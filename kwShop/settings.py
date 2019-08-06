@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.naver', # 사용하는 소셜 서비스(naver)
     'cart',
     'coupon',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -159,7 +160,13 @@ AWS_S3_OBJECT_PARAMETERS = {
 AWS_DEFAULT_ACL = 'public-read'
 AWS_LOCATION = 'static'
 
+#IAMPORT
+IAMPORT_KEY = '4710501694677841'
+IAMPORT_SECRET = 'zjusuEuVqF0YH9EEBlpibPsvQemLZTLzcg1HVwClcDjTMYyokXGvN91EoopohbXusZbnwOIIs2Bf1aDl'
+
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'kwShop.asset_storage.MediaStorage' # 미디어 파일을 위한 파일 스토리지 설정
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
