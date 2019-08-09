@@ -22,8 +22,8 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
 def home(request) :
     categories = Category.objects.all()
     current_category = None
-    products = Product.objects.filter(available_display=True)
-    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category})
+    banners = Banner.objects.all()
+    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners})
 
 def search(request):
     print("here")
