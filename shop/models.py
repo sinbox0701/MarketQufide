@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from django.contrib.auth import get_user_model
 class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True) # 카테고리 이름, db_index=True로 하면 인덱스 열을  이름으로 설정 가능
     meta_description = models.TextField(blank=True) # Search Engine Optimization
@@ -44,3 +44,23 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
+
+from  django.contrib.auth.models import User
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='comments')
+    comment_created = models.DateTimeField(auto_now_add=True)
+    comment_updated = models.DateTimeField(auto_now=True)
+    #comment_thumbnail_url = models.TextField(max_length=20)
+    like = models.IntegerField(default=0)
+    comment_text = models.TextField()
+
+    def __str__(self):
+        return (self.author.username if self.author else "무명") + "의 댓글"
+
+class Member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nickname = models.TextField(max_length=10)
+
+    def __str__(self):
+        return '{}'.format(self.nickname)

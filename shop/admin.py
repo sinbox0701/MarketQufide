@@ -15,3 +15,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 
+from .models import Comment
+admin.site.register(Comment)
+
+from .models import Member
+admin.site.register(Member)

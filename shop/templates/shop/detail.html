@@ -19,10 +19,31 @@
                     </form>
                     <h5><span class="badge badge-secondary">Description</span>{{product.description|linebreaks}}</h5>
                 </div>
+
             </div>
+            <h3> Comments </h3>
+                <table class="table table-striped">
+                    {% for comment in comments %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><a href="{ % url 'shop:comment_delete' comment.id % }">삭제하기</a></td>
+                            <td><a href="{ % url 'shop:comment_update' comment.id % }">수정하기</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div class="row">
+                     {% for comment in comments %}
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ comment.comment_created }}</h5>
+                            <h5 class="mt-0">{{ comment.comment_text }}</h5>
+                         </div>
+                      {% endfor %}
 
+                </div>
         </div>
-
 
 
 {% endblock %}
