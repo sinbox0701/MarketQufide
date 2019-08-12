@@ -10,7 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['price', 'stock', 'available_display', 'available_order'] # 주요값 바로 변경 가능
 
 
-
+admin.site.register(Banner)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, MPTTModelAdmin)
 admin.site.register(Theme)

@@ -116,3 +116,12 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
+
+
+class Banner(models.Model):
+    name = models.CharField(blank=True, max_length=30)
+    image = models.ImageField()
+    url = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
