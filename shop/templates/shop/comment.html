@@ -16,6 +16,9 @@
                          </div>
                       {% endfor %}
 
+        <td><a href="{ % url 'shop:delete_comment' comment.id % }">삭제하기</a></td>
+        <td><a href="{ % url 'shop:update_comment' comment.id % }">수정하기</a></td>
+
             <h1>New comment</h1>
             <form method="POST" class="post-form">{% csrf_token %}
                 <table>

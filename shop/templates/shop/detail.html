@@ -46,7 +46,7 @@
     <h3> Comments </h3>
                     <!-- Single Comment -->
 
-                    <form action="{% url product.id product.slug 'shop:comment' % }" method="post">
+                    <form action="{% url 'shop:comment' product.id product.slug %}" method="post">
                     {% csrf_token %}
 
 
@@ -60,8 +60,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><a href="{ % url 'shop:comment_delete' comment.id % }">삭제하기</a></td>
-                        <td><a href="{ % url 'shop:comment_update' comment.id % }">수정하기</a></td>
+
                      </tr>
                         {% endfor %}
                     </table>
