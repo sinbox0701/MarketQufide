@@ -94,8 +94,8 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kwshop', # 설정해둔 DataBase 이름
-        'USER': ' ', # 설정해 둔 DB 관리자 계정 python
+        'NAME': 'kwShop', # 설정해둔 DataBase 이름
+        'USER': ' ', # 설정해 둔 DB 관리자 계정 pytho
         'PASSWORD': ' ', # 설정해 둔 DB 관리자 비번
         'HOST': ' ', # 만들어 논 DataBase의 엔드 포인트
         'PORT': '3306',
