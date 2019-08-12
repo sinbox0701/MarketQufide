@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'cart',
     'coupon',
     'order',
+    'mptt',
+    'django_social_share',
 ]
 
 MIDDLEWARE = [
