@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Comments{% endblock %}
+{% block content %}
+
+    <div class="container">
+
+        <h3> Comments </h3>
+                    <!-- Single Comment -->
+
+
+                     {% for comment in comments %}
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{comment.comment_created}}</h5>
+                            <h5 class="mt-0">{{comment.comment_text}}</h5>
+                         </div>
+                      {% endfor %}
+
+            <h1>New comment</h1>
+            <form method="POST" class="post-form">{% csrf_token %}
+                <table>
+                {{ form.as_table }}
+                </table>
+                <button type="submit" class="save btn btn-default">Send</button>
+            </form>
+
+    </div>
+{% endblock %}

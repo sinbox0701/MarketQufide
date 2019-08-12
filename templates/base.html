@@ -47,13 +47,37 @@
         </a>
       </li>
 
+        <!--for search-->
+        <li>
+            <form action="/search"class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </li>
     </ul>
   </div>
 </nav>
+<!--category-->
+<div class="col-2">
+    <div class="list-group">
+        <a href="/" class="list-group-item {% if not current_category %}active{% endif %}">All</a>
+        {% for c in categories %}
+            <a href="{{c.get_absolute_url}}" class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+
 <div class="container">
 {% block content %}
 {% endblock %}
 </div>
 
 </body>
+<input type="button" value="입점신청" onClick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfdGy1Jvt9uyhN9IzDiGU-oceGBfSGLGAhTr7CY4BamBRDFpw/viewform?usp=pp_url')">
+
 </html>

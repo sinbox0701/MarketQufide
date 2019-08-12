@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Product Detail{% endblock %}
 {% block content %}
+{% load social_share %}
 
 
         <div class="container">
+
             <div class="row">
                 <div class="col-4">
                     <img src="{{product.image.url}}" width="100%">
@@ -19,31 +21,113 @@
                     </form>
                     <h5><span class="badge badge-secondary">Description</span>{{product.description|linebreaks}}</h5>
                 </div>
-
             </div>
-            <h3> Comments </h3>
-                <table class="table table-striped">
-                    {% for comment in comments %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><a href="{ % url 'shop:comment_delete' comment.id % }">삭제하기</a></td>
-                            <td><a href="{ % url 'shop:comment_update' comment.id % }">수정하기</a></td>
-                        </tr>
-                    {% endfor %}
-                </table>
+
+	        <h3>묶음배송</h3>
                 <div class="row">
+                    {% for relative_product in relative_products %}
+                       <div class="col-4">
+                            <div class="card">
+                              <img class="card-img-top" src="{{relative_product.image.url}}" alt="Product Image">
+                              <div class="card-body">
+                                  <h5 class="card-title">{{relative_product.name}}</h5>
+                                  <a href="{{relative_product.get_absolute_url}}" class="btn btn-primary">View Detail</a>
+                              </div>
+                            </div>
+                       </div>
+                    {% endfor %}
+                </div>
+
+
+        </div>
+
+    </div>
+
+    <h3> Comments </h3>
+                    <!-- Single Comment -->
+
+                    <form action="{% url product.id product.slug 'shop:comment' % }" method="post">
+                    {% csrf_token %}
+
+
+                    <input type="submit" value="Comment" class="btn btn-outline-primary">
+
+                    </form>
+
+                    <table class="table table-striped">
+                        {% for comment in comments %}
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a href="{ % url 'shop:comment_delete' comment.id % }">삭제하기</a></td>
+                        <td><a href="{ % url 'shop:comment_update' comment.id % }">수정하기</a></td>
+                     </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="row">
+
                      {% for comment in comments %}
                         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                         <div class="media-body">
-                            <h5 class="mt-0">{{ comment.comment_created }}</h5>
-                            <h5 class="mt-0">{{ comment.comment_text }}</h5>
+                            <h5 class="mt-0">{{comment.comment_created}}</h5>
+                            <h5 class="mt-0">{{comment.comment_text}}</h5>
                          </div>
                       {% endfor %}
 
-                </div>
-        </div>
+                    </div>
+    </div>
 
+
+
+    <button type="button" class="btn btn-light">{% post_to_facebook post.get_absolute_url "Facebook" %}</button>
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
+    <title>KakaoLink v2 Demo(Default / Feed) - Kakao JavaScript SDK</title>
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+    </head>
+    <body>
+    <a id="kakao-link-btn" href="javascript:;">
+    <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+    </a>
+    <script type='text/javascript'>
+      //<![CDATA[
+        // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('92dd12b816c6f2824075b01c8b9446f2');
+        // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+        localhost='127.0.0.1:8000'
+        Kakao.Link.createDefaultButton({
+          container: '#kakao-link-btn',
+          objectType: 'feed',
+          content: {
+            title: '{{product.name}}',
+            description: '{{product.description}}',
+            imageUrl: '{{product.image.url}}',
+            link: {
+              mobileWebUrl: localhost+'{{product.get_absolute_url}}',
+              webUrl: localhost+'{{product.get_absolute_url}}'
+            }
+          },
+          buttons: [
+            {
+              title: '웹으로 보기',
+              link: {
+                mobileWebUrl: localhost+'{{product.get_absolute_url}}',
+                webUrl: localhost+'{{product.get_absolute_url}}'
+              }
+            }
+          ]
+        });
+      //]]>
+    </script>
+
+    </body>
+    </html>
 
 {% endblock %}
