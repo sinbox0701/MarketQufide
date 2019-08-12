@@ -41,6 +41,45 @@
 
         </div>
 
+    </div>
+
+    <h3> Comments </h3>
+                    <!-- Single Comment -->
+
+                    <form action="{% url product.id product.slug 'shop:comment' % }" method="post">
+                    {% csrf_token %}
+
+
+                    <input type="submit" value="Comment" class="btn btn-outline-primary">
+
+                    </form>
+
+                    <table class="table table-striped">
+                        {% for comment in comments %}
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a href="{ % url 'shop:comment_delete' comment.id % }">삭제하기</a></td>
+                        <td><a href="{ % url 'shop:comment_update' comment.id % }">수정하기</a></td>
+                     </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="row">
+
+                     {% for comment in comments %}
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{comment.comment_created}}</h5>
+                            <h5 class="mt-0">{{comment.comment_text}}</h5>
+                         </div>
+                      {% endfor %}
+
+                    </div>
+    </div>
+
+
+
     <button type="button" class="btn btn-light">{% post_to_facebook post.get_absolute_url "Facebook" %}</button>
 
     <!DOCTYPE html>
