@@ -118,8 +118,6 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
-
-
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=True, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='comments')
@@ -131,5 +129,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return (self.author.username if self.author else "무명") + "의 댓글"
+      
+class Banner(models.Model):
+    name = models.CharField(blank=True, max_length=30)
+    image = models.ImageField()
+    url = models.TextField(blank=True)
 
-
+    def __str__(self):
+        return self.name
