@@ -1,13 +1,10 @@
 {% extends 'base.html' %}
-{% block title %}Category Page{% endblock %}
+{% block title %}Search Page{% endblock %}
 {% block content %}
 
 
     <div class="row">
         <div class="col">
-            <div class="alert alert-info" role="alert">
-              {% if current_category %}{{current_category.name}}{% else %}All Products{% endif %}
-            </div>
             <div class="row">
             {% for product in products %}
 

@@ -27,10 +27,11 @@ def category(request, category_slug=None): # 카테고리 페이지
 
 
 def product_detail(request, id, product_slug=None): # 제품 상세 뷰
+    categories = Category.objects.all()
     product = get_object_or_404(Product, id=id, slug=product_slug)
     add_to_cart = AddProductForm(initial={'quantity':1})
     relative_products = Product.objects.filter(company=product.company).exclude(slug=product_slug)
-
+    
     #comment 부분
     #comments = Comment.objects.all()
     if request.method == "POST":
@@ -61,10 +62,8 @@ def comment(request, id, product_slug=None):
             return redirect('shop:comment', id, product_slug)
     else:
         form = CommentForm()
-
+        
     return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
-
-
 
 def comment_detail(request, id):
     comment = Comment.objects.get(id=id)
@@ -89,8 +88,6 @@ def delete_comment(request, id):
     else:
         return render(request, 'shop/delete_comment.html', {'object':comment})
 
-
-
 def update_comment(request, id):
 
     comment = Comment.objects.get(id=id)
@@ -110,3 +107,21 @@ def update_comment(request, id):
         form = CommentForm(instance=comment)
 
     return render(request,'shop/update_comment.html', {'form':form})
+
+def home(request) :
+    categories = Category.objects.all()
+    current_category = None
+    banners = Banner.objects.all()
+    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners})
+  
+def search(request):
+    print("here")
+    #products = Product.objects.filter(available_display=True)
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    search_term = ''
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+        products = products.filter(name__contains=search_term)
+    return render(request, 'shop/search.html',
+                  {'products': products, 'search_term' : search_term, 'categories' : categories})
