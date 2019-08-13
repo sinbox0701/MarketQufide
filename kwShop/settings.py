@@ -97,8 +97,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kwShop', # 설정해둔 DataBase 이름
         'USER': '', # 설정해 둔 DB 관리자 계정pytho
-        'PASSWORD': '', # 설정해 둔 DB 관리자 비번
-        'HOST': '', # 만들어 논 DataBase의 엔드 포인트
+'PASSWORD': '', # 설정해 둔 DB 관리자 비번
+'HOST': '', # 만들어 논 DataBase의 엔드 포인트
         'PORT': '3306',
         #'OPTIONS': {
         #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -166,6 +166,7 @@ AWS_LOCATION = 'static'
 #IAMPORT
 IAMPORT_KEY = ''
 IAMPORT_SECRET = ''
+
 
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

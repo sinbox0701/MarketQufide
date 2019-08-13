@@ -115,13 +115,46 @@ def home(request) :
     return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners})
   
 def search(request):
-    print("here")
     #products = Product.objects.filter(available_display=True)
-    categories = Category.objects.all()
     products = Product.objects.all()
+    categories = Category.objects.all()
     search_term = ''
     if 'search' in request.GET:
         search_term = request.GET['search']
         products = products.filter(name__contains=search_term)
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
+
+def best_item(request):
+    categories = Category.objects.all()
+    context={'categories' : categories}
+    return render(request, 'shop/best_item.html', context)
+
+def new_item(request):
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    products = Product.objects.order_by('-created')[:6]
+
+
+    context = {'categories': categories, 'products' : products}
+    return render(request, 'shop/new_item.html', context)
+
+def frugal_shopping(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'shop/frugal_shopping.html', context)
+
+def exhibition(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'shop/exhibition.html', context)
+
+def event(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'shop/event.html', context)
+
+def recipe(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'shop/recipe.html', context)
