@@ -2,14 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ef2dfab-710d-40d3-9848-7bad09d41ee7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/qna/templates/qna/form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/templates/shop/best_item.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/templates/shop/event.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/templates/shop/exhibition.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/templates/shop/frugal_shopping.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/templates/shop/new_item.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/templates/shop/recipe.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qna/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/qna/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qna/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/qna/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qna/templates/qna/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/qna/templates/qna/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qna/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/qna/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qna/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/qna/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kwShop/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kwShop/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/templates/shop/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/shop/templates/shop/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +41,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../GP" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
@@ -77,7 +81,7 @@
       <workItem from="1565315863600" duration="12272000" />
       <workItem from="1565506324697" duration="517000" />
       <workItem from="1565574210064" duration="15454000" />
-      <workItem from="1565660423322" duration="2179000" />
+      <workItem from="1565660423322" duration="18111000" />
     </task>
     <task id="LOCAL-00002" summary="html파일변경&#10;search&#10;instagram&#10;banner">
       <created>1565246397215</created>
@@ -107,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1565597206304</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="channeltalk">
+      <created>1565663075629</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1565663075629</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +142,7 @@
     <MESSAGE value="html파일변경&#10;search&#10;instagram&#10;banner" />
     <MESSAGE value="banner slider update" />
     <MESSAGE value="qna" />
-    <option name="LAST_COMMIT_MESSAGE" value="qna" />
+    <MESSAGE value="channeltalk" />
+    <option name="LAST_COMMIT_MESSAGE" value="channeltalk" />
   </component>
 </project>
