@@ -15,4 +15,6 @@ urlpatterns = [
     path('<slug:category_slug>/', product_in_category, name='product_in_category'), # 카테고리 선택
     path('<int:id>/<product_slug>/', product_detail, name='product_detail'), # 상품 상세 페이지
     path('<int:id>/<product_slug>/comment/', comment, name='comment'),
+    path('<int:id>/<product_slug>/comment/delete', delete_comment, name="delete_comment"),
+    path('<int:id>/<product_slug>/comment/update', update_comment, name="update_comment"),
 ]

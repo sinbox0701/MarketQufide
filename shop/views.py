@@ -35,7 +35,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
     #comments = Comment.objects.all()
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
-        comment_form.instance.author_id = request.user.id
+        comment_form.instance.author = request.user.id
         comment_form.instance.product_slug = product_slug
         if comment_form.is_valid():
             comment = comment_form.save()
@@ -56,12 +56,46 @@ def comment(request, id, product_slug=None):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.product = Product.objects.get(id=id)
+            comment.author = request.user
             comment.save()
-            return redirect('shop:comment')
+            return redirect('shop:comment', id, product_slug)
     else:
         form = CommentForm()
 
     return render(request, 'shop/comment.html', {'form': form, 'comments':comments})
+ 
+def update_comment(request, comment_id):
+
+    comment = get_object_or_404(Comment, pk=comment_id)
+    document = get_object_or_404(Document, pk=comment.document.id)
+
+    if request.user != comment.author:
+        messages.warning(request, "권한 없음")
+        return redirect('shop:comment')
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('shop:comment')
+    else:
+        form = CommentForm(instance=comment)
+    return render(request,'shop/update_comment.html',{'form':form})
+
+
+def delete_comment(request, comment_id):
+
+    comment = get_object_or_404(Comment, pk=comment_id)
+
+    if request.user != comment.author and not request.user.is_staff:
+        messages.warning(request, '권한 없음')
+        return redirect('shop:comment')
+
+    if request.method == "POST":
+        comment.delete()
+        return redirect('shop:comment')
+    else:
+        return render(request, 'shop/delete_comment.html', {'object':comment})
 
 def home(request) :
     categories = Category.objects.all()
