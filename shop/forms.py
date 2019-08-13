@@ -5,9 +5,10 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ['comment_text']
+        fields = ['comment_text', 'like']
+
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
+        super(CommentForm, self).__init__(*args,**kwargs)
         self.fields['comment_text'].label = "댓글"
 

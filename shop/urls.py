@@ -7,6 +7,7 @@ app_name = 'shop'
 
 urlpatterns = [
     #path('', category, name='product_all'), # 카테고리 선택 없이 상품 전체 노출
+
     path('', home, name='product_all'),
     path('best_item/', best_item, name="best_item"),
     path('new_item/', new_item, name="new_item"),
@@ -20,6 +21,7 @@ urlpatterns = [
     #path('<slug:category_slug>/', product_in_category, name='product_in_category'), # 카테고리 선택
     path('<int:id>/<product_slug>/', product_detail, name='product_detail'), # 상품 상세 페이
     path('<int:id>/<product_slug>/comment/', comment, name='comment'),
-    path('<int:id>/<product_slug>/comment/delete', delete_comment, name="delete_comment"),
-    path('<int:id>/<product_slug>/comment/update', update_comment, name="update_comment"),
+    path('comment/<int:id>/', comment_detail, name='comment_detail'),
+    path('comment/<int:id>/delete/', delete_comment, name="delete_comment"),
+    path('comment/<int:id>/update/', update_comment, name="update_comment"),
 ]

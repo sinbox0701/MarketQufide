@@ -5,6 +5,7 @@ from .forms import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.contrib import messages
 
 def category(request, category_slug=None): # 카테고리 페이지
     current_category = None
@@ -61,41 +62,51 @@ def comment(request, id, product_slug=None):
             return redirect('shop:comment', id, product_slug)
     else:
         form = CommentForm()
+        
+    return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
 
-    return render(request, 'shop/comment.html', {'form': form, 'comments':comments})
- 
-def update_comment(request, comment_id):
+def comment_detail(request, id):
+    comment = Comment.objects.get(id=id)
+    form = CommentForm()
 
-    comment = get_object_or_404(Comment, pk=comment_id)
-    document = get_object_or_404(Document, pk=comment.document.id)
+    return render(request, 'shop/comment_detail.html', {'comment':comment, 'form':form})
+
+
+
+def delete_comment(request, id):
+
+    comment = Comment.objects.get(id=id)
+    product = get_object_or_404(Product, slug=comment.product.slug)
+
+    if request.user != comment.author and not request.user.is_staff:
+        messages.warning(request, '권한 없음')
+        return redirect('shop:comment', product.id, product.slug)
+
+    if request.method == "POST":
+        comment.delete()
+        return redirect('shop:comment', product.id, product.slug)
+    else:
+        return render(request, 'shop/delete_comment.html', {'object':comment})
+
+def update_comment(request, id):
+
+    comment = Comment.objects.get(id=id)
+    product = get_object_or_404(Product, slug=comment.product.slug)
+
 
     if request.user != comment.author:
         messages.warning(request, "권한 없음")
-        return redirect('shop:comment')
+        return redirect('shop:comment', product.id, product.slug)
 
     if request.method == "POST":
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-            return redirect('shop:comment')
+            return redirect('shop:comment', product.id, product.slug)
     else:
         form = CommentForm(instance=comment)
-    return render(request,'shop/update_comment.html',{'form':form})
 
-
-def delete_comment(request, comment_id):
-
-    comment = get_object_or_404(Comment, pk=comment_id)
-
-    if request.user != comment.author and not request.user.is_staff:
-        messages.warning(request, '권한 없음')
-        return redirect('shop:comment')
-
-    if request.method == "POST":
-        comment.delete()
-        return redirect('shop:comment')
-    else:
-        return render(request, 'shop/delete_comment.html', {'object':comment})
+    return render(request,'shop/update_comment.html', {'form':form})
 
 def home(request) :
     categories = Category.objects.all()
