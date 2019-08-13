@@ -93,6 +93,7 @@ class Product(models.Model):
     company = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
     available_display = models.BooleanField('Display', default=True) # 상품 노출 여부
     available_order = models.BooleanField('Order', default=True) # 상품 주문 가능 여부
+    count_order = models.IntegerField(default=0) # 팔린 갯수
 
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
@@ -129,7 +130,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return (self.author.username if self.author else "무명") + "의 댓글"
-      
+
 class Banner(models.Model):
     name = models.CharField(blank=True, max_length=30)
     image = models.ImageField()

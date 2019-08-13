@@ -1,3 +1,4 @@
+
 """
 Django settings for kwShop project.
 
@@ -95,9 +96,9 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kwShop', # 설정해둔 DataBase 이름
-        'USER': '', # 설정해 둔 DB 관리자 계정pytho
-        'PASSWORD': '', # 설정해 둔 DB 관리자 비번
-        'HOST': '', # 만들어 논 DataBase의 엔드 포인트
+        'USER': 'kiwoong', # 설정해 둔 DB 관리자 계정pytho
+        'PASSWORD': 'park1230', # 설정해 둔 DB 관리자 비번
+        'HOST': 'kwshop.curmjtxz1etm.ap-northeast-2.rds.amazonaws.com', # 만들어 논 DataBase의 엔드 포인트
         'PORT': '3306',
         #'OPTIONS': {
         #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -151,8 +152,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
+AWS_ACCESS_KEY_ID = 'AKIAXOVYP27VVQ4AICSX'
+AWS_SECRET_ACCESS_KEY = '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'
+
 AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = 'django-kwshop'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com'%(AWS_STORAGE_BUCKET_NAME,AWS_REGION)
