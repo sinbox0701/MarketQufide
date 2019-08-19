@@ -11,18 +11,17 @@
                      {% for comment in comments %}
                         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                         <div class="media-body">
-                            <h5 class="mt-0">{{comment.comment_created}}</h5>
+                            <a href="{% url 'shop:comment_detail' comment.id %}" class="mt-0">{{comment.comment_created}}</a>
                             <h5 class="mt-0">{{comment.comment_text}}</h5>
                          </div>
                       {% endfor %}
 
-        <td><a href="{ % url 'shop:delete_comment' comment.id % }">삭제하기</a></td>
-        <td><a href="{ % url 'shop:update_comment' comment.id % }">수정하기</a></td>
 
             <h1>New comment</h1>
             <form method="POST" class="post-form">{% csrf_token %}
                 <table>
                 {{ form.as_table }}
+
                 </table>
                 <button type="submit" class="save btn btn-default">Send</button>
             </form>
