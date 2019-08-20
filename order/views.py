@@ -24,8 +24,9 @@ def order_create(request): # 주문서 입력
 
 def order_complete(request):
     order_id = request.GET.get('order_id')
-    order  = Order.objects.get(id=order_id)
-    Product.count_order += 1
+    order = Order.objects.get(id=order_id)
+    print(order)
+    #Product.count_order += 1
     return render(request, 'order/created.html', {'order': order})
 
 from django.views.generic.base import View

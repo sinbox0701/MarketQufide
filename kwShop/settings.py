@@ -54,7 +54,10 @@ INSTALLED_APPS = [
     'order',
     'mptt',
     'django_social_share',
+    'django_inlinecss',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,6 +89,31 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kwShop.wsgi.application'
 
+#all-auth registraion settings
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1 # email 확인 메일의 만료 날짜
+ACCOUNT_EMAIL_REQUIRED = True # 사용자는 가입할 때 이메일 주소를 넘겨야 함
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" # 이메일 확인 방법 - 필수: 주소확인될때까지 사용못함
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5 # 로그인 제한 횟수, 초과시 아래 시간만큼 로그인 불가
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day. This does ot prevent admin login from being brut forced.
+ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/' #or any other page
+LOGIN_REDIRECT_URL = '/accounts/email/' # redirects to profile page by default
+ACCOUNT_PRESERVE_USERNAME_CASING = False # reduces the delays in iexact lookups
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+ACCOUNT_UNIQUE_EMAIL=True
+ACCOUNT_USERNAME_MIN_LENGTH = 5
+ACCOUNT_USERNAME_REQUIRED =True
+ACCOUNT_USERNAME_VALIDATORS = None
+
+#Account adapters
+ACCOUNT_ADAPTER = 'kwShop.adapter.CustomProcessAdapter'
+
+#Account Signup
+ACCOUNT_FORMS = {'signup': 'kwShop.forms.CustomSignupForm',}
+
+SOCIALACCOUNT_QUERY_EMAIL=ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_EMAIL_REQUIRED=ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_STORE_TOKENS=False
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -96,9 +124,9 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kwShop', # 설정해둔 DataBase 이름
-        'USER': 'kiwoong', # 설정해 둔 DB 관리자 계정pytho
-        'PASSWORD': 'park1230', # 설정해 둔 DB 관리자 비번
-        'HOST': 'kwshop.curmjtxz1etm.ap-northeast-2.rds.amazonaws.com', # 만들어 논 DataBase의 엔드 포인트
+        'USER': 'kiwoong', # 설정해 둔 DB 관리자 계정 python
+        'PASSWORD': ' ', # 설정해 둔 DB 관리자 비번
+        'HOST': ' ', # 만들어 논 DataBase의 엔드 포인트
         'PORT': '3306',
         #'OPTIONS': {
         #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -134,7 +162,7 @@ SITE_ID = 1
 
 CART_ID = 'cart_in_session'
 
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -152,8 +180,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-AWS_ACCESS_KEY_ID = 'AKIAXOVYP27VVQ4AICSX'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
 
 AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = 'django-kwshop'
@@ -165,8 +193,8 @@ AWS_DEFAULT_ACL = 'public-read'
 AWS_LOCATION = 'static'
 
 #IAMPORT
-IAMPORT_KEY = '4710501694677841'
-IAMPORT_SECRET = 'zjusuEuVqF0YH9EEBlpibPsvQemLZTLzcg1HVwClcDjTMYyokXGvN91EoopohbXusZbnwOIIs2Bf1aDl'
+IAMPORT_KEY = ' '
+IAMPORT_SECRET = ' '
 
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -174,3 +202,6 @@ DEFAULT_FILE_STORAGE = 'kwShop.asset_storage.MediaStorage' # 미디어 파일을
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# 서버 배포 이후 삭제하기 --> 현재는 로컬호스트기 때문에 불가능
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
