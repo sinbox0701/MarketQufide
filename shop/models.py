@@ -97,6 +97,8 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
 
+    count_order = models.IntegerField(default=0)
+
     class Meta:
         ordering = ['-created']
         index_together = [['id', 'slug']] # 멀티 컬럼 색인 기능
@@ -126,6 +128,7 @@ class Comment(models.Model):
 #    comment_thumbnail_url = models.TextField(max_length=20)
     like = models.IntegerField(default=0)
     comment_text = models.TextField()
+    best = models.BooleanField(default=False)
 
     def __str__(self):
         return (self.author.username if self.author else "무명") + "의 댓글"

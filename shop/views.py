@@ -49,6 +49,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
                                                 'comments':comments, 'comment_form':comment_form})
 
 
+
 def comment(request, id, product_slug=None):
     product = get_object_or_404(Product, id=id, slug=product_slug)
     comments = Comment.objects.filter(product=product)
@@ -64,6 +65,8 @@ def comment(request, id, product_slug=None):
         form = CommentForm()
         
     return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
+
+
 
 def comment_detail(request, id):
     comment = Comment.objects.get(id=id)
@@ -88,6 +91,8 @@ def delete_comment(request, id):
     else:
         return render(request, 'shop/delete_comment.html', {'object':comment})
 
+
+
 def update_comment(request, id):
 
     comment = Comment.objects.get(id=id)
@@ -108,12 +113,37 @@ def update_comment(request, id):
 
     return render(request,'shop/update_comment.html', {'form':form})
 
+
+
+def comment_select(request):
+    comments = Comment.objects.all()
+
+    if request.method == 'POST':
+        select = request.POST.getlist('select')
+        best_comments = Comment.objects.filter(id__in=select)
+        false_comments = Comment.objects.all().exclude(id__in=select)
+        for best_comment in best_comments:
+            best_comment.best=True
+            best_comment.save()
+        for false_comment in false_comments:
+            false_comment.best=False
+            false_comment.save()
+
+    return render(request, 'shop/commentselect.html', {'comments': comments})
+
+
+
 def home(request) :
     categories = Category.objects.all()
     current_category = None
     banners = Banner.objects.all()
-    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners})
-  
+    comments = Comment.objects.filter(best=True)
+
+
+    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners, 'comments': comments})
+
+
+
 def search(request):
     print("here")
     #products = Product.objects.filter(available_display=True)
@@ -125,3 +155,6 @@ def search(request):
         products = products.filter(name__contains=search_term)
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
+
+
+

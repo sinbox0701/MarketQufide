@@ -68,7 +68,7 @@
             <div id="instafeed">
                 <script type="text/javascript">
                     console.log("here")
-                    var access_token="";
+                    var access_token="9533696900.b62fa1c.58f8e2395c1c430a94f6239bde18af45";
                     var api_endpoint="https://api.instagram.com/v1/users/self/media/recent/?access_token=" + access_token;
                     $.get(api_endpoint, function(json) {
                         var instabanner = $('#instafeed');
@@ -95,7 +95,7 @@
 <!-- for channeltalk -->
 <script>
   ;window.channelPluginSettings = {
-    "pluginKey": ""
+    "pluginKey": "f50ac0eb-d697-497b-a54a-fb2bdad0936b"
   };
   (function() {
     var w = window;
@@ -134,4 +134,22 @@
     }
   })();
 </script>
+
+
+<div id="best-comment">
+    <h3>베스트 후기</h3>
+        {% for comment in comments %}
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <a href="{% url 'shop:comment_detail' comment.id %}" class="mt-0">{{comment.comment_created}}</a>
+                            <h5 class="mt-0">{{comment.comment_text}}</h5>
+                         </div>
+        {% endfor %}
+
+    {% if request.user.is_superuser %}
+    <td><a href="{% url 'shop:comment_select' %}" target="_blank">선택하기</a></td>
+    {% endif %}
+
+</div>
+
 {% endblock %}
