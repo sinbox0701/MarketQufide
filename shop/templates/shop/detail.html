@@ -20,6 +20,12 @@
                         <input type="submit" class="btn btn-primary btn-sm" value="Add to Cart">
                     </form>
                     <h5><span class="badge badge-secondary">Description</span>{{product.description|linebreaks}}</h5>
+                    {% if product.recipe_name != '' %}
+                        <form action="{% url 'shop:recipe_detail' product.id product.slug %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-primary btn-sm" value="Recipe">
+                        </form>
+                    {% endif %}
                 </div>
             </div>
 

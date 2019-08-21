@@ -145,10 +145,9 @@ def home(request) :
 
 
 def search(request):
-    print("here")
     #products = Product.objects.filter(available_display=True)
-    categories = Category.objects.all()
     products = Product.objects.all()
+    categories = Category.objects.all()
     search_term = ''
     if 'search' in request.GET:
         search_term = request.GET['search']
@@ -156,5 +155,51 @@ def search(request):
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
 
+def best_item(request):
+    categories = Category.objects.all()
+    context={'categories' : categories}
+    return render(request, 'shop/best_item.html', context)
 
+def new_item(request):
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    products = Product.objects.order_by('-created')[:6]
+
+
+    context = {'categories': categories, 'products' : products}
+    return render(request, 'shop/new_item.html', context)
+
+def frugal_shopping(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'shop/frugal_shopping.html', context)
+
+def exhibition(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'shop/exhibition.html', context)
+
+def event(request):
+    categories = Category.objects.all()
+    events = Event.objects.all()
+    context = {'categories': categories, 'events' : events}
+    return render(request, 'shop/event.html', context)
+
+def event_detail(request, event_slug=None):
+    categories = Category.objects.all()
+    event = get_object_or_404(Event, slug=event_slug)
+    context = {'categories' : categories, 'event' : event}
+    return render(request, 'shop/event_detail.html', context)
+
+def recipe(request):
+    categories = Category.objects.all()
+    products = Product.objects.exclude(recipe_name='')
+    context = {'categories':categories, 'products':products}
+    return render(request, 'shop/recipe.html', context)
+
+def recipe_detail(request, id, product_slug=None):
+    categories = Category.objects.all()
+    product = get_object_or_404(Product, id=id, slug=product_slug)
+    context = {'categories':categories, 'product':product}
+    return render(request, 'shop/recipe_detail.html', context)
 

@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e61fc8d7-3da4-4a0f-9a1d-b3e48b113506" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/shop/templates/shop/commentselect.html" afterDir="false" />
+    <list default="true" id="1ef2dfab-710d-40d3-9848-7bad09d41ee7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kwShop/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kwShop/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/order/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/templates/shop/comment.html" beforeDir="false" afterPath="$PROJECT_DIR$/shop/templates/shop/comment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/templates/shop/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/shop/templates/shop/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/templates/shop/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/shop/templates/shop/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0002_banner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0003_auto_20190809_1135.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0004_auto_20190809_1136.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0005_merge_20190813_1722.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0006_auto_20190814_1515.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0007_event.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0008_event_slug.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0009_auto_20190819_1119.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0010_auto_20190819_1202.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0011_remove_product_recipe_title_image.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0012_auto_20190819_1416.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0013_auto_20190819_1531.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/migrations/0014_auto_20190819_1533.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -255,11 +261,11 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../GP" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.notifications" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -295,7 +301,9 @@
       <workItem from="1565315863600" duration="12272000" />
       <workItem from="1565506324697" duration="517000" />
       <workItem from="1565574210064" duration="15454000" />
-      <workItem from="1565660423322" duration="2179000" />
+      <workItem from="1565660423322" duration="19274000" />
+      <workItem from="1565746920669" duration="7145000" />
+      <workItem from="1566178338825" duration="14251000" />
     </task>
     <task id="LOCAL-00002" summary="html파일변경&#10;search&#10;instagram&#10;banner">
       <created>1565246397215</created>
@@ -325,7 +333,28 @@
       <option name="project" value="LOCAL" />
       <updated>1565597206304</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="channeltalk">
+      <created>1565663075629</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1565663075629</updated>
+    </task>
+    <task id="LOCAL-00007" summary="migrations">
+      <created>1565684900070</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1565684900070</updated>
+    </task>
+    <task id="LOCAL-00008" summary="event, recipe">
+      <created>1566199681247</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1566199681247</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -411,7 +440,10 @@
     <MESSAGE value="html파일변경&#10;search&#10;instagram&#10;banner" />
     <MESSAGE value="banner slider update" />
     <MESSAGE value="qna" />
-    <option name="LAST_COMMIT_MESSAGE" value="qna" />
+    <MESSAGE value="channeltalk" />
+    <MESSAGE value="migrations" />
+    <MESSAGE value="event, recipe" />
+    <option name="LAST_COMMIT_MESSAGE" value="event, recipe" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/kwShop/urls.py">
