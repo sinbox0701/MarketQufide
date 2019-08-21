@@ -2,22 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ef2dfab-710d-40d3-9848-7bad09d41ee7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/shop/migrations/0002_auto_20190821_1413.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/migrations/0003_delete_exhibition.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/migrations/0004_collection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/migrations/0005_auto_20190821_1445.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/migrations/0006_auto_20190821_1502.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/migrations/0007_auto_20190821_1502.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/templates/shop/collection_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/cart/cart.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kwShop/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kwShop/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0002_banner.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0003_auto_20190809_1135.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0004_auto_20190809_1136.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0005_merge_20190813_1722.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0006_auto_20190814_1515.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0007_event.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0008_event_slug.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0009_auto_20190819_1119.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0010_auto_20190819_1202.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0011_remove_product_recipe_title_image.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0012_auto_20190819_1416.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0013_auto_20190819_1531.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/migrations/0014_auto_20190819_1533.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/templates/shop/exhibition.html" beforeDir="false" afterPath="$PROJECT_DIR$/shop/templates/shop/collection.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,11 +42,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1P4wn9iSGpqS4MZNVxGZtjrhzzV" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/workspace/example/django-carton-master" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
@@ -88,6 +93,8 @@
       <workItem from="1565660423322" duration="19274000" />
       <workItem from="1565746920669" duration="7145000" />
       <workItem from="1566178338825" duration="14251000" />
+      <workItem from="1566267529446" duration="18719000" />
+      <workItem from="1566350563404" duration="12959000" />
     </task>
     <task id="LOCAL-00002" summary="html파일변경&#10;search&#10;instagram&#10;banner">
       <created>1565246397215</created>
@@ -158,6 +165,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="test-uj" />
     <MESSAGE value="html파일변경&#10;search&#10;instagram&#10;banner" />
     <MESSAGE value="banner slider update" />

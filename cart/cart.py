@@ -8,6 +8,8 @@ from coupon.models import Coupon
 class Cart(object):
     def __init__(self, request):
         self.session = request.session
+        print(self.session)
+        print("-----------------------------------------")
         cart = self.session.get(settings.CART_ID)
         if not cart:
             cart = self.session[settings.CART_ID] = {}
@@ -73,4 +75,3 @@ class Cart(object):
 
     def get_total_price(self):
         return self.get_product_total() - self.get_discount_total()
-

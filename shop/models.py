@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
-from  django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 
 class Category(MPTTModel):
@@ -145,19 +145,26 @@ class Banner(models.Model):
     def __str__(self):
         return self.name
 
-class Exhibition(models.Model):
-    name = models.CharField(blank=True, max_length=30)
-    description = models.TextField(blank=True)
-    title_image = models.ImageField()
-    #product = models.ForeignKey(Product, on_delete=True)
-    #selected_product = MultiSelectField(choices = )
 
+class Collection(models.Model):
+    name = models.CharField(max_length=30)
+    slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True)
+    title_image = models.ImageField()
+    description = models.TextField(blank=True)
+    products = models.ManyToManyField(Product)
+
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('shop:collection_detail', args=[self.slug])
 
 class Event(models.Model):
     title_image = models.ImageField()
     name = models.CharField(max_length=30)
     content = models.ImageField()
-    slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True)
+    slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True, default=0)
 
     def __str__(self):
         return self.name
