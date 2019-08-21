@@ -174,10 +174,18 @@ def frugal_shopping(request):
     context = {'categories': categories}
     return render(request, 'shop/frugal_shopping.html', context)
 
-def exhibition(request):
+def collection(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'shop/exhibition.html', context)
+    collections = Collection.objects.all()
+    context = {'categories':categories, 'collections':collections}
+    return render(request, 'shop/collection.html', context)
+
+def collection_detail(request, collection_slug):
+    categories = Category.objects.all()
+    collection = get_object_or_404(Collection, slug=collection_slug)
+    selected_products = collection.products.all()
+    context = {'categories':categories, 'selected_products':selected_products, 'collection':collection}
+    return render(request, 'shop/collection_detail.html', context)
 
 def event(request):
     categories = Category.objects.all()

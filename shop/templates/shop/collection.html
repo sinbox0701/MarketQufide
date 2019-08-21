@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Collection Page{% endblock %}
+{% block content %}
+    {% for collection in collections %}
+        {{ collection.name }}
+        <a href="{{ collection.get_absolute_url }}"><img src="{{collection.title_image.url }}" alt="title_image"></a>
+
+    {% endfor %}
+{% endblock %}
