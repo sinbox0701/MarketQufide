@@ -134,4 +134,22 @@
     }
   })();
 </script>
+
+
+<div id="best-comment">
+    <h3>베스트 후기</h3>
+        {% for comment in comments %}
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <a href="{% url 'shop:comment_detail' comment.id %}" class="mt-0">{{comment.comment_created}}</a>
+                            <h5 class="mt-0">{{comment.comment_text}}</h5>
+                         </div>
+        {% endfor %}
+
+    {% if request.user.is_superuser %}
+    <td><a href="{% url 'shop:comment_select' %}" target="_blank">선택하기</a></td>
+    {% endif %}
+
+</div>
+
 {% endblock %}

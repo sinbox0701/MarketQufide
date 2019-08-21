@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from  django.contrib.auth.models import User
-
+from multiselectfield import MultiSelectField
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
@@ -95,8 +95,14 @@ class Product(models.Model):
     available_order = models.BooleanField('Order', default=True) # 상품 주문 가능 여부
     count_order = models.IntegerField(default=0) # 팔린 갯수
 
+    #for recipe
+    recipe_name = models.CharField(max_length=30, default='')
+    recipe_content = models.ImageField(default='')
+
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
+
+    count_order = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-created']
@@ -119,6 +125,9 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
+    def get_recipe_absolute_url(self):
+        return reverse('shop:recipe_detail', args=[self.id, self.slug])
+
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=True, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='comments')
@@ -127,6 +136,7 @@ class Comment(models.Model):
 #    comment_thumbnail_url = models.TextField(max_length=20)
     like = models.IntegerField(default=0)
     comment_text = models.TextField()
+    best = models.BooleanField(default=False)
 
     def __str__(self):
         return (self.author.username if self.author else "무명") + "의 댓글"
@@ -138,3 +148,23 @@ class Banner(models.Model):
 
     def __str__(self):
         return self.name
+
+class Exhibition(models.Model):
+    name = models.CharField(blank=True, max_length=30)
+    description = models.TextField(blank=True)
+    title_image = models.ImageField()
+    #product = models.ForeignKey(Product, on_delete=True)
+    #selected_product = MultiSelectField(choices = )
+
+
+class Event(models.Model):
+    title_image = models.ImageField()
+    name = models.CharField(max_length=30)
+    content = models.ImageField()
+    slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('shop:event_detail', args=[self.slug])
