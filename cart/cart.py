@@ -8,6 +8,8 @@ from coupon.models import Coupon
 class Cart(object):
     def __init__(self, request):
         self.session = request.session
+        print(self.session)
+        print("-----------------------------------------")
         cart = self.session.get(settings.CART_ID)
         if not cart:
             cart = self.session[settings.CART_ID] = {}
