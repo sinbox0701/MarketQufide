@@ -151,10 +151,25 @@ def exhibition(request):
 
 def event(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    events = Event.objects.all()
+    context = {'categories': categories, 'events' : events}
     return render(request, 'shop/event.html', context)
+
+def event_detail(request, event_slug=None):
+    categories = Category.objects.all()
+    event = get_object_or_404(Event, slug=event_slug)
+    context = {'categories' : categories, 'event' : event}
+    return render(request, 'shop/event_detail.html', context)
 
 def recipe(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    products = Product.objects.exclude(recipe_name='')
+    context = {'categories':categories, 'products':products}
     return render(request, 'shop/recipe.html', context)
+
+def recipe_detail(request, id, product_slug=None):
+    categories = Category.objects.all()
+    product = get_object_or_404(Product, id=id, slug=product_slug)
+    context = {'categories':categories, 'product':product}
+    return render(request, 'shop/recipe_detail.html', context)
+
