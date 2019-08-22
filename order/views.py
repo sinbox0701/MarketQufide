@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 from cart.cart import Cart
 from .forms import *
-from shop.models import Product
+from shop.models import *
 
 def order_create(request): # 주문서 입력
     cart = Cart(request)
@@ -25,8 +25,11 @@ def order_create(request): # 주문서 입력
 def order_complete(request):
     order_id = request.GET.get('order_id')
     order = Order.objects.get(id=order_id)
-    print(order)
-    #Product.count_order += 1
+    print ("*****************test start*******************")
+    orderitems = OrderItem.objects.filter(order=order)
+    for orderitem in orderitems:
+        orderitem.product.count_order+=orderitem.quantity
+        orderitem.product.save()
     return render(request, 'order/created.html', {'order': order})
 
 from django.views.generic.base import View

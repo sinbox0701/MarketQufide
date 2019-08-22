@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Recipe Detail Page{% endblock %}
+{% block content %}
+    {{ product.recipe_name }}
+    <img src="{{ product.recipe_content.url }}" alt="recipe_content">
+    <a href="{{product.get_absolute_url}}" class="btn btn-primary">상품 보기</a>
+{% endblock %}

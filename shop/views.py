@@ -49,6 +49,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
                                                 'comments':comments, 'comment_form':comment_form})
 
 
+
 def comment(request, id, product_slug=None):
     product = get_object_or_404(Product, id=id, slug=product_slug)
     comments = Comment.objects.filter(product=product)
@@ -64,6 +65,8 @@ def comment(request, id, product_slug=None):
         form = CommentForm()
         
     return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
+
+
 
 def comment_detail(request, id):
     comment = Comment.objects.get(id=id)
@@ -88,6 +91,8 @@ def delete_comment(request, id):
     else:
         return render(request, 'shop/delete_comment.html', {'object':comment})
 
+
+
 def update_comment(request, id):
 
     comment = Comment.objects.get(id=id)
@@ -108,12 +113,37 @@ def update_comment(request, id):
 
     return render(request,'shop/update_comment.html', {'form':form})
 
+
+
+def comment_select(request):
+    comments = Comment.objects.all()
+
+    if request.method == 'POST':
+        select = request.POST.getlist('select')
+        best_comments = Comment.objects.filter(id__in=select)
+        false_comments = Comment.objects.all().exclude(id__in=select)
+        for best_comment in best_comments:
+            best_comment.best=True
+            best_comment.save()
+        for false_comment in false_comments:
+            false_comment.best=False
+            false_comment.save()
+
+    return render(request, 'shop/commentselect.html', {'comments': comments})
+
+
+
 def home(request) :
     categories = Category.objects.all()
     current_category = None
     banners = Banner.objects.all()
-    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners})
-  
+    comments = Comment.objects.filter(best=True)
+
+
+    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners, 'comments': comments})
+
+
+
 def search(request):
     #products = Product.objects.filter(available_display=True)
     products = Product.objects.all()
@@ -144,17 +174,40 @@ def frugal_shopping(request):
     context = {'categories': categories}
     return render(request, 'shop/frugal_shopping.html', context)
 
-def exhibition(request):
+def collection(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'shop/exhibition.html', context)
+    collections = Collection.objects.all()
+    context = {'categories':categories, 'collections':collections}
+    return render(request, 'shop/collection.html', context)
+
+def collection_detail(request, collection_slug):
+    categories = Category.objects.all()
+    collection = get_object_or_404(Collection, slug=collection_slug)
+    selected_products = collection.products.all()
+    context = {'categories':categories, 'selected_products':selected_products, 'collection':collection}
+    return render(request, 'shop/collection_detail.html', context)
 
 def event(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    events = Event.objects.all()
+    context = {'categories': categories, 'events' : events}
     return render(request, 'shop/event.html', context)
+
+def event_detail(request, event_slug=None):
+    categories = Category.objects.all()
+    event = get_object_or_404(Event, slug=event_slug)
+    context = {'categories' : categories, 'event' : event}
+    return render(request, 'shop/event_detail.html', context)
 
 def recipe(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    products = Product.objects.exclude(recipe_name='')
+    context = {'categories':categories, 'products':products}
     return render(request, 'shop/recipe.html', context)
+
+def recipe_detail(request, id, product_slug=None):
+    categories = Category.objects.all()
+    product = get_object_or_404(Product, id=id, slug=product_slug)
+    context = {'categories':categories, 'product':product}
+    return render(request, 'shop/recipe_detail.html', context)
+
