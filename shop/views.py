@@ -6,6 +6,9 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.db.models import Count
+from django.db.models import Max, Min
+
 
 def category(request, category_slug=None): # 카테고리 페이지
     current_category = None
@@ -22,7 +25,39 @@ def category(request, category_slug=None): # 카테고리 페이지
             for slug in current_category.get_descendants(include_self=True):
                 results = results | products.filter(categories=slug)
 
-    return render(request,'shop/list.html', {'current_category': current_category, 'categories': categories, 'products': results})
+    order = ''
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+            print (order)
+
+        if order == 'review':
+            results = results.annotate(comment_count=Count("comment")).order_by("-comment_count")
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'like':
+            results = results.annotate(comment_like=Max("comment__like")).order_by('-comment_like')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'lowprice':
+            results = results.order_by('price')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'highprice':
+            results = results.order_by('-price')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'date':
+            results = results.order_by('created')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        else:
+            results = results.order_by('-count_order')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request, 'shop/list.html', context)
+
+    context = {'current_category': current_category, 'categories': categories, 'products': results}
+    return render(request,'shop/list.html', context)
 
 
 
@@ -144,27 +179,25 @@ def home(request) :
 
 
 
-def search(request):
-    #products = Product.objects.filter(available_display=True)
+def search(request, search_term = ''):
     products = Product.objects.all()
     categories = Category.objects.all()
-    search_term = ''
     if 'search' in request.GET:
         search_term = request.GET['search']
         products = products.filter(name__contains=search_term)
+        print (search_term)
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
 
 def best_item(request):
     categories = Category.objects.all()
-    context={'categories' : categories}
+    products = Product.objects.order_by('-count_order')[:6]
+    context={'categories' : categories, 'products' : products}
     return render(request, 'shop/best_item.html', context)
 
 def new_item(request):
     categories = Category.objects.all()
-    products = Product.objects.all()
     products = Product.objects.order_by('-created')[:6]
-
 
     context = {'categories': categories, 'products' : products}
     return render(request, 'shop/new_item.html', context)
