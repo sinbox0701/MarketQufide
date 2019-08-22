@@ -82,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -193,8 +194,8 @@ AWS_DEFAULT_ACL = 'public-read'
 AWS_LOCATION = 'static'
 
 #IAMPORT
-IAMPORT_KEY = ' '
-IAMPORT_SECRET = ' '
+IAMPORT_KEY = '4710501694677841'
+IAMPORT_SECRET = ''
 
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
