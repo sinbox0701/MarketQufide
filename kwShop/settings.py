@@ -82,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -125,8 +126,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kwShop', # 설정해둔 DataBase 이름
         'USER': 'kiwoong', # 설정해 둔 DB 관리자 계정 python
-        'PASSWORD': ' ', # 설정해 둔 DB 관리자 비번
-        'HOST': ' ', # 만들어 논 DataBase의 엔드 포인트
+        'PASSWORD': 'park1230', # 설정해 둔 DB 관리자 비번
+        'HOST': 'kwshop.curmjtxz1etm.ap-northeast-2.rds.amazonaws.com', # 만들어 논 DataBase의 엔드 포인트
         'PORT': '3306',
         #'OPTIONS': {
         #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -180,8 +181,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
+AWS_ACCESS_KEY_ID = 'AKIAJB7LSMODSY6TRCXQ'
+AWS_SECRET_ACCESS_KEY = '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'
 
 AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = 'django-kwshop'
@@ -193,8 +194,8 @@ AWS_DEFAULT_ACL = 'public-read'
 AWS_LOCATION = 'static'
 
 #IAMPORT
-IAMPORT_KEY = ' '
-IAMPORT_SECRET = ' '
+IAMPORT_KEY = '4710501694677841'
+IAMPORT_SECRET = 'zjusuEuVqF0YH9EEBlpibPsvQemLZTLzcg1HVwClcDjTMYyokXGvN91EoopohbXusZbnwOIIs2Bf1aDl2019wngmlToa'
 
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
