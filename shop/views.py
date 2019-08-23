@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Count
 from django.db.models import Max, Min
+from django.db.models import Q
 
 
 def category(request, category_slug=None): # 카테고리 페이지
@@ -184,7 +185,7 @@ def search(request, search_term = ''):
     categories = Category.objects.all()
     if 'search' in request.GET:
         search_term = request.GET['search']
-        products = products.filter(name__contains=search_term)
+        products = products.filter(Q(name__contains=search_term)|Q(tag_description__contains=search_term))
         print (search_term)
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
