@@ -3,6 +3,7 @@ from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+from tagging.fields import TagField
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
@@ -87,7 +88,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     description = models.TextField(blank=True)
-    meta_description = models.TextField(blank=True)
+    tag_description = TagField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2) # 가격
     stock = models.PositiveIntegerField() # 재고
     company = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
@@ -127,6 +128,7 @@ class Product(models.Model):
 
     def get_recipe_absolute_url(self):
         return reverse('shop:recipe_detail', args=[self.id, self.slug])
+
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=True, null=True)

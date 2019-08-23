@@ -20,12 +20,24 @@
                         <input type="submit" class="btn btn-primary btn-sm" value="Add to Cart">
                     </form>
                     <h5><span class="badge badge-secondary">Description</span>{{product.description|linebreaks}}</h5>
+
                     {% if product.recipe_name != '' %}
                         <form action="{% url 'shop:recipe_detail' product.id product.slug %}" method="post">
                             {% csrf_token %}
                             <input type="submit" class="btn btn-primary btn-sm" value="Recipe">
                         </form>
                     {% endif %}
+
+                    <div>
+                    <b>TAGS: </b>
+                    {% load tagging_tags %}
+                    {% tags_for_object product as tags %}
+                    {% for tag in tags %}
+                    <a href="/search/?search={{ tag.name }}">{{tag.name}}</a>
+                    {% endfor %}
+                    <a><i>[ TagCloud ]</i></a>
+                    </div>
+
                 </div>
             </div>
 
@@ -139,15 +151,7 @@
             }
           ]
         });
-        Kakao.Link.sendDefault({
-          objectType: 'text',
-          text: '콜백 링크 전송.',
-          link: {
-            mobileWebUrl: 'https://developers.kakao.com',
-            webUrl: 'https://developers.kakao.com'
-          },
-          serverCallbackArgs: '{"key":"value"}' // 콜백 파라미터 설정
-        });
+
       //]]>
     </script>
 
