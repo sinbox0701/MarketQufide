@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'mptt',
     'django_social_share',
     'django_inlinecss',
+    'rest_framework',
     'multiselectfield',
 ]
 
@@ -194,7 +195,7 @@ AWS_DEFAULT_ACL = 'public-read'
 AWS_LOCATION = 'static'
 
 #IAMPORT
-IAMPORT_KEY = '4710501694677841'
+IAMPORT_KEY = ''
 IAMPORT_SECRET = ''
 
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)

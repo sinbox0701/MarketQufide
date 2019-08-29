@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 app_name = 'shop'
 
 urlpatterns = [
+
     path('', home, name='product_all'),
     path('search/', search, name='search'),
     path('best_item/', best_item, name="best_item"),
