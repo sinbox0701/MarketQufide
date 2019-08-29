@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django_inlinecss',
     'rest_framework',
     'multiselectfield',
+    'tagging.apps.TaggingConfig',
 ]
 
 
