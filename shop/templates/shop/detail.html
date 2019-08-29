@@ -3,6 +3,42 @@
 {% block content %}
 {% load social_share %}
 
+<script type="text/javascript">
+    // get url query string
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+// 정렬방식 셀렉트 박스 유지
+$(document).ready(function(){
+  var option = getUrlParameter('option');
+  if(option == 'date'){
+    $('.sort-date').prop('selected', 'selected')
+  }else{
+    $('.sort-like').prop('selected', 'selected')
+  }
+});
+
+var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100;
+var add = saled_price;
+
+function optionchange(obj){
+        all_price = parseInt(add) + parseInt(obj.value);
+        div1.style.display="block";
+}
+    </script>
+
+
 
         <div class="container">
 
@@ -13,13 +49,38 @@
                 <div class="col">
                     <h1 class="display-6">{{product.name}}</h1>
 
-                    <p><span class="badge badge-secondary">Price</span> {{product.price}}</p>
+
+
+                    <p>
+                        <h5><span class="badge badge-secondary">Price</span>  {% if product.sale_percent == 0 %}
+                        <span class="cart-text">{{product.price}}원</span>
+                        {% else %}
+                        <span class="cart-text">
+                            <script>document.write(Math.floor(saled_price));</script>원
+                        </span>
+                        <strike class="cart-text">{{product.price}}</strike>
+                        <span class="cart-text">-{{product.sale_percent}}%</span>
+                        {% endif %}<h5>
+                    </p>
                     <form action="{% url 'cart:product_add' product.id %}" method="post">
                         {{add_to_cart}}
                         {% csrf_token %}
                         <input type="submit" class="btn btn-primary btn-sm" value="Add to Cart">
                     </form>
                     <h5><span class="badge badge-secondary">Description</span>{{product.description|linebreaks}}</h5>
+
+
+                    <h5><span class="badge badge-secondary">옵션</span>
+
+                        <select id="option" name="option" onchange="optionchange(this);">
+                            <option class="option-0">옵션선택
+                            {% for option in options %}
+                            <option class="option-1" value="{{option.add_price}}">
+                                {{option.name}}&nbsp;&nbsp;
+                                남은수량: {{option.stock}}&nbsp;&nbsp;
+                                추가금: +{{option.add_price}}원</option>
+                            {% endfor %}
+                        </select><h5>
 
                     {% if product.recipe_name != '' %}
                         <form action="{% url 'shop:recipe_detail' product.id product.slug %}" method="post">
@@ -41,6 +102,13 @@
                 </div>
             </div>
 
+            <div id="div1" style="display:none;">
+                상품: {{product.name}}<br>
+                옵션: {{option.name}}<br>
+                가격: <script>document.write(all_price);</script><br>
+            </div>
+
+
 	        <h3>묶음배송</h3>
                 <div class="row">
                     {% for relative_product in relative_products %}
@@ -61,9 +129,42 @@
 
     </div>
 
+
+<script type="text/javascript">
+    // get url query string
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+// 정렬방식 셀렉트 박스 유지
+$(document).ready(function(){
+  var orderby = getUrlParameter('orderby');
+  if(orderby == 'date'){
+    $('.sort-date').prop('selected', 'selected')
+  }else{
+    $('.sort-like').prop('selected', 'selected')
+  }
+});
+    </script>
+
     <h3> Comments </h3>
                     <!-- Single Comment -->
-
+    <form action="{% url 'shop:product_detail' product.id product.slug %}" method="get">
+        <select id="orderby" name="orderby" onchange="this.form.submit();">
+            <option class="sort-like" value="like">추천순</option>
+            <option class="sort-date" value="date">최신순</option>
+        </select>
+        </form>
                     <form action="{% url 'shop:comment' product.id product.slug %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="Comment" class="btn btn-outline-primary">
@@ -89,8 +190,10 @@
                         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                         <div class="media-body">
                             <script>sum+={{comment.like}};</script>
-                            <h5 class="mt-0">{{comment.comment_created}}</h5>
-                            <h5 class="mt-0">{{comment.comment_text}}</h5>
+                            <h5 class="mt-0">작성자: {{comment.author}}</h5>
+                            <h5 class="mt-0">날짜: {{comment.comment_created}}</h5>
+                            <h5 class="mt-0">내용: {{comment.comment_text}}</h5>
+                            <h5 class="mt-0">평점: {{comment.like}}</h5>
                          </div>
                       {% endfor %}
 
@@ -124,6 +227,7 @@
     <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
     </a>
     <script type='text/javascript'>
+    var count=0;
       //<![CDATA[
         // // 사용할 앱의 JavaScript 키를 설정해 주세요.
         Kakao.init('92dd12b816c6f2824075b01c8b9446f2');
@@ -150,9 +254,15 @@
               }
             }
           ]
+          success: function(){
+            count++;
+          }
+
         });
 
+
       //]]>
+      document.write(count);
     </script>
 
     </body>

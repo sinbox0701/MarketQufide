@@ -33,7 +33,7 @@ class Cart(object):
     def add(self, product, quantity=1, is_update=False):
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity':0, 'price':str(product.price)}
+            self.cart[product_id] = {'quantity':0, 'price':str(int(product.price*(100-product.sale_percent)/100*10/10))}
 
         if is_update:
             self.cart[product_id]['quantity'] = quantity
