@@ -6,10 +6,19 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
+
+# ------- 인증번호 -------
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from . import models as m
+# ------------------
+
 from django.db.models import Count
 from django.db.models import Max, Min
 from django.db.models import Q
 from datetime import datetime, timedelta
+
 
 
 
@@ -278,9 +287,21 @@ def recipe(request):
     context = {'categories':categories, 'products':products}
     return render(request, 'shop/recipe.html', context)
 
+class AuthSMS(APIView):
+    def post(self, request):
+        try:
+            p_num = request.data['phone_number']
+        except KeyError:
+            return Response({'message': 'Bad Request'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            m.Auth.objects.update_or_create(phone_number=p_num)
+            return Response({'message': 'OK'})
+
+
 def recipe_detail(request, id, product_slug=None):
     categories = Category.objects.all()
     product = get_object_or_404(Product, id=id, slug=product_slug)
     context = {'categories':categories, 'product':product}
     return render(request, 'shop/recipe_detail.html', context)
+
 

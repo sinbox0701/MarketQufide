@@ -45,6 +45,18 @@ function optionchange(obj){
             <div class="row">
                 <div class="col-4">
                     <img src="{{product.image.url}}" width="100%">
+                    {% if product.image2.url != None %}
+                        <img src="{{product.image2.url}}" width="100%">
+                    {% endif %}
+                    {% if product.image3.url != None %}
+                        <img src="{{product.image3.url}}" width="100%">
+                    {% endif %}
+                    {% if product.image4.url != None %}
+                        <img src="{{product.image4.url}}" width="100%">
+                    {% endif %}
+                    {% if product.image5.url != None %}
+                        <img src="{{product.image5.url}}" width="100%">
+                    {% endif %}
                 </div>
                 <div class="col">
                     <h1 class="display-6">{{product.name}}</h1>

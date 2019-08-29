@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 app_name = 'shop'
 
 urlpatterns = [
+
     path('', home, name='product_all'),
     path('search/', search, name='search'),
     path('best_item/', best_item, name="best_item"),
@@ -21,7 +22,8 @@ urlpatterns = [
     path('<slug:category_slug>/', category, name='category'),  # 카테고리 선택
     path('comment/<int:id>/', comment_detail, name='comment_detail'),
     path('<int:id>/<slug:product_slug>/', product_detail, name='product_detail'),  # 상품 상세 페이지
-    path('<int:id>/<slug:product_slug>/comment/', comment, name='comment'),
+    path('<int:id>/<slu>/comment/', comment, name='comment'),
     path('comment/<int:id>/delete/', delete_comment, name="delete_comment"),
     path('comment/<int:id>/update/', update_comment, name="update_comment"),
+
 ]
