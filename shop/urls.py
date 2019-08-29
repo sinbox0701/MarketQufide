@@ -7,7 +7,6 @@ app_name = 'shop'
 
 urlpatterns = [
     #path('', category, name='product_all'), # 카테고리 선택 없이 상품 전체 노출
-
     path('', home, name='product_all'),
     path('best_item/', best_item, name="best_item"),
     path('new_item/', new_item, name="new_item"),

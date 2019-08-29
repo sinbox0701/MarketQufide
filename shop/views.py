@@ -6,6 +6,12 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
+# ------- 인증번호 -------
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from . import models as m
+# ------------------
 
 def category(request, category_slug=None): # 카테고리 페이지
     current_category = None
@@ -158,3 +164,13 @@ def recipe(request):
     categories = Category.objects.all()
     context = {'categories': categories}
     return render(request, 'shop/recipe.html', context)
+
+class AuthSMS(APIView):
+    def post(self, request):
+        try:
+            p_num = request.data['phone_number']
+        except KeyError:
+            return Response({'message': 'Bad Request'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            m.Auth.objects.update_or_create(phone_number=p_num)
+            return Response({'message': 'OK'})
