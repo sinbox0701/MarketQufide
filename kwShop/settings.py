@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django_social_share',
     'django_inlinecss',
     'rest_framework',
+    'members',
 ]
 
 
@@ -136,6 +137,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'members.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
