@@ -73,4 +73,3 @@ class Cart(object):
 
     def get_total_price(self):
         return self.get_product_total() - self.get_discount_total()
-

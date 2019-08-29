@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Event Page{% endblock %}
 {% block content %}
+    <div class="row">
+    {% for event in events %}
+        <div class="card">
+            <a href="{{ event.get_absolute_url }}"><img src="{{ event.title_image.url }}" alt="Event Title Image"></a>
+        </div>
+    {% endfor %}
+    </div>
+
 {% endblock %}

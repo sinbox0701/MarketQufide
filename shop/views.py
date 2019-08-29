@@ -6,12 +6,18 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
+
 # ------- 인증번호 -------
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . import models as m
 # ------------------
+
+from django.db.models import Count
+from django.db.models import Max, Min
+
+
 
 def category(request, category_slug=None): # 카테고리 페이지
     current_category = None
@@ -28,7 +34,39 @@ def category(request, category_slug=None): # 카테고리 페이지
             for slug in current_category.get_descendants(include_self=True):
                 results = results | products.filter(categories=slug)
 
-    return render(request,'shop/list.html', {'current_category': current_category, 'categories': categories, 'products': results})
+    order = ''
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+            print (order)
+
+        if order == 'review':
+            results = results.annotate(comment_count=Count("comment")).order_by("-comment_count")
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'like':
+            results = results.annotate(comment_like=Max("comment__like")).order_by('-comment_like')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'lowprice':
+            results = results.order_by('price')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'highprice':
+            results = results.order_by('-price')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        elif order == 'date':
+            results = results.order_by('created')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request,'shop/list.html', context)
+        else:
+            results = results.order_by('-count_order')
+            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            return render(request, 'shop/list.html', context)
+
+    context = {'current_category': current_category, 'categories': categories, 'products': results}
+    return render(request,'shop/list.html', context)
 
 
 
@@ -55,6 +93,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
                                                 'comments':comments, 'comment_form':comment_form})
 
 
+
 def comment(request, id, product_slug=None):
     product = get_object_or_404(Product, id=id, slug=product_slug)
     comments = Comment.objects.filter(product=product)
@@ -70,6 +109,8 @@ def comment(request, id, product_slug=None):
         form = CommentForm()
         
     return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
+
+
 
 def comment_detail(request, id):
     comment = Comment.objects.get(id=id)
@@ -94,6 +135,8 @@ def delete_comment(request, id):
     else:
         return render(request, 'shop/delete_comment.html', {'object':comment})
 
+
+
 def update_comment(request, id):
 
     comment = Comment.objects.get(id=id)
@@ -114,33 +157,56 @@ def update_comment(request, id):
 
     return render(request,'shop/update_comment.html', {'form':form})
 
+
+
+def comment_select(request):
+    comments = Comment.objects.all()
+
+    if request.method == 'POST':
+        select = request.POST.getlist('select')
+        best_comments = Comment.objects.filter(id__in=select)
+        false_comments = Comment.objects.all().exclude(id__in=select)
+        for best_comment in best_comments:
+            best_comment.best=True
+            best_comment.save()
+        for false_comment in false_comments:
+            false_comment.best=False
+            false_comment.save()
+
+    return render(request, 'shop/commentselect.html', {'comments': comments})
+
+
+
 def home(request) :
     categories = Category.objects.all()
     current_category = None
     banners = Banner.objects.all()
-    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners})
-  
-def search(request):
-    #products = Product.objects.filter(available_display=True)
+    comments = Comment.objects.filter(best=True)
+
+
+    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners, 'comments': comments})
+
+
+
+def search(request, search_term = ''):
     products = Product.objects.all()
     categories = Category.objects.all()
-    search_term = ''
     if 'search' in request.GET:
         search_term = request.GET['search']
         products = products.filter(name__contains=search_term)
+        print (search_term)
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
 
 def best_item(request):
     categories = Category.objects.all()
-    context={'categories' : categories}
+    products = Product.objects.order_by('-count_order')[:6]
+    context={'categories' : categories, 'products' : products}
     return render(request, 'shop/best_item.html', context)
 
 def new_item(request):
     categories = Category.objects.all()
-    products = Product.objects.all()
     products = Product.objects.order_by('-created')[:6]
-
 
     context = {'categories': categories, 'products' : products}
     return render(request, 'shop/new_item.html', context)
@@ -150,19 +216,35 @@ def frugal_shopping(request):
     context = {'categories': categories}
     return render(request, 'shop/frugal_shopping.html', context)
 
-def exhibition(request):
+def collection(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'shop/exhibition.html', context)
+    collections = Collection.objects.all()
+    context = {'categories':categories, 'collections':collections}
+    return render(request, 'shop/collection.html', context)
+
+def collection_detail(request, collection_slug):
+    categories = Category.objects.all()
+    collection = get_object_or_404(Collection, slug=collection_slug)
+    selected_products = collection.products.all()
+    context = {'categories':categories, 'selected_products':selected_products, 'collection':collection}
+    return render(request, 'shop/collection_detail.html', context)
 
 def event(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    events = Event.objects.all()
+    context = {'categories': categories, 'events' : events}
     return render(request, 'shop/event.html', context)
+
+def event_detail(request, event_slug=None):
+    categories = Category.objects.all()
+    event = get_object_or_404(Event, slug=event_slug)
+    context = {'categories' : categories, 'event' : event}
+    return render(request, 'shop/event_detail.html', context)
 
 def recipe(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    products = Product.objects.exclude(recipe_name='')
+    context = {'categories':categories, 'products':products}
     return render(request, 'shop/recipe.html', context)
 
 class AuthSMS(APIView):
@@ -174,3 +256,12 @@ class AuthSMS(APIView):
         else:
             m.Auth.objects.update_or_create(phone_number=p_num)
             return Response({'message': 'OK'})
+
+
+def recipe_detail(request, id, product_slug=None):
+    categories = Category.objects.all()
+    product = get_object_or_404(Product, id=id, slug=product_slug)
+    context = {'categories':categories, 'product':product}
+    return render(request, 'shop/recipe_detail.html', context)
+
+

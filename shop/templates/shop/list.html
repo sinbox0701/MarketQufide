@@ -8,24 +8,74 @@
             <div class="alert alert-info" role="alert">
               {% if current_category %}{{current_category.name}}{% else %}All Products{% endif %}
             </div>
-            <div class="row">
-            {% for product in products %}
-
-                <div class="col-4">
-                    <div class="card">
-                      <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
-                      <div class="card-body">
-                        <h5 class="card-title">{{product.name}}</h5>
-                        <p class="card-text">{{product.description}} <span class="badge badge-secondary">${{product.price}}</span></p>
-                        <a href="{{product.get_absolute_url}}" class="btn btn-primary">View Detail</a>
-                      </div>
-                    </div>
-                </div>
-
-            {% endfor %}
-            </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+    // get url query string
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+// 정렬방식 셀렉트 박스 유지
+$(document).ready(function(){
+  var orderby = getUrlParameter('orderby');
+  if(orderby == 'date'){
+    $('.sort-date').prop('selected', 'selected')
+  }else if(orderby == 'review'){
+    $('.sort-review').prop('selected', 'selected')
+  }else if(orderby == 'like'){
+    $('.sort-like').prop('selected', 'selected')
+  }else if(orderby == 'lowprice'){
+    $('.sort-lowprice').prop('selected', 'selected')
+  }else if(orderby == 'highprice'){
+    $('.sort-highprice').prop('selected', 'selected')
+  }else{
+    $('.sort-best').prop('selected', 'selected')
+  }
+});
+    </script>
+
+
+    <div class="container">
+        <form action="{% url 'shop:category' current_category.slug %}" method="get">
+        <select id="orderby" name="orderby" onchange="this.form.submit();">
+            <option class="sort-best" value="/">인기순</option>
+            <option class="sort-review" value="review">리뷰많은순</option>
+            <option class="sort-like" value="like">평점순</option>
+            <option class="sort-lowprice" value="lowprice">낮은가격순</option>
+            <option class="sort-highprice" value="highprice">높은가격순</option>
+            <option class="sort-date" value="date">신상품순</option>
+        </select>
+        </form>
+        <div class="row">
+        {% for product in products %}
+
+            <div class="col-4">
+                <div class="card">
+                  <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                  <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.description}} <span class="badge badge-secondary">${{product.price}}</span></p>
+                    <a href="{{product.get_absolute_url}}" class="btn btn-primary">View Detail</a>
+                  </div>
+                </div>
+            </div>
+
+        {% endfor %}
+        </div>
+    </div>
+
 
 
 {% endblock %}

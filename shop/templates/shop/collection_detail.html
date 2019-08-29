@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}New Item Page{% endblock %}
+{% block title %}Collection Detail Page{% endblock %}
 {% block content %}
-<div class="row">
+    <div class="row">
         <div class="col">
             <div class="row">
-            {% for product in products %}
-
+            <h2>{{ collection.name }}</h2>
+            {% for product in selected_products %}
                 <div class="col-4">
                     <div class="card">
                       <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
@@ -16,7 +16,6 @@
                       </div>
                     </div>
                 </div>
-
             {% endfor %}
             </div>
         </div>
