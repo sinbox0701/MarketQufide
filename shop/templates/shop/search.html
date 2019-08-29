@@ -8,16 +8,29 @@
             <div class="row">
             {% for product in products %}
 
-                <div class="col-4">
-                    <div class="card">
-                      <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
-                      <div class="card-body">
-                        <h5 class="card-title">{{product.name}}</h5>
-                        <p class="card-text">{{product.description}} <span class="badge badge-secondary">${{product.price}}</span></p>
-                        <a href="{{product.get_absolute_url}}" class="btn btn-primary">View Detail</a>
-                      </div>
-                    </div>
+                           <div class="col-4">
+                <div class="card">
+                  <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                  <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.description}}</p>
+                      {% if product.sale_percent == 0 %}
+                      <span class="cart-text">{{product.price}}원</span>
+                      {% else %}
+                      <span class="cart-text">
+                          <script>var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100
+                      document.write(Math.floor(saled_price));</script>원
+                      </span>
+                      <strike class="cart-text">{{product.price}}</strike>
+                      <span class="cart-text">-{{product.sale_percent}}%</span>
+                      {% endif %}
+
+                    <a href="{{product.get_absolute_url}}" class="btn btn-primary">View Detail</a>
+
+
+                  </div>
                 </div>
+            </div>
 
             {% endfor %}
             </div>

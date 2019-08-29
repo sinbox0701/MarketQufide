@@ -1,3 +1,4 @@
+
 """
 Django settings for kwShop project.
 
@@ -207,3 +208,4 @@ STATICFILES_DIRS = [
 
 # 서버 배포 이후 삭제하기 --> 현재는 로컬호스트기 때문에 불가능
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

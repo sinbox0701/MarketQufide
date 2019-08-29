@@ -16,6 +16,9 @@ from . import models as m
 
 from django.db.models import Count
 from django.db.models import Max, Min
+from django.db.models import Q
+from datetime import datetime, timedelta
+
 
 
 
@@ -77,7 +80,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
     relative_products = Product.objects.filter(company=product.company).exclude(slug=product_slug)
     
     #comment 부분
-    #comments = Comment.objects.all()
+    comments = Comment.objects.filter(product=product)
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
         comment_form.instance.author = request.user.id
@@ -87,10 +90,28 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
         # models.py에서 document의 related_name을 comments로 해놓았다.
 
     comment_form = CommentForm()
-    comments = Comment.objects.filter(product=product)
-    print(comments)
+
+    order=''
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+
+        if order == 'like':
+            comments = comments.order_by('-like')
+            return render(request, 'shop/detail.html',
+                          {'product': product, 'add_to_cart': add_to_cart, 'relative_products': relative_products,
+                           'comments': comments, 'comment_form': comment_form, 'options': options})
+        elif order == 'date':
+            comments = comments.order_by('-comment_created')
+            return render(request, 'shop/detail.html',
+                          {'product': product, 'add_to_cart': add_to_cart, 'relative_products': relative_products,
+                           'comments': comments, 'comment_form': comment_form, 'options': options})
+
+    options = Option.objects.filter(product=product)
+
+
     return render(request, 'shop/detail.html', {'product':product, 'add_to_cart':add_to_cart, 'relative_products': relative_products,
-                                                'comments':comments, 'comment_form':comment_form})
+                                                'comments':comments, 'comment_form':comment_form, 'options':options})
 
 
 
@@ -107,7 +128,20 @@ def comment(request, id, product_slug=None):
             return redirect('shop:comment', id, product_slug)
     else:
         form = CommentForm()
-        
+
+    order = ''
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+
+        if order == 'like':
+            comments = comments.order_by('-like')
+            return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
+
+        elif order == 'date':
+            comments = comments.order_by('-comment_created')
+            return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
+
     return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
 
 
@@ -193,27 +227,33 @@ def search(request, search_term = ''):
     categories = Category.objects.all()
     if 'search' in request.GET:
         search_term = request.GET['search']
-        products = products.filter(name__contains=search_term)
+        products = products.filter(Q(name__contains=search_term)|Q(tag_description__contains=search_term))
         print (search_term)
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
 
+
 def best_item(request):
     categories = Category.objects.all()
-    products = Product.objects.order_by('-count_order')[:6]
+    products = Product.objects.order_by('-count_order')[:10]
     context={'categories' : categories, 'products' : products}
     return render(request, 'shop/best_item.html', context)
 
+
 def new_item(request):
     categories = Category.objects.all()
-    products = Product.objects.order_by('-created')[:6]
+    now = datetime.today()
+    start_dt = now - timedelta(days=30)
+
+    products = Product.objects.filter(created__gte=start_dt)
 
     context = {'categories': categories, 'products' : products}
     return render(request, 'shop/new_item.html', context)
 
 def frugal_shopping(request):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    products = Product.objects.all().exclude(sale_percent=0)
+    context = {'categories': categories, 'products': products}
     return render(request, 'shop/frugal_shopping.html', context)
 
 def collection(request):
