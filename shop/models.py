@@ -2,7 +2,8 @@ from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 
-from  django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.conf import settings
 # ----- 인증번호 -----
 import requests
 from random import randint
@@ -46,14 +47,6 @@ class Category(MPTTModel):
     def get_absolute_url(self):
         return reverse('shop:category', args=[self.slug])
 
-
-class Option(models.Model):
-    name = models.CharField(max_length=200, db_index=True)
-    content = models.TextField()
-    add_price = models.IntegerField()
-
-    def __str__(self):
-        return '{} // {}'.format(self.name, self.add_price)
 
 
 class Delivery(models.Model):
@@ -142,7 +135,8 @@ class Option(models.Model):
 class Comment(models.Model):
 
     product = models.ForeignKey(Product, on_delete=True, null=True)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='comments')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                               related_name='comments')
     comment_created = models.DateTimeField(auto_now_add=True)
     comment_updated = models.DateTimeField(auto_now=True)
 #    comment_thumbnail_url = models.TextField(max_length=20)
