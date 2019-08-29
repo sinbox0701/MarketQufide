@@ -47,15 +47,6 @@ class Category(MPTTModel):
         return reverse('shop:category', args=[self.slug])
 
 
-class Option(models.Model):
-    name = models.CharField(max_length=200, db_index=True)
-    content = models.TextField()
-    add_price = models.IntegerField()
-
-    def __str__(self):
-        return '{} // {}'.format(self.name, self.add_price)
-
-
 class Delivery(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField()
