@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from coupon.models import Coupon
+from django_simple_coupons.models import Coupon
 # Create your models here.
 class User(AbstractUser):
     mileage = models.IntegerField(default=0)
-    coupon = models.ForeignKey(Coupon, db_column='name', on_delete=models.CASCADE, null=True)
+    coupon = models.ManyToManyField(Coupon)

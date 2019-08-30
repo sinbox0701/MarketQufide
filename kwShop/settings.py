@@ -50,18 +50,18 @@ INSTALLED_APPS = [
     'allauth.socialaccount', # 소셜계정으로 가입한 계정 관리
     'allauth.socialaccount.providers.naver', # 사용하는 소셜 서비스(naver)
     'cart',
-    'coupon',
+    #'coupon',
     'order',
     'mptt',
     'django_social_share',
     'django_inlinecss',
     'rest_framework',
-    'multiselectfield',
     'tagging.apps.TaggingConfig',
     'members',
+    'django_simple_coupons',
 ]
 
-
+AUTH_USER_MODEL='members.user'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -130,9 +130,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kwShop', # 설정해둔 DataBase 이름
         'USER': 'kiwoong',  # 설정해 둔 DB 관리자 계정 python
-        'PASSWORD': '',  # 설정해 둔 DB 관리자 비번
-        'HOST': '',  # 만들어 논 DataBase의 엔드 포인트
-        'PORT': '',
+        'PASSWORD': 'park1230',  # 설정해 둔 DB 관리자 비번
+        'HOST': 'kwshop.curmjtxz1etm.ap-northeast-2.rds.amazonaws.com',  # 만들어 논 DataBase의 엔드 포인트
+        'PORT': '3306',
         #'OPTIONS': {
         #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         #}
@@ -185,8 +185,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
+AWS_ACCESS_KEY_ID = 'AKIAXOVYP27VVQ4AICSX'
+AWS_SECRET_ACCESS_KEY = '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'
 
 AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = 'django-kwshop'
@@ -198,8 +198,9 @@ AWS_DEFAULT_ACL = 'public-read'
 AWS_LOCATION = 'static'
 
 #IAMPORT
-IAMPORT_KEY = ''
-IAMPORT_SECRET = ''
+IAMPORT_KEY = '4710501694677841'
+IAMPORT_SECRET = 'zjusuEuVqF0YH9EEBlpibPsvQemLZTLzcg1HVwClcDjTMYyokXGvN91EoopohbXusZbnwOIIs2Bf1aDl'
+
 
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

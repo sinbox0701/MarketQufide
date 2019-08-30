@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
 from shop.models import Product
-from coupon.models import Coupon
+from django_simple_coupons.models import Coupon
 
 # session을 사용하는 방식 -> request.session에 데이터를 저장하고 꺼내오기
 # session에 값을 저장 -> 키 값 설정 -> settings.py에 CART_ID라는 변수를 만들고 설정된 값을 사용

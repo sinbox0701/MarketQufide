@@ -10,7 +10,7 @@ from random import randint
 from model_utils.models import TimeStampedModel
 # -------------
 
-from django.contrib.auth.models import User
+from django.conf import settings
 from multiselectfield import MultiSelectField
 from tagging.fields import TagField
 
@@ -209,4 +209,14 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:event_detail', args=[self.slug])
+
+
+class Recipe(models.Model):
+    name = models.CharField(max_length=30)
+    content = models.ImageField()
+    product = models.ManyToManyField(Product)
+
+    def __str__(self):
+        return self.name
+
 

@@ -1,7 +1,8 @@
 import hashlib
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from coupon.models import Coupon
+#from coupon.models import Coupon
+from django_simple_coupons.models import Coupon
 from shop.models import Product
 from .iamport import payments_prepare, find_transaction
 
