@@ -2,14 +2,14 @@
 {% block title %}Recipe Page{% endblock %}
 {% block content %}
     <div class="row">
-            {% for product in products %}
+            {% for recipe in recipes %}
 
                 <div class="col-4">
                     <div class="card">
-                      <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                      <img class="card-img-top" src="{{recipe.thumbnail.url}}" alt="Recipe Thumbnail">
                       <div class="card-body">
                         <h5 class="card-title">{{product.recipe_name}}</h5>
-                          <a href="{{product.get_recipe_absolute_url}}" class="btn btn-primary">레시피보기</a>
+                          <a href="{{recipe.get_absolute_url}}" class="btn btn-primary">레시피보기</a>
                       </div>
                     </div>
                 </div>

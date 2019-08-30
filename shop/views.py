@@ -78,7 +78,9 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
     product = get_object_or_404(Product, id=id, slug=product_slug)
     add_to_cart = AddProductForm(initial={'quantity':1})
     relative_products = Product.objects.filter(company=product.company).exclude(slug=product_slug)
-    
+    recipes = Recipe.objects.filter(products=product)
+
+
     #comment 부분
     comments = Comment.objects.filter(product=product)
     if request.method == "POST":
@@ -111,7 +113,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
 
 
     return render(request, 'shop/detail.html', {'product':product, 'add_to_cart':add_to_cart, 'relative_products': relative_products,
-                                                'comments':comments, 'comment_form':comment_form, 'options':options})
+                                                'comments':comments, 'comment_form':comment_form, 'options':options, 'recipes':recipes})
 
 
 
@@ -281,11 +283,7 @@ def event_detail(request, event_slug=None):
     context = {'categories' : categories, 'event' : event}
     return render(request, 'shop/event_detail.html', context)
 
-def recipe(request):
-    categories = Category.objects.all()
-    products = Product.objects.exclude(recipe_name='')
-    context = {'categories':categories, 'products':products}
-    return render(request, 'shop/recipe.html', context)
+
 
 class AuthSMS(APIView):
     def post(self, request):
@@ -297,11 +295,21 @@ class AuthSMS(APIView):
             m.Auth.objects.update_or_create(phone_number=p_num)
             return Response({'message': 'OK'})
 
-
-def recipe_detail(request, id, product_slug=None):
+def recipe(request):
     categories = Category.objects.all()
-    product = get_object_or_404(Product, id=id, slug=product_slug)
-    context = {'categories':categories, 'product':product}
+    recipes = Recipe.objects.all()
+    context = {'categories':categories, 'recipes':recipes}
+    return render(request, 'shop/recipe.html', context)
+
+def recipe_detail(request, id, recipe_slug=None):
+    categories = Category.objects.all()
+    recipe = get_object_or_404(Recipe, id=id, slug=recipe_slug)
+    query = Recipe.objects.filter(id=id, slug=recipe_slug).select_related().values('products')
+    products = []
+    for q in query:
+        products.append(Product.objects.get(id=q['products']))
+
+    context = {'categories': categories, 'recipe': recipe, 'products':products}
     return render(request, 'shop/recipe_detail.html', context)
 
 
