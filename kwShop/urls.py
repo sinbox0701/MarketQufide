@@ -23,4 +23,5 @@ urlpatterns = [
     #path('coupon/', include('coupon.urls')),
     path('order/', include('order.urls')),
     path('', include('shop.urls')),
+    path('members/', include('members.urls')),
 ]

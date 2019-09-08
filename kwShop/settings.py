@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'tagging.apps.TaggingConfig',
     'members',
-    'django_simple_coupons',
+    'coupon',
 ]
 
 AUTH_USER_MODEL='members.user'
@@ -128,11 +128,11 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '', # 설정해둔 DataBase 이름
+        'NAME': 'kwShop', # 설정해둔 DataBase 이름
         'USER': '',  # 설정해 둔 DB 관리자 계정 python
         'PASSWORD': '',  # 설정해 둔 DB 관리자 비번
         'HOST': '',  # 만들어 논 DataBase의 엔드 포인트
-        'PORT': '3306',
+        'PORT': '',
         #'OPTIONS': {
         #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         #}
@@ -211,5 +211,9 @@ STATICFILES_DIRS = [
 
 # 서버 배포 이후 삭제하기 --> 현재는 로컬호스트기 때문에 불가능
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# coolsms
+COOLSMS_API_KEY = 'NCSSY5JNCBLY35HZ'
+COOLSMS_API_SECRET = 'DWAVROJUC748QWHN9CFCYQMXPVORVDLY'
+SENDER = '01056373374'
 
 

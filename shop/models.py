@@ -113,9 +113,6 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
-    def get_recipe_absolute_url(self):
-        return reverse('shop:recipe_detail', args=[self.id, self.slug])
-
 
 class Option(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -135,6 +132,9 @@ class Comment(models.Model):
                                related_name='comments')
     comment_created = models.DateTimeField(auto_now_add=True)
     comment_updated = models.DateTimeField(auto_now=True)
+    comment_image = models.ImageField(upload_to='comments/%Y/%m/%d', blank=True, null=True)
+    comment_image2 = models.ImageField(upload_to='comments/%Y/%m/%d', blank=True, null=True)
+    comment_image3 = models.ImageField(upload_to='comments/%Y/%m/%d', blank=True, null=True)
 #    comment_thumbnail_url = models.TextField(max_length=20)
     like = models.IntegerField(choices=list(zip(range(0, 6), range(0, 6))))
     comment_text = models.TextField()
