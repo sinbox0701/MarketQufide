@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Comment_select{% endblock %}
+{% block content %}
+
+
+
+<div class="container">
+
+        <h3> Comments </h3>
+                    <!-- Single Comment -->
+
+        <form action="{% url 'shop:comment_select' %}" method="post" name="checkbox">
+                        <input type="checkbox" onclick="check_all()" id="allCheck"> <label>Check ALL</label>
+                        <br />
+                       {% for comment in comments %}
+                            {% if comment.best == True %}
+                                <input type="checkbox" name="select" value={{comment.id}} checked>
+                            {% else %}
+                                <input type="checkbox" name="select" value={{comment.id}}>
+                            {% endif %}
+                            <label><b>{{comment}}<a href="{% url 'shop:comment_detail' comment.id %}" class="mt-0"></b></label><br />
+                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                <div class="media-body">
+                                <h5 class="mt-0">작성자: {{comment.author}}</h5>
+                                <h5 class="mt-0">품목: {{comment.product}}</h5>
+                                <h5 class="mt-0">내용: {{comment.comment_text}}</h5>
+                                </div>
+                            <br><br><br>
+                        {% endfor %}
+
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-primary btn-sm" onclick="window.close()" value="적용하기">
+        </form>
+</div>
+
+<script>
+function check_all() {
+    if($("#allCheck").prop("checked")) {
+        for(i=0; i < checkbox.select.length; i++) {
+            checkbox.select[i].checked = true;
+        }
+    }else{
+        for(i=0; i < checkbox.select.length; i++) {
+            checkbox.select[i].checked = false;
+        }
+    }
+}
+</script>
+
+{% endblock %}

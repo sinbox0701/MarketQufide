@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
+
 #from django.contrib.auth.models import User
 from django.conf import settings
 # ----- 인증번호 -----
@@ -8,6 +9,11 @@ import requests
 from random import randint
 from model_utils.models import TimeStampedModel
 # -------------
+
+from django.contrib.auth.models import User
+
+from tagging.fields import TagField
+
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
@@ -41,19 +47,6 @@ class Category(MPTTModel):
     def get_absolute_url(self):
         return reverse('shop:category', args=[self.slug])
 
-
-
-
-
-class Option(models.Model):
-    name = models.CharField(max_length=200, db_index=True)
-    content = models.TextField()
-    add_price = models.IntegerField()
-
-    def __str__(self):
-        return '{} // {}'.format(self.name, self.add_price)
-
-
 class Delivery(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField()
@@ -86,15 +79,20 @@ class Product(models.Model):
     image5 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True)
     description = models.TextField(blank=True)
     #meta_description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2) # 가격
-    #stock = models.PositiveIntegerField() # 재고
+    tag_description = TagField(blank=True)
+
+    price = models.DecimalField(max_digits=10, decimal_places=0) # 가격
     company = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
     available_display = models.BooleanField('Display', default=True) # 상품 노출 여부
     available_order = models.BooleanField('Order', default=True) # 상품 주문 가능 여부
     count_order = models.IntegerField(default=0) # 팔린 갯수
 
-    created = models.DateTimeField(auto_now=True)
-    updated = models.DateTimeField(auto_now_add=True)
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    count_order = models.IntegerField(default=0)
+    sale_percent = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-created']
@@ -117,17 +115,36 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
-class Comment(models.Model):
+    def get_recipe_absolute_url(self):
+        return reverse('shop:recipe_detail', args=[self.id, self.slug])
+
+
+class Option(models.Model):
+    name = models.CharField(max_length=200, db_index=True)
     product = models.ForeignKey(Product, on_delete=True, null=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,null=True,blank=True,related_name='comments')
+    content = models.TextField()
+    add_price = models.IntegerField()
+    stock = models.IntegerField(default=0)
+
+    def __str__(self):
+        return '{} // {} // {}'.format(self.product, self.name, self.add_price)
+
+
+class Comment(models.Model):
+
+    product = models.ForeignKey(Product, on_delete=True, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                               related_name='comments')
     comment_created = models.DateTimeField(auto_now_add=True)
     comment_updated = models.DateTimeField(auto_now=True)
 #    comment_thumbnail_url = models.TextField(max_length=20)
-    like = models.IntegerField(default=0)
+    like = models.IntegerField(choices=list(zip(range(0, 6), range(0, 6))))
     comment_text = models.TextField()
+    best = models.BooleanField(default=False)
 
     def __str__(self):
         return (self.author.username if self.author else "무명") + "의 댓글"
+
 
 class Banner(models.Model):
     name = models.CharField(blank=True, max_length=30)
@@ -136,6 +153,7 @@ class Banner(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class AuthSMS(TimeStampedModel):
     phone_number = models.CharField(verbose_name='휴대폰 번호', primary_key=True, max_length=11)
@@ -163,3 +181,32 @@ class AuthSMS(TimeStampedModel):
                   "x-ncp-service-secret": '82ac2516914143deb1ad0d0a808f822e',
         }
         requests.post(url, json=data, headers=headers)
+
+
+class Collection(models.Model):
+    name = models.CharField(max_length=30)
+    slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True)
+    title_image = models.ImageField()
+    description = models.TextField(blank=True)
+    products = models.ManyToManyField(Product)
+
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('shop:collection_detail', args=[self.slug])
+
+
+class Event(models.Model):
+    title_image = models.ImageField()
+    name = models.CharField(max_length=30)
+    content = models.ImageField()
+    slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True, default=0)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('shop:event_detail', args=[self.slug])
+

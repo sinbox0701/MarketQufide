@@ -1,4 +1,4 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
 
@@ -21,7 +21,7 @@
   {% endif %}
   
   <button  class="btn btn-outline-success" type="submit">{% trans 'Sign Out' %}</button>
-  <a class="btn btn-outline-danger" id="custom_logout_no" href="/accounts/profile/">{% trans 'No' %}</a>
+  <a class="btn btn-outline-danger" id="custom_logout_no" href="/">{% trans 'No' %}</a>
 </form>
 
 </div>
