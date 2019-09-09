@@ -1,13 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-
-
-# Create your models here.
-'''class User(AbstractUser):
-    mileage = models.IntegerField(default=0)'''
-
-from django.db import models
 from django.contrib.auth.models import AbstractUser # 유진이
 from coupon.models import Coupon
 from django.db import models

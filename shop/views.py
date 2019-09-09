@@ -92,7 +92,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
         # models.py에서 document의 related_name을 comments로 해놓았다.
 
     comment_form = CommentForm()
-
+    options = Option.objects.filter(product=product)
     order=''
     if request.method == "GET":
         if 'orderby' in request.GET:
@@ -109,7 +109,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
                           {'product': product, 'add_to_cart': add_to_cart, 'relative_products': relative_products,
                            'comments': comments, 'comment_form': comment_form, 'options': options})
 
-    options = Option.objects.filter(product=product)
+    #options = Option.objects.filter(product=product)
 
 
     return render(request, 'shop/detail.html', {'categories':categories, 'product':product, 'add_to_cart':add_to_cart, 'relative_products': relative_products,

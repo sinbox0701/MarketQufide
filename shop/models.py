@@ -10,6 +10,8 @@ from random import randint
 from model_utils.models import TimeStampedModel
 # -------------
 
+from django.contrib.auth.models import User
+
 from django.conf import settings
 from tagging.fields import TagField
 
