@@ -3,24 +3,28 @@ from .models import *
 from cart.cart import Cart
 from .forms import *
 from shop.models import *
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def order_create(request): # 주문서 입력
     cart = Cart(request)
+    user = User.objects.get(id=request.user.id)
+    coupons = CouponUser.objects.filter(user=user)
     if request.method == 'POST':
-        form = OrderCreateForm(request.POST)
-        if form.is_valid():
-            order = form.save()
-            if cart.coupon:
-                order.coupon = cart.coupon
-                order.discount = cart.coupon.amount
-                order.save()
+        order_create_form = OrderCreateForm(request.POST)
+        if order_create_form.is_valid():
+            order = order_create_form.save()
+            print("here")
             for item in cart:
                 OrderItem.objects.create(order=order, product=item['product'], price=item['price'], quantity=item['quantity'])
-            cart.clear()
-            return render(request, 'order/created.html', {'order':order})
+            if 'price_post' in request.POST:
+                price = request.POST['price_post']
+            order_price = Order.objects.get(order=order)
+            order_price.price = price
+            order_price.save()
     else:
-        form = OrderCreateForm()
-    return render(request, 'order/create.html', {'cart' : cart, 'form' : form})
+        order_create_form = OrderCreateForm()
+    return render(request, 'order/create.html', {'cart' : cart, 'order_create_form' : order_create_form, 'coupons':coupons})
 
 def order_complete(request):
     order_id = request.GET.get('order_id')
@@ -44,10 +48,6 @@ class OrderCreateAjaxView(View):
         form = OrderCreateForm(request.POST)
 
         if form.is_valid():
-            order = form.save(commit=False)
-            if cart.coupon:
-                order.coupon = cart.coupon
-                order.discount = cart.coupon.amount
             order = form.save()
             for item in cart:
                 OrderItem.objects.create(order=order, product=item['product'], price=item['price'],

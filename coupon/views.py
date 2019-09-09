@@ -1,24 +1,45 @@
-from django.shortcuts import redirect
+from django.shortcuts import render
+from members.models import User
+from .forms import RegisterCouponForm
+from coupon.models import Coupon, CouponUser
+from shop.models import Category
 from django.utils import timezone
-from django.views.decorators.http import require_POST
-from .models import Coupon
-from .forms import AddCouponForm
+# Create your views here.
 
-@require_POST
-def add_coupon(request):
-    now = timezone.now()
-    form = AddCouponForm(request.POST)
+def valid(coupon_code, user):
+    coupon_exist_valid = Coupon.objects.filter(code=coupon_code)
+    if coupon_exist_valid == None:
+        print("coupon doesnt exist")
+        return False
+    else:
+        actual_coupon = coupon_exist_valid.first()
+        already_registered_valid = CouponUser.objects.filter(coupon=actual_coupon, user=user)
+        if len(already_registered_valid) == 0:
+            if timezone.now() > actual_coupon.expiration_date:
+                print("check coupon date")
+                return False
+            else:
+                return True
+
+        else:
+            print("coupon already registered")
+            return False
+
+#쿠폰함/쿠폰등록
+def coupon(request):
+    categories = Category.objects.all()
+    user = User.objects.get(id=request.user.id)
+    form = RegisterCouponForm(request.POST)
+
     if form.is_valid():
-        code = form.cleaned_data['code']
+        input_code = request.POST['input_code']
+        v = valid(input_code, user)
 
-        try:
-            coupon = Coupon.objects.get(code__iexact=code, use_from__lte=now, use_to__gte=now, active=True)
-            # 입력한 쿠폰 코드를 이용해 조회
-            # 필드명__옵션 형태로 질의 가능
-            # code__iexact : 대소문자 구분 X, use_from < 현재시간 < use_to
-            request.session['coupon_id'] = coupon.id
-        except Coupon.DoesNotExist:
-            request.session['coupon_id'] = None
+        if v==True:
+            actual_coupon = Coupon.objects.filter(code=input_code).first()
+            new_coupon_user = CouponUser(user=user, coupon=actual_coupon, times_used=0)
+            new_coupon_user.save()
 
-    return redirect('cart:detail')
-
+    coupons = CouponUser.objects.filter(user=user, times_used=0)
+    context = {'categories': categories, 'user': user, 'form': form, 'coupons':coupons}
+    return render(request, 'members/coupon.html', context)

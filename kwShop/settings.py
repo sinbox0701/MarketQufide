@@ -50,18 +50,18 @@ INSTALLED_APPS = [
     'allauth.socialaccount', # 소셜계정으로 가입한 계정 관리
     'allauth.socialaccount.providers.naver', # 사용하는 소셜 서비스(naver)
     'cart',
-    'coupon',
+    #'coupon',
     'order',
     'mptt',
     'django_social_share',
     'django_inlinecss',
     'rest_framework',
-    'multiselectfield',
     'tagging.apps.TaggingConfig',
     'members',
+    'coupon',
 ]
 
-
+AUTH_USER_MODEL='members.user'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,7 +129,7 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kwShop', # 설정해둔 DataBase 이름
-        'USER': 'kiwoong',  # 설정해 둔 DB 관리자 계정 python
+        'USER': '',  # 설정해 둔 DB 관리자 계정 python
         'PASSWORD': '',  # 설정해 둔 DB 관리자 비번
         'HOST': '',  # 만들어 논 DataBase의 엔드 포인트
         'PORT': '',
@@ -201,6 +201,7 @@ AWS_LOCATION = 'static'
 IAMPORT_KEY = ''
 IAMPORT_SECRET = ''
 
+
 STATIC_URL = 'https://%s/%s/'%(AWS_S3_CUSTOM_DOMAIN,AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'kwShop.asset_storage.MediaStorage' # 미디어 파일을 위한 파일 스토리지 설정
@@ -210,5 +211,8 @@ STATICFILES_DIRS = [
 
 # 서버 배포 이후 삭제하기 --> 현재는 로컬호스트기 때문에 불가능
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+# coolsms
+COOLSMS_API_KEY = 'NCSSY5JNCBLY35HZ'
+COOLSMS_API_SECRET = 'DWAVROJUC748QWHN9CFCYQMXPVORVDLY'
+SENDER = '01056373374'
 

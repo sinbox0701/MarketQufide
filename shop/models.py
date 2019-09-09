@@ -11,7 +11,8 @@ from model_utils.models import TimeStampedModel
 # -------------
 
 from django.contrib.auth.models import User
-from multiselectfield import MultiSelectField
+
+from django.conf import settings
 from tagging.fields import TagField
 
 
@@ -116,9 +117,6 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
-    def get_recipe_absolute_url(self):
-        return reverse('shop:recipe_detail', args=[self.id, self.slug])
-
 
 class Option(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -213,4 +211,18 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:event_detail', args=[self.slug])
+
+
+class Recipe(models.Model):
+    name = models.CharField(max_length=30)
+    thumbnail = models.ImageField(blank=True)
+    content = models.ImageField()
+    products = models.ManyToManyField(Product)
+    slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True, default=0)
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('shop:recipe_detail', args=[self.id, self.slug])
+
 
