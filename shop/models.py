@@ -80,12 +80,14 @@ class Product(models.Model):
     image5 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True)
     description = models.TextField(blank=True)
     #meta_description = models.TextField(blank=True)
-    tag_description = TagField(blank=True)
+    tag_description = TagField(blank=True, null=True)
+
     price = models.DecimalField(max_digits=10, decimal_places=0) # 가격
     company = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
     available_display = models.BooleanField('Display', default=True) # 상품 노출 여부
     available_order = models.BooleanField('Order', default=True) # 상품 주문 가능 여부
     count_order = models.IntegerField(default=0) # 팔린 갯수
+
 
 
     created = models.DateTimeField(auto_now_add=True)

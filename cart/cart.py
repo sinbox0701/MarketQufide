@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
-from shop.models import Product
+from shop.models import Product, Option
+from django.shortcuts import get_object_or_404
 from coupon.models import *
 
 # session을 사용하는 방식 -> request.session에 데이터를 저장하고 꺼내오기
@@ -18,11 +19,12 @@ class Cart(object):
         return sum(item['quantity'] for item in self.cart.values())
 
     def __iter__(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
+        option_ids = self.cart.keys()
+        options = Option.objects.filter(id__in=option_ids)
 
-        for product in products:
-            self.cart[str(product.id)]['product'] = product
+        for option in options:
+            self.cart[str(option.id)]['product'] = option.product
+            self.cart[str(option.id)]['option'] = option
 
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])
@@ -30,25 +32,26 @@ class Cart(object):
 
             yield item
 
-    def add(self, product, quantity=1, is_update=False):
+    def add(self, product, option, quantity=1, is_update=False):
         product_id = str(product.id)
-        if product_id not in self.cart:
-            self.cart[product_id] = {'quantity':0, 'price':str(int(product.price*(100-product.sale_percent)/100*10/10))}
+        option_id= str(option.id)
+        if option_id not in self.cart:
+            self.cart[option_id] = {'quantity':0, 'price':str(int(product.price*(100-product.sale_percent)/100*10/10))}
 
         if is_update:
-            self.cart[product_id]['quantity'] = quantity
+            self.cart[option_id]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
+            self.cart[option_id]['quantity'] += quantity
         self.save()
 
     def save(self): # 상품을 담기
         self.session[settings.CART_ID] = self.cart
         self.session.modified = True
 
-    def remove(self, product): # 상품을 지우기
-        product_id = str(product.id)
-        if product_id in self.cart:
-            del(self.cart[product_id])
+    def remove(self, product, option): # 상품을 지우기
+        option_id = str(option.id)
+        if option_id in self.cart:
+            del(self.cart[option_id])
             self.save()
 
     def clear(self): # 장바구니 비우기 (주문완료에도 사용예정)

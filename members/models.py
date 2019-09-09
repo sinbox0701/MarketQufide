@@ -30,6 +30,7 @@ class Phone(models.Model):
 
 class User(AbstractUser): # 원래는 AbstractBaseUser
     mileage = models.IntegerField(default=0)
+
     #coupon = models.ManyToManyField(Coupon)
     #email = models.EmailField(max_length=255, unique=True)
     phone = models.ForeignKey(Phone, db_column='number', on_delete=models.CASCADE, null=True)

@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import *
 from mptt.admin import MPTTModelAdmin
 
-
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'categories', 'price', 'available_display', 'available_order', 'created', 'updated']
     list_filter = ['available_display', 'created', 'updated', 'categories']

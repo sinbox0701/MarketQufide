@@ -4,40 +4,31 @@
 {% load social_share %}
 
 <script type="text/javascript">
-    // get url query string
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : sParameterName[1];
-        }
-    }
-};
-// 정렬방식 셀렉트 박스 유지
-$(document).ready(function(){
-  var option = getUrlParameter('option');
-  if(option == 'date'){
-    $('.sort-date').prop('selected', 'selected')
-  }else{
-    $('.sort-like').prop('selected', 'selected')
-  }
-});
 
 var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100;
-var add = saled_price;
 
 function optionchange(obj){
-        all_price = parseInt(add) + parseInt(obj.value);
-        div1.style.display="block";
-}
-    </script>
+    document.getElementById('field').innerHTML="";
+    var div = document.createElement('div');
+    div.setAttribute("id", obj.value);
+    div.innerHTML += "옵션" + document.getElementById('option').value;
+    div.innerHTML += document.getElementById('selected').innerHTML;
+    document.getElementById('field').appendChild(div);
 
+};
+
+function add(){
+    document.getElementById("id_quantity").value++;
+};
+
+function del(){
+    if (document.getElementById("id_quantity").value > 1) {
+			document.getElementById("id_quantity").value -= 1;
+		}
+};
+
+
+    </script>
 
 
         <div class="container">
@@ -74,25 +65,40 @@ function optionchange(obj){
                         <span class="cart-text">-{{product.sale_percent}}%</span>
                         {% endif %}<h5>
                     </p>
-                    <form action="{% url 'cart:product_add' product.id %}" method="post">
-                        {{add_to_cart}}
-                        {% csrf_token %}
-                        <input type="submit" class="btn btn-primary btn-sm" value="Add to Cart">
-                    </form>
+
                     <h5><span class="badge badge-secondary">Description</span>{{product.description|linebreaks}}</h5>
 
 
                     <h5><span class="badge badge-secondary">옵션</span>
-
-                        <select id="option" name="option" onchange="optionchange(this);">
+                        <form name="form1" action="{% url 'cart:product_add' product.id %}" method="post" enctype="multipart/form-data">
+                        <select id="option" name="option[]" onchange="optionchange(this);">
                             <option class="option-0">옵션선택
                             {% for option in options %}
-                            <option class="option-1" value="{{option.add_price}}">
+                            <option value="{{option.id}}">
                                 {{option.name}}&nbsp;&nbsp;
                                 남은수량: {{option.stock}}&nbsp;&nbsp;
-                                추가금: +{{option.add_price}}원</option>
+                                추가금: +{{option.add_price}}원
+                            </option>
                             {% endfor %}
-                        </select><h5>
+                        </select>
+
+                            <br>
+
+
+                            <div id="field">
+
+                            </div>
+
+
+
+                            {% csrf_token %}
+
+
+
+
+                        </form>
+
+
 
                     {% if product.recipe_name != '' %}
                         <form action="{% url 'shop:recipe_detail' product.id product.slug %}" method="post">
@@ -101,18 +107,24 @@ function optionchange(obj){
                         </form>
                     {% endif %}
 
-                    <div>
-                    <b>TAGS: </b>
-                    {% load tagging_tags %}
-                    {% tags_for_object product as tags %}
-                    {% for tag in tags %}
-                    <a href="/search/?search={{ tag.name }}">{{tag.name}}</a>
-                    {% endfor %}
-                    <a><i>[ TagCloud ]</i></a>
-                    </div>
-
+                            <div>
+                            <b>TAGS: </b>
+                            {% load tagging_tags %}
+                            {% tags_for_object product as tags %}
+                            {% for tag in tags %}
+                            <a href="/search/?search={{ tag.name }}">{{tag.name}}</a>
+                            {% endfor %}
+                            </div>
                 </div>
             </div>
+
+             <div id="selected" style="display:none;">
+                 수량 : {{add_to_cart.quantity}}
+                 <button class="ui button" type="button" onclick="del();">-</button>
+                 <button class="ui button" type="button" onclick="add();">+</button>
+                 <input type="submit" class="btn btn-primary btn-sm" value="장바구니">
+             </div>
+
 
             <div id="div1" style="display:none;">
                 상품: {{product.name}}<br>
@@ -212,9 +224,17 @@ $(document).ready(function(){
                         {% endfor %}
                     </table>
                     <div class="row">
-
                      {% for comment in comments %}
-                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                            {% if comment.comment_image.url != None %}
+                            <img src="{{comment.comment_image.url}}" width="10%">
+                            {% endif %}
+                            {% if comment.comment_image2.url != None %}
+                                <img src="{{comment.comment_image2.url}}" width="10%">
+                            {% endif %}
+                            {% if comment.comment_image3.url != None %}
+                                <img src="{{comment.comment_image3.url}}" width="10%">
+                            {% endif %}
+                    </div>
                         <div class="media-body">
                             <script>sum+={{comment.like}};</script>
                             <h5 class="mt-0">작성자: {{comment.author}}</h5>
