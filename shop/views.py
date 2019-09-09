@@ -91,7 +91,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
         if comment_form.is_valid():
             comment = comment_form.save()
         # models.py에서 document의 related_name을 comments로 해놓았다.
-
+    options = Option.objects.filter(product=product)
     comment_form = CommentForm()
     for option in options:
         add_to_cart = AddProductForm(initial={'quantity': 1})
