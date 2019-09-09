@@ -4,19 +4,21 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from coupon.models import Coupon
 from shop.models import Product
 from .iamport import payments_prepare, find_transaction
+from .orderNumber import get_order_code
 
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
-    address = models.CharField(max_length=250)
-    postal_code = models.CharField(max_length=20)
-    city = models.CharField(max_length=100)
+    addr1 = models.CharField(max_length=250)
+    zip = models.CharField(max_length=20)
+    addr2 = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
     discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
     price = models.IntegerField(default=0)
+    orderno = models.CharField(max_length=18, default=get_order_code)
 
     class Meta:
         ordering = ['-created']

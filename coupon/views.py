@@ -28,7 +28,7 @@ def valid(coupon_code, user):
 #쿠폰함/쿠폰등록
 def coupon(request):
     categories = Category.objects.all()
-    user = User.objects.get(id=request.user.id)
+    user = User.objects.get(id=request.usr.id)
     form = RegisterCouponForm(request.POST)
 
     if form.is_valid():

@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import *
+from members.models import User as mUser
 from cart.cart import Cart
 from .forms import *
 from shop.models import *
@@ -13,6 +14,7 @@ def order_create(request): # 주문서 입력
     coupons = CouponUser.objects.filter(user=user)
     if request.method == 'POST':
         order_create_form = OrderCreateForm(request.POST)
+        print (request.POST)
         if order_create_form.is_valid():
             order = order_create_form.save()
             print("here")
@@ -42,17 +44,24 @@ from django.http import JsonResponse
 
 class OrderCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
+        print("-----------------")
+        print("start")
         if not request.user.is_authenticated:
             return JsonResponse({"authenticated":False}, status=403)
-
+        print("finish")
         cart = Cart(request)
         form = OrderCreateForm(request.POST)
+        print(request.POST)
 
         if form.is_valid():
+            print("valid")
             order = form.save()
+            print("save")
             for item in cart:
                 OrderItem.objects.create(order=order, product=item['product'], price=item['price'],
                                          quantity=item['quantity'])
+                print(item)
+                print("item")
             cart.clear()
             data = {
                 "order_id": order.id
