@@ -1,0 +1,17 @@
+Metadata-Version: 1.1
+Name: coolsms-python-sdk
+Version: 2.0.3
+Summary: Send Message, Kakao Alimtalk and Management Message using Python and REST API.
+Home-page: https://github.com/coolsms/python-sdk
+Author: Nurigo
+Author-email: sms-team@nurigo.net
+License: BSD License
+Download-URL: https://github.com/coolsms/python-sdk/releases
+Description: UNKNOWN
+Keywords: sms,rest,restapi,restsms,smsrest,coolsms,nurigo,python sdk,alimtalk,kakao
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
