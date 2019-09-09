@@ -43,7 +43,15 @@ $(document).ready(function(){
 
                      {% for comment in comments %}
                         <a href="{% url 'shop:comment_detail' comment.id %}">
-                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                            {% if comment.comment_image.url != None %}
+                            <img src="{{comment.comment_image.url}}" width="10%">
+                            {% endif %}
+                            {% if comment.comment_image2.url != None %}
+                                <img src="{{comment.comment_image2.url}}" width="10%">
+                            {% endif %}
+                            {% if comment.comment_image3.url != None %}
+                                <img src="{{comment.comment_image3.url}}" width="10%">
+                            {% endif %}
                         <div class="media-body">
                             <h5 class="mt-0">날짜: {{comment.author}}</h5>
                             <h5 class="mt-0">날짜: {{comment.comment_created}}</h5>
@@ -54,7 +62,7 @@ $(document).ready(function(){
 
 
             <h1>New comment</h1>
-            <form method="POST" class="post-form">{% csrf_token %}
+            <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
                 <table>
                 {{ form.as_table }}
 

@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col">Image</th>
                 <th scope="col">Product</th>
+                <th scope="col">Option</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Remove</th>
                 <th scope="col">Unit price</th>
@@ -20,6 +21,7 @@
         <tbody>
         {% for item in cart %}
             {% with product=item.product %}
+            {% with option=item.option %}
             <tr>
                 <th scope="row">
                     <a href="{{ product.get_absolute_url }}">
@@ -27,18 +29,20 @@
                     </a>
                 </th>
                 <td>{{ product.name }}</td>
+                <td>{{ option.name }}</td>
                 <td>
-                    <form action="{% url "cart:product_add" product.id %}" method="post">
+                    <form action="{% url 'cart:product_add' product.id %}" method="post">
                         {{ item.quantity_form.quantity }}
                         {{ item.quantity_form.is_update }}
                         <input type="submit" class="btn btn-primary" value="Update">
                         {% csrf_token %}
                     </form>
                 </td>
-                <td><a href="{% url "cart:product_remove" product.id %}">Remove</a></td>
+                <td><a href="{% url 'cart:product_remove' product.id option.id %}">Remove</a></td>
                 <td class="num">${{ item.price }}</td>
                 <td class="num">${{ item.total_price }}</td>
             </tr>
+            {% endwith %}
             {% endwith %}
         {% endfor %}
         {% if cart.coupon %}

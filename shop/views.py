@@ -68,6 +68,7 @@ def category(request, category_slug=None): # 카테고리 페이지
             context = {'current_category': current_category, 'categories': categories, 'products': results}
             return render(request, 'shop/list.html', context)
 
+    results = results.order_by('-count_order')
     context = {'current_category': current_category, 'categories': categories, 'products': results}
     return render(request,'shop/list.html', context)
 
@@ -76,13 +77,13 @@ def category(request, category_slug=None): # 카테고리 페이지
 def product_detail(request, id, product_slug=None): # 제품 상세 뷰
     categories = Category.objects.all()
     product = get_object_or_404(Product, id=id, slug=product_slug)
-    add_to_cart = AddProductForm(initial={'quantity':1})
+
     relative_products = Product.objects.filter(company=product.company).exclude(slug=product_slug)
     
     #comment 부분
     comments = Comment.objects.filter(product=product)
     if request.method == "POST":
-        comment_form = CommentForm(request.POST)
+        comment_form = CommentForm(request.POST, request.FILES)
         comment_form.instance.author = request.user.id
         comment_form.instance.product_slug = product_slug
         if comment_form.is_valid():
@@ -90,6 +91,10 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
         # models.py에서 document의 related_name을 comments로 해놓았다.
 
     comment_form = CommentForm()
+
+    options = Option.objects.filter(product=product)
+    for option in options:
+        add_to_cart = AddProductForm(initial={'quantity': 1})
 
     order=''
     if request.method == "GET":
@@ -107,9 +112,8 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
                           {'product': product, 'add_to_cart': add_to_cart, 'relative_products': relative_products,
                            'comments': comments, 'comment_form': comment_form, 'options': options})
 
-    options = Option.objects.filter(product=product)
 
-
+    comments = comments.order_by('-like')
     return render(request, 'shop/detail.html', {'product':product, 'add_to_cart':add_to_cart, 'relative_products': relative_products,
                                                 'comments':comments, 'comment_form':comment_form, 'options':options})
 
@@ -119,7 +123,8 @@ def comment(request, id, product_slug=None):
     product = get_object_or_404(Product, id=id, slug=product_slug)
     comments = Comment.objects.filter(product=product)
     if request.method == "POST":
-        form = CommentForm(request.POST)
+        
+        form = CommentForm(request.POST, request.FILES)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.product = Product.objects.get(id=id)
@@ -134,13 +139,14 @@ def comment(request, id, product_slug=None):
         if 'orderby' in request.GET:
             order = request.GET['orderby']
 
-        if order == 'like':
+        if order == 'date':
+            comments = comments.order_by('-comment_created')
+            return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
+        else:
             comments = comments.order_by('-like')
             return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
 
-        elif order == 'date':
-            comments = comments.order_by('-comment_created')
-            return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
+    comments = comments.order_by('-like')
 
     return render(request, 'shop/comment.html', {'form': form, 'comments':comments, 'product':product})
 

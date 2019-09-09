@@ -19,8 +19,15 @@
                                 <input type="checkbox" name="select" value={{comment.id}}>
                             {% endif %}
                             <label><b>{{comment}}<a href="{% url 'shop:comment_detail' comment.id %}" class="mt-0"></b></label><br />
-                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                                <div class="media-body">
+                            {% if comment.comment_image.url != None %}
+                            <img src="{{comment.comment_image.url}}" width="10%">
+                            {% endif %}
+                            {% if comment.comment_image2.url != None %}
+                                <img src="{{comment.comment_image2.url}}" width="10%">
+                            {% endif %}
+                            {% if comment.comment_image3.url != None %}
+                                <img src="{{comment.comment_image3.url}}" width="10%">
+                            {% endif %}                                <div class="media-body">
                                 <h5 class="mt-0">작성자: {{comment.author}}</h5>
                                 <h5 class="mt-0">품목: {{comment.product}}</h5>
                                 <h5 class="mt-0">내용: {{comment.comment_text}}</h5>

@@ -4,4 +4,4 @@ from coupon.models import Coupon
 # Create your models here.
 class User(AbstractUser):
     mileage = models.IntegerField(default=0)
-    coupon = models.ForeignKey(Coupon, db_column='name', on_delete=models.CASCADE, null=True)
+    #coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, null=True)

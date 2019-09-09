@@ -1,4 +1,5 @@
 from django import forms
+from shop.models import Option
 
 class AddProductForm(forms.Form):
     quantity = forms.IntegerField() # 제품 수량
