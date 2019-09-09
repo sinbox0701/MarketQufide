@@ -10,6 +10,15 @@ from django.conf import settings
 from members.models import Phone
 from .forms import SignUpForm, LogInForm
 
+#from django.shortcuts import render, get_object_or_404
+from shop.models import Category
+from coupon.models import *
+
+from django.http import HttpResponseRedirect
+# Create your views here.
+
+
+
 User = settings.AUTH_USER_MODEL
 
 def index(request):
@@ -111,3 +120,15 @@ def check_verification_code(request):
         'verification_fail': True
     }
     return render(request, 'members/verify_phone.html', context)
+
+def mypage(request):
+    categories = Category.objects.all()
+    context = {'categories':categories}
+    return render(request, 'members/mypage.html', context)
+
+
+
+
+
+
+

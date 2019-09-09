@@ -119,7 +119,22 @@ function optionchange(obj){
                 옵션: {{option.name}}<br>
                 가격: <script>document.write(all_price);</script><br>
             </div>
-
+            <div id="product_detail_recipe">
+                <h3>만들 수 있는 요리들~</h3>
+                <div class="row">
+                    {% for recipe in recipes %}
+                       <div class="col-4">
+                            <div class="card">
+                              <img class="card-img-top" src="{{recipe.thumbnail.url}}" alt="Product Image">
+                              <div class="card-body">
+                                  <h5 class="card-title">{{recipe.name}}</h5>
+                                  <a href="{{recipe.get_absolute_url}}" class="btn btn-primary">View Recipe</a>
+                              </div>
+                            </div>
+                       </div>
+                    {% endfor %}
+                </div>
+            </div>
 
 	        <h3>묶음배송</h3>
                 <div class="row">

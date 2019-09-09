@@ -15,8 +15,8 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
-    coupon = models.ForeignKey(Coupon,on_delete=models.PROTECT, related_name='order_coupon', null=True, blank=True)
     discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
+    price = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-created']
@@ -55,6 +55,7 @@ class OrderTransactionManager(models.Manager):
         final_hash = hashlib.sha1((order_hash + email_hash).encode('utf-8')).hexdigest()[:10]
         merchant_order_id = "%s"%(final_hash)
         payments_prepare(merchant_order_id, amount)
+
         transaction = self.model(
             order = order,
             merchant_order_id = merchant_order_id,

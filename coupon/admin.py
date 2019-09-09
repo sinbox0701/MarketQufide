@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Coupon
+from .models import *
+# Register your models here.
+class CouponUserAdmin(admin.ModelAdmin):
+    list_display = ['user', 'coupon', 'times_used']
 
-class CouponAdmin(admin.ModelAdmin):
-    list_display = ['code', 'use_from', 'use_to', 'amount', 'active']
-    list_filter = ['active', 'use_from', 'use_to']
-    search_fields =  ['code']
-
-admin.site.register(Coupon,CouponAdmin)
+admin.site.register(CouponUser, CouponUserAdmin)
+admin.site.register(Coupon)
+admin.site.register(Discount)

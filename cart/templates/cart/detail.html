@@ -41,18 +41,7 @@
             </tr>
             {% endwith %}
         {% endfor %}
-        {% if cart.coupon %}
-            <tr class="subtotal">
-                <td>Subtotal</td>
-                <td colspan="4"></td>
-                <td >${{ cart.get_product_total }}</td>
-            </tr>
-            <tr>
-                    <td>"{{ cart.coupon.code }}" coupon (${{ cart.coupon.amount }})</td>
-                <td colspan="4"></td>
-                <td >- ${{ cart.get_discount_total|floatformat:"2" }}</td>
-            </tr>
-        {% endif %}
+
         <tr class="total">
             <td>Total</td>
             <td colspan="4"></td>
@@ -60,14 +49,7 @@
         </tr>
         </tbody>
     </table>
-    <p>
-        Add Coupon:
-    </p>
-    <form action='{% url "coupon:add" %}' method="post">
-        {{ add_coupon }}
-        <input type="submit" value="Add">
-        {% csrf_token %}
-    </form>
+
 
 
     <p class="text-right">
