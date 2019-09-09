@@ -66,11 +66,6 @@
         </li>
         <li class="nav-item ">
         <a class="nav-link btn btn-outline-success" href="{% url 'cart:detail' %}">Cart
-            {% if cart|length > 0 %}
-                ${{ cart.get_total_price }} with {{cart|length}} items
-            {% else %}
-                : Empty
-            {% endif %}
         </a>
             <a href="{% url 'members:mypage' %}" class="btn btn-primary">마이큐피드</a>
       </li>

@@ -4,11 +4,12 @@ from cart.cart import Cart
 from .forms import *
 from shop.models import *
 from django.views.decorators.csrf import csrf_exempt
+from members.models import User as mUser
 
 @csrf_exempt
 def order_create(request): # 주문서 입력
     cart = Cart(request)
-    user = User.objects.get(id=request.user.id)
+    user = mUser.objects.get(id=request.user.id)
     coupons = CouponUser.objects.filter(user=user)
     if request.method == 'POST':
         order_create_form = OrderCreateForm(request.POST)

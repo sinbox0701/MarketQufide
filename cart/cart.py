@@ -27,7 +27,7 @@ class Cart(object):
             self.cart[str(option.id)]['option'] = option
 
         for item in self.cart.values():
-            item['price'] = Decimal(item['price'])
+            item['price'] = Decimal(item['product'].price*(100-item['product'].sale_percent)/100*10/10) + Decimal(item['option'].add_price)
             item['total_price'] = item['price'] * item['quantity']
 
             yield item
@@ -36,7 +36,7 @@ class Cart(object):
         product_id = str(product.id)
         option_id= str(option.id)
         if option_id not in self.cart:
-            self.cart[option_id] = {'quantity':0, 'price':str(int(product.price*(100-product.sale_percent)/100*10/10))}
+            self.cart[option_id] = {'quantity':0, 'price':str(product.price)}
 
         if is_update:
             self.cart[option_id]['quantity'] = quantity

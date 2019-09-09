@@ -32,6 +32,7 @@
                 <td>{{ option.name }}</td>
                 <td>
                     <form action="{% url 'cart:product_add' product.id %}" method="post">
+                        {{ item.quantity_form.option_id }}
                         {{ item.quantity_form.quantity }}
                         {{ item.quantity_form.is_update }}
                         <input type="submit" class="btn btn-primary" value="Update">
