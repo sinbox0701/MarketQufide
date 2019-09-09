@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}My Page{% endblock %}
+{% block content %}
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <ul class="nav navbar-nav">
+
+            <li><a href="{% url 'members:coupon' %}">쿠폰함/쿠폰등록</a></li>
+
+        </ul>
+      </div>
+    </nav>
+{% endblock %}

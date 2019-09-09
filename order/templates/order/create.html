@@ -33,26 +33,67 @@ order_complete_url = '{% url "orders:order_complete" %}';
                 <span>{{item.total_price}}</span>
             </li>
         {% endfor %}
-        {% if cart.coupon %}
-            <li class="list-group-item">
-
-                    "{{ cart.coupon.code }}" ({{ cart.coupon.amount }}% off)
-
-                <span>- ${{ cart.get_total_discount|floatformat:"2" }}</span>
-            </li>
-        {% endif %}
     </ul>
-            <div class="alert alert-success" role="alert">Total : {{cart.get_total_price|floatformat:"2"}}</div>
+            <div class="alert alert-success" role="alert">총 상품금액 : {{cart.get_total_price|floatformat:"2"}}</div>
+            <div class="alert alert-bad" role="alert">
+                할인 금액 : <div id="discount">0.00</div>원
+            </div>
+            <div class="alert alert-bad" role="alert">실 결제 금액 : <div id="actual_price">{{ cart.get_total_price|floatformat:"2" }}</div></div>>
 
     <!-- form에 class 추가 -->
     <form action="" method="post" class="order-form">
-        {{form.as_p}}
+        {{ order_create_form.as_p}}
         {% csrf_token %}
         <!-- hidden field 추가-->
         <input type="hidden" name="pre_order_id" value="0">
         <input type="hidden" name="amount" value="{{ cart.get_total_price|floatformat:'2' }}">
         <input type="submit" class="btn btn-primary float-right" value="Place Order">
+        <input type="submit" value="coupon test" class="btn btn-primary" onclick="PricePost();">
     </form>
+    <!--coupon select-->
+        <select id="coupon_select_box" onChange="SetSelectBox();">
+            <option value="0" selected="selected">선택 안함</option>
+        {% for coupon in coupons %}
+            <option value="{{ coupon.coupon.discount }}">{{ coupon.coupon.name }}</option>
+        {% endfor %}
+        </select>
+            <script language="javascript">
+                function SetSelectBox() {
+                    var select = document.getElementById("coupon_select_box");
+                    var selected_value = select.options[select.selectedIndex];
+                    document.getElementById("discount").innerText = selected_value.value;
+                    SetActualPrice();
+                }
+                function SetActualPrice() {
+                    var total_price = {{ cart.get_total_price }};
+                    var coupon_price = document.getElementById("discount").innerText
+                    document.getElementById("actual_price").innerText = total_price - parseInt(coupon_price);
+                }
+                function PricePost() {
+                    var actual_price = document.getElementById("actual_price");
+
+                    var form = document.createElement("form");
+                    form.setAttribute("charset", "UTF-8");
+                    form.setAttribute("method", "POST");
+
+                    /*var csrf_token = document.createElement("input");
+                    csrf_token.setAttribute("type", "hidden");
+                    csrf_token.setAttribute("name", "csrfmiddlewaretoken");
+                    csrf_token.setAttribute("value", {% csrf_token %});
+                    form.appendChild(csrf_token);
+                    document.body.appendChild(form);*/
+
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("aria-label", "price_post");
+                    hiddenField.setAttribute("placeholder", "price_post");
+                    hiddenField.setAttribute("name", "price_post");
+                    hiddenField.setAttribute("value", actual_price);
+                    form.appendChild(hiddenField);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            </script>
     </div>
     </div>
 {% endblock %}

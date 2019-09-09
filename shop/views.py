@@ -112,7 +112,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
     options = Option.objects.filter(product=product)
 
 
-    return render(request, 'shop/detail.html', {'product':product, 'add_to_cart':add_to_cart, 'relative_products': relative_products,
+    return render(request, 'shop/detail.html', {'categories':categories, 'product':product, 'add_to_cart':add_to_cart, 'relative_products': relative_products,
                                                 'comments':comments, 'comment_form':comment_form, 'options':options, 'recipes':recipes})
 
 

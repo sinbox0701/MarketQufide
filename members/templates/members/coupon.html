@@ -1,0 +1,18 @@
+{% extends './mypage.html' %}
+{% block title %}Coupon Page{% endblock %}
+{% block content %}
+    <h2>사용 가능 쿠폰</h2>
+    <h3>{{ coupons|length }} 개</h3>
+    {% for coupon in coupons %}
+        {{ coupon.coupon.name }}
+        {{ coupon.coupon.discount }}
+        {{ coupon.coupon.expiration_date }}
+        {{ coupon.coupon.minimum_price }}
+    {% endfor %}
+    <h2>쿠폰 등록</h2>
+    <form action="{% url 'members:coupon' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit"class="btn btn-outline-primary">쿠폰등록</button>>
+    </form>
+{% endblock %}

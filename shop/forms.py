@@ -1,6 +1,8 @@
 from .models import Product,Comment,Collection
 from django import forms
+from coupon.models import *
 
+from django.conf import settings
 INTEGER_CHOICES= [tuple([x,x]) for x in range(0,6)]
 
 class CommentForm(forms.ModelForm):
@@ -15,5 +17,6 @@ class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args,**kwargs)
         self.fields['comment_text'].label = "댓글"
+
 
 

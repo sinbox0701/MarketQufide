@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'tagging.apps.TaggingConfig',
     'members',
-    'django_simple_coupons',
+    'coupon',
 ]
 
 AUTH_USER_MODEL='members.user'
@@ -211,5 +211,9 @@ STATICFILES_DIRS = [
 
 # 서버 배포 이후 삭제하기 --> 현재는 로컬호스트기 때문에 불가능
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# coolsms
+COOLSMS_API_KEY = 'NCSSY5JNCBLY35HZ'
+COOLSMS_API_SECRET = 'DWAVROJUC748QWHN9CFCYQMXPVORVDLY'
+SENDER = '01056373374'
 
 
