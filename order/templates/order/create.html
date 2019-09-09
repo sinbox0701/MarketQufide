@@ -30,16 +30,18 @@ order_complete_url = '{% url "orders:order_complete" %}';
     <ul class="list-group">
         {% for item in cart %}
             <li class="list-group-item">
-                {{item.quantity}}X{{item.product.name}}
-                <span>{{item.total_price}}</span>
+                <img src="{{item.product.image.url}}" width="10%">
+                {{item.product.name}}  ({{item.option.name}}) <br>
+                수량 : {{item.quantity}}<br>
+                <span>금액 : {{item.total_price}}원</span>
             </li>
         {% endfor %}
     </ul>
-            <div class="alert alert-success" role="alert">총 상품금액 : {{cart.get_total_price|floatformat:"2"}}</div>
+            <div class="alert alert-success" role="alert">총 상품금액 : {{cart.get_total_price|floatformat:"2"}}원</div>
             <div class="alert alert-bad" role="alert">
                 할인 금액 : <div id="discount">0.00</div>원
             </div>
-            <div class="alert alert-bad" role="alert">실 결제 금액 : <div id="actual_price">{{ cart.get_total_price|floatformat:"2" }}</div></div>>
+            <div class="alert alert-bad" role="alert">실 결제 금액 : <div id="actual_price">{{ cart.get_total_price|floatformat:"2" }}원</div></div>>
 
     <!-- form에 class 추가 -->
     <form action="" method="post" class="order-form">

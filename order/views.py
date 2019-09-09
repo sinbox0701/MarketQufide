@@ -5,6 +5,7 @@ from cart.cart import Cart
 from .forms import *
 from shop.models import *
 from django.views.decorators.csrf import csrf_exempt
+from members.models import User as mUser
 
 @csrf_exempt
 def order_create(request): # 주문서 입력

@@ -71,7 +71,7 @@ function del(){
 
                     <h5><span class="badge badge-secondary">옵션</span>
                         <form name="form1" action="{% url 'cart:product_add' product.id %}" method="post" enctype="multipart/form-data">
-                        <select id="option" name="option[]" onchange="optionchange(this);">
+                        <select id="option" name="option_id" onchange="optionchange(this);">
                             <option class="option-0">옵션선택
                             {% for option in options %}
                             <option value="{{option.id}}">
