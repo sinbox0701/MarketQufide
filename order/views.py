@@ -17,9 +17,9 @@ def order_create(request): # 주문서 입력
         print (request.POST)
         if order_create_form.is_valid():
             order = order_create_form.save()
-            print("here")
             for item in cart:
-                OrderItem.objects.create(order=order, product=item['product'], price=item['price'], quantity=item['quantity'])
+                print(item)
+                OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
             if 'price_post' in request.POST:
                 price = request.POST['price_post']
             order_price = Order.objects.get(order=order)
@@ -58,11 +58,10 @@ class OrderCreateAjaxView(View):
             order = form.save()
             print("save")
             for item in cart:
-                OrderItem.objects.create(order=order, product=item['product'], price=item['price'],
-                                         quantity=item['quantity'])
+                OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
                 print(item)
                 print("item")
-            cart.clear()
+#            cart.clear()
             data = {
                 "order_id": order.id
             }
@@ -74,6 +73,7 @@ class OrderCreateAjaxView(View):
 class OrderCheckoutAjaxView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
+            print ("error")
             return JsonResponse({"authenticated":False}, status=403)
 
         order_id = request.POST.get('order_id')
