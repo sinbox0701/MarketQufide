@@ -88,7 +88,9 @@
     <div class="list-group">
         <a href="/" class="list-group-item {% if not current_category %}active{% endif %}">All</a>
         {% for c in categories %}
-            <a href="{{c.get_absolute_url}}" class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
+            {% if not c.get_parent_node %}
+                <a href="{{c.get_absolute_url}}" class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
+            {% endif %}
         {% endfor %}
     </div>
 </div>

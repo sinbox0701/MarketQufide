@@ -14,11 +14,9 @@ def order_create(request): # 주문서 입력
     coupons = CouponUser.objects.filter(user=user)
     if request.method == 'POST':
         order_create_form = OrderCreateForm(request.POST)
-        print (request.POST)
         if order_create_form.is_valid():
             order = order_create_form.save()
             for item in cart:
-                print(item)
                 OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
             if 'price_post' in request.POST:
                 price = request.POST['price_post']
@@ -32,7 +30,6 @@ def order_create(request): # 주문서 입력
 def order_complete(request):
     order_id = request.GET.get('order_id')
     order = Order.objects.get(id=order_id)
-    print ("*****************test start*******************")
     orderitems = OrderItem.objects.filter(order=order)
     for orderitem in orderitems:
         orderitem.product.count_order+=orderitem.quantity
@@ -44,23 +41,15 @@ from django.http import JsonResponse
 
 class OrderCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
-        print("-----------------")
-        print("start")
         if not request.user.is_authenticated:
             return JsonResponse({"authenticated":False}, status=403)
-        print("finish")
         cart = Cart(request)
         form = OrderCreateForm(request.POST)
-        print(request.POST)
 
         if form.is_valid():
-            print("valid")
             order = form.save()
-            print("save")
             for item in cart:
                 OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
-                print(item)
-                print("item")
 #            cart.clear()
             data = {
                 "order_id": order.id
@@ -73,7 +62,6 @@ class OrderCreateAjaxView(View):
 class OrderCheckoutAjaxView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            print ("error")
             return JsonResponse({"authenticated":False}, status=403)
 
         order_id = request.POST.get('order_id')
