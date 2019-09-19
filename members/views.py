@@ -92,7 +92,7 @@ def verify_phone(request):
 
         else:
             print('-----------------------------')
-            print(f'verification code: {code}')
+            print('verification code: {code}')
             print('-----------------------------')
             phone = Phone.objects.get(user=request.user)
             phone.verification_code = code

@@ -14,12 +14,10 @@ def order_create(request): # 주문서 입력
     coupons = CouponUser.objects.filter(user=user)
     if request.method == 'POST':
         order_create_form = OrderCreateForm(request.POST)
-        print (request.POST)
         if order_create_form.is_valid():
             order = order_create_form.save()
-            print("here")
             for item in cart:
-                OrderItem.objects.create(order=order, product=item['product'], price=item['price'], quantity=item['quantity'])
+                OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
             if 'price_post' in request.POST:
                 price = request.POST['price_post']
             order_price = Order.objects.get(order=order)
@@ -32,7 +30,6 @@ def order_create(request): # 주문서 입력
 def order_complete(request):
     order_id = request.GET.get('order_id')
     order = Order.objects.get(id=order_id)
-    print ("*****************test start*******************")
     orderitems = OrderItem.objects.filter(order=order)
     for orderitem in orderitems:
         orderitem.product.count_order+=orderitem.quantity
@@ -44,25 +41,16 @@ from django.http import JsonResponse
 
 class OrderCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
-        print("-----------------")
-        print("start")
         if not request.user.is_authenticated:
             return JsonResponse({"authenticated":False}, status=403)
-        print("finish")
         cart = Cart(request)
         form = OrderCreateForm(request.POST)
-        print(request.POST)
 
         if form.is_valid():
-            print("valid")
             order = form.save()
-            print("save")
             for item in cart:
-                OrderItem.objects.create(order=order, product=item['product'], price=item['price'],
-                                         quantity=item['quantity'])
-                print(item)
-                print("item")
-            cart.clear()
+                OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
+#            cart.clear()
             data = {
                 "order_id": order.id
             }
