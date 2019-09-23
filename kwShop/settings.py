@@ -186,8 +186,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-AWS_ACCESS_KEY_ID = 'AKIAJB7LSMODSY6TRCXQ'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = 'AKIAXOVYP27VUBVOQWVS'
+AWS_SECRET_ACCESS_KEY = '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'
 
 
 AWS_REGION = 'ap-northeast-2'

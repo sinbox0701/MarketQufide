@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}Home{% endblock %}
+{% block title %}Market Qufide{% endblock %}
 {% block content %}
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../../static/js/instafeed.min.js"></script>
-    <link rel="stylesheet" href="../../../static/css/pdf.css" type="text/css">
     {% load static %}
     <script src="{% static 'js/instafeed.min.js' %}" type="text/javascript">
         var feed = new Instafeed({
@@ -20,15 +20,18 @@
         feed.run();
     </script>
 </head>
-    <!--for banner slider-->
-    <div class="slideshow-container">
+    <body>
+       <br><br>
+    <div>
+          <div class="slideshow-container" style="position: relative;">
         {% for banner in banners %}
             <div class="mySlides">
                 <a href="{{ banner.url }}"><img  src="{{ banner.image.url }}"></a>
             </div>
         {% endfor %}
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        <a class="prev" style="cursor:pointer" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" style="cursor:pointer" onclick="plusSlides(1)">&#10095;</a>
+    </div>
     </div>
     <script>
         var slideIndex = 1;
@@ -58,15 +61,127 @@
           dots[slideIndex-1].className += " active";
         }
     </script>
+     <div class="list-group">
+        {% for c in categories %}
+            {% if not c.get_parent_node %}
+                <div class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">
+                    <a href="{{c.get_absolute_url}}">{{c.name}}</a>
+                {% for child in c.get_descendants %}
+                    <div class="tteok_menu {% if current_category.slug == child.slug %}active{% endif %}">
+                        <a href="{{child.get_absolute_url}}">{{child.name}}</a>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 
+      <!--<div class="hangoa_back"style="position: absolute; top:259px; left:8px">
+        <a href="#" id="hangoa">한과</a>
+        <div class="hangoa_menu"style="margin-top:-80px;">
+          <a href="#" id="hangoa1">맛있는 한과</a><br>
+          <a href="#" id="hangoa2">쫄깃한 한과</a><br>
+          <a href="#" id="hangoa3">달콤한 한과</a><br>
+          <a href="#" id="hangoa4">취향저격 한과</a><br>
+        </div>
+      </div>
+      <div class="bread_back"style="position: absolute; top:299px; left:8px">
+        <a href="#" id="bread">빵</a>
+        <div class="bread_menu"style="margin-top:-120px;">
+          <a href="#" id="bread1">식빵</a><br>
+          <a href="#" id="bread2">카스테라</a><br>
+          <a href="#" id="bread3">바게트</a><br>
+          <a href="#" id="bread4">쿠키</a><br>
+        </div>
+      </div>
+      <div class="guk_back"style="position: absolute; top:339px; left:8px">
+        <a href="#" id="guk">국</a>
+        <div class="guk_menu"style="margin-top:-160px;">
+          <a href="#" id="guk1">찌개</a><br>
+          <a href="#" id="guk2">미역국</a><br>
+          <a href="#" id="guk3">북엇국</a><br>
+          <a href="#" id="guk4">육개장</a><br>
+        </div>
+      </div>
+      <div class="fruit_back"style="position: absolute; top:379px; left:8px">
+        <a href="#" id="fruit">수산·고기·과일</a>
+        <div class="fruit_menu"style="margin-top:-200px;">
+          <a href="#" id="fruit1">수산</a><br>
+          <a href="#" id="fruit2">고기</a><br>
+          <a href="#" id="fruit3">과일</a><br>
+        </div>
+      </div>
+      <div class="bunsik_back"style="position: absolute; top:419px; left:8px">
+        <a href="#" id="bunsik">분식·튀김·만두</a>
+        <div class="bunsik_menu"style="margin-top:-240px;">
+          <a href="#" id="bunsik1">떡볶이</a><br>
+          <a href="#" id="bunsik2">오뎅</a><br>
+          <a href="#" id="bunsik3">튀김</a><br>
+          <a href="#" id="bunsik3">만두</a><br>
+        </div>
+      </div>
+      <div class="yukgagong_back"style="position: absolute; top:459px; left:8px">
+        <a href="#" id="yukgagong">육가공</a>
+        <div class="yukgagong_menu"style="margin-top:-280px;">
+          <a href="#" id="yukgagong1">육가공1</a><br>
+          <a href="#" id="yukgagong2">육가공2</a><br>
+          <a href="#" id="yukgagong3">육가공3</a><br>
+        </div>
+      </div>
+      <div class="sauce_back"style="position: absolute; top:499px; left:8px">
+        <a href="#" id="sauce">반찬·소스·장류</a>
+        <div class="sauce_menu"style="margin-top:-320px;">
+          <a href="#" id="sauce1">반찬</a><br>
+          <a href="#" id="sauce2">소스</a><br>
+          <a href="#" id="sauce3">장류</a><br>
+        </div>
+      </div>
+      <div class="drink_back"style="position: absolute; top:539px; left:8px">
+        <a href="#" id="drink">즙·음료·주스</a>
+        <div class="drink_menu"style="margin-top:-360px;">
+          <a href="#" id="drink1">즙</a><br>
+          <a href="#" id="drink2">음료</a><br>
+          <a href="#" id="drink3">주스</a><br>
+        </div>
 
-
-        <!--for instagram-->
-        <div id="instagram-container">
-            <a href="https://www.instagram.com/market_qufide/">
-                <h3>인스타그램</h3>
-            </a>
-            <div id="instafeed">
+      </div>
+      <div class="healthyfood_back"style="position: absolute; top:579px; left:8px">
+        <a href="#" id="healthyfood">건강식품</a>
+        <div class="healthyfood_menu"style="margin-top:-400px;">
+          <a href="#" id="healthyfood1">족발</a><br>
+          <a href="#" id="healthyfood2">보쌈</a><br>
+          <a href="#" id="healthyfood3">등갈비</a><br>
+        </div>
+      </div>-->
+    </div>
+    <p class="t_somun">
+      소문내면 특가
+      <img src="{% static "image/확성기.PNG" %}" style="position: relative; top:-4px; left:-2px">
+      <p id="item_box" style="margin-left:100px;"></p> <p id="item_box"></p><p id="item_box" ></p><p id="item_box"></p>
+    </p>
+    <a class="item_more" href="#">특가상품 더보기</a>
+    <p class="t_recommendation">큐피드 추천
+      <img src="{% static "image/그룹 70.png" %}" style="position: relative; top:-3px; left:1px">
+      <p id="item_box" style="margin-left:100px;"></p> <p id="item_box"></p><p id="item_box" ></p><p id="item_box"></p>
+    </p>
+    <p class="t_Hot_clip">HOT 클립
+      <img src="{% static "image/패스 31.png" %}" style="position: relative; top:-3px; left:1px">
+      <p id="item_box" style="margin-left:100px;"></p> <p id="item_box"></p><p id="item_box" ></p><p id="item_box"></p>
+    </p>
+    <p class="t_best">
+      베스트
+      <p id="item_box" style="margin-left:100px;"></p> <p id="item_box"></p><p id="item_box" ></p><p id="item_box"></p>
+    </p>
+    <p class="banner3">
+      배너3(이미지)
+    </p>
+    <p class="t_best_review">
+      베스트 후기
+      <p id="item_box" style="margin-left:100px;"></p> <p id="item_box"></p><p id="item_box" ></p><p id="item_box"></p>
+    </p>
+    <p class="t_instagram">인스타그램</p>
+       <div id="insta">
+        <div id="instafeed">
                 <script type="text/javascript">
                     console.log("here")
                     var access_token="9533696900.b62fa1c.58f8e2395c1c430a94f6239bde18af45";
@@ -82,7 +197,7 @@
                         for (var i=0 ; i<limit ; i++) {
                             outputHtml += '<li>';
                             outputHtml += '<a href="'+myfeed[i].link+'" target=" blank">';
-                            outputHtml += '<img src="' +myfeed[i].images.thumbnail.url+'" />';
+                            outputHtml += '<img class="insta-content-img" src="' +myfeed[i].images.thumbnail.url+'" />';
                             outputHtml += '</a>';
                             outputHtml += '</li>';
                         }
@@ -90,20 +205,11 @@
                         instabanner.html(outputHtml);
                     });
                 </script>
-            </div>
         </div>
-<button onclick="show();">1:1문의</button>
-    <script type="text/javascript">
-    function show() {
-        var x = document.getElementById("ch-plugin-script");
-        x.setAttribute('class', 'ch-desk-manager rightPosition');
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-    }
-    </script>
+       </div>
+       <br>
+   <center><p class="instagram_id">@market_qufide</p></center>
+
 <!-- for channeltalk -->
 <script>
   ;window.channelPluginSettings = {
@@ -127,7 +233,6 @@
       if (w.ChannelIOInitialized) {
         return;
       }
-      console.log("here");
       w.ChannelIOInitialized = true;
       var s = document.createElement('script');
       s.type = 'text/javascript';
@@ -148,28 +253,5 @@
   })();
 </script>
 
-<div id="best-comment">
-    <h3>베스트 후기</h3>
-        {% for comment in comments %}
-                            {% if comment.comment_image.url != None %}
-                            <img src="{{comment.comment_image.url}}" width="10%">
-                            {% endif %}
-                            {% if comment.comment_image2.url != None %}
-                                <img src="{{comment.comment_image2.url}}" width="10%">
-                            {% endif %}
-                            {% if comment.comment_image3.url != None %}
-                                <img src="{{comment.comment_image3.url}}" width="10%">
-                            {% endif %}
-                            <div class="media-body">
-                            <a href="{% url 'shop:comment_detail' comment.id %}" class="mt-0">{{comment.comment_created}}</a>
-                            <h5 class="mt-0">{{comment.comment_text}}</h5>
-                         </div>
-        {% endfor %}
-
-    {% if request.user.is_superuser %}
-    <td><a href="{% url 'shop:comment_select' %}" target="_blank">선택하기</a></td>
-    {% endif %}
-
-</div>
-
+    </body>
 {% endblock %}
