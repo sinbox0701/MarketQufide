@@ -30,6 +30,13 @@ class Marketing(models.Model):
         return self.name
 
 
+class Marketing(models.Model):
+    name = models.CharField(max_length=20, null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class User(AbstractUser): # 원래는 AbstractBaseUser
     mileage = models.IntegerField(default=0)
 

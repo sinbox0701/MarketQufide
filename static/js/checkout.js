@@ -7,6 +7,7 @@ $(function () {
         var type = $('.order-form input[name="type"]:checked').val();
         // 폼 데이터를 기준으로 주문 생성
         var order_id = AjaxCreateOrder(e);
+
         if (order_id == false) {
             alert('주문 생성 실패\n다시 시도해주세요.');
             return false;
