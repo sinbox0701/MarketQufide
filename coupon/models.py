@@ -2,10 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from .coupons import get_random_code
+from members.models import User as mUser
 # Create your models here.
 
 class CouponUser(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(mUser, on_delete=models.CASCADE)
     coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE)
     times_used = models.IntegerField(default=0)
 
@@ -29,6 +30,7 @@ class Coupon(models.Model):
     name = models.CharField(max_length=20)
     expiration_date = models.DateTimeField()
     minimum_price = models.IntegerField()
+    used = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -53,7 +55,6 @@ class Coupon(models.Model):
         else:
             new_price = initial_value - discount['value']
             new_price = new_price if new_price >= 0.0 else 0.0
-
         return new_price
 
     def save(self, *args, **kwargs):

@@ -48,6 +48,9 @@ class Category(MPTTModel):
     def get_absolute_url(self):
         return reverse('shop:category', args=[self.slug])
 
+    def get_parent_node(self):
+        return self.parent
+
 class Delivery(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField()
@@ -120,7 +123,7 @@ class Product(models.Model):
 
 class Option(models.Model):
     name = models.CharField(max_length=200, db_index=True)
-    product = models.ForeignKey(Product, on_delete=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     content = models.TextField()
     add_price = models.IntegerField()
     stock = models.IntegerField(default=0)

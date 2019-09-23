@@ -8,11 +8,12 @@
         {{ coupon.coupon.discount }}
         {{ coupon.coupon.expiration_date }}
         {{ coupon.coupon.minimum_price }}
+        <br>
     {% endfor %}
     <h2>쿠폰 등록</h2>
-    <form action="{% url 'members:coupon' %}" method="post">
+    <form action="{% url 'members:CouponRegister' %}" method="post">
         {% csrf_token %}
         {{ form }}
-        <button type="submit"class="btn btn-outline-primary">쿠폰등록</button>>
+        <button type="submit"class="btn btn-outline-primary">쿠폰등록</button>
     </form>
 {% endblock %}

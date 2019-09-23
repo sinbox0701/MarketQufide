@@ -36,7 +36,7 @@ def category(request, category_slug=None): # 카테고리 페이지
             results = products.filter(categories=current_category)
             for slug in current_category.get_descendants(include_self=True):
                 results = results | products.filter(categories=slug)
-
+    descendant_categories = current_category.get_descendants(include_self=False)
     order = ''
     if request.method == "GET":
         if 'orderby' in request.GET:
@@ -45,31 +45,31 @@ def category(request, category_slug=None): # 카테고리 페이지
 
         if order == 'review':
             results = results.annotate(comment_count=Count("comment")).order_by("-comment_count")
-            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
             return render(request,'shop/list.html', context)
         elif order == 'like':
             results = results.annotate(comment_like=Max("comment__like")).order_by('-comment_like')
-            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
             return render(request,'shop/list.html', context)
         elif order == 'lowprice':
             results = results.order_by('price')
-            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
             return render(request,'shop/list.html', context)
         elif order == 'highprice':
             results = results.order_by('-price')
-            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
             return render(request,'shop/list.html', context)
         elif order == 'date':
             results = results.order_by('created')
-            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
             return render(request,'shop/list.html', context)
         else:
             results = results.order_by('-count_order')
-            context = {'current_category': current_category, 'categories': categories, 'products': results}
+            context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
             return render(request, 'shop/list.html', context)
 
     results = results.order_by('-count_order')
-    context = {'current_category': current_category, 'categories': categories, 'products': results}
+    context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
     return render(request,'shop/list.html', context)
 
 

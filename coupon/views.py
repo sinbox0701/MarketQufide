@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from members.models import User
+from members.models import User as mUser
 from .forms import RegisterCouponForm
 from coupon.models import Coupon, CouponUser
 from shop.models import Category
@@ -26,9 +26,9 @@ def valid(coupon_code, user):
             return False
 
 #쿠폰함/쿠폰등록
-def coupon(request):
+def CouponRegister(request):
     categories = Category.objects.all()
-    user = User.objects.get(id=request.usr.id)
+    user = mUser.objects.get(id=request.user.id)
     form = RegisterCouponForm(request.POST)
 
     if form.is_valid():
@@ -43,3 +43,4 @@ def coupon(request):
     coupons = CouponUser.objects.filter(user=user, times_used=0)
     context = {'categories': categories, 'user': user, 'form': form, 'coupons':coupons}
     return render(request, 'members/coupon.html', context)
+

@@ -46,18 +46,16 @@ order_complete_url = '{% url "orders:order_complete" %}';
     <!-- form에 class 추가 -->
     <form action="" method="post" class="order-form">
         {{ order_create_form.as_p}}
-        우편번호 : <input type="text" name="zip" style="width:80px; height:26px;" />
         <button type="button" style="width:60px; height:32px;" onclick="openZipSearch()">검색</button><br>
-        주소 : <input type="text" name="addr1" style="width:300px; height:30px;" readonly /><br>
-        상세 : <input type="text" name="addr2" style="width:300px; height:30px;" />
-        <br>
+        {{ coupon_select_form }}
+
+
         <br>
         {% csrf_token %}
         <!-- hidden field 추가-->
         <input type="hidden" name="pre_order_id" value="0">
         <input type="hidden" name="amount" value="{{ cart.get_total_price|floatformat:'2' }}">
-        <input type="submit" class="btn btn-primary float-right" value="Place Order">
-        <input type="submit" value="coupon test" class="btn btn-primary" onclick="PricePost();">
+        <input type="submit" class="btn btn-primary float-right" value="Place Order" onclick="PricePost();">
     </form>
     <script language="JavaScript">
         function openZipSearch() {
@@ -71,6 +69,7 @@ order_complete_url = '{% url "orders:order_complete" %}';
         }
     </script>
     <!--coupon select-->
+
         <select id="coupon_select_box" onChange="SetSelectBox();">
             <option value="0" selected="selected">선택 안함</option>
         {% for coupon in coupons %}
@@ -86,32 +85,15 @@ order_complete_url = '{% url "orders:order_complete" %}';
                 }
                 function SetActualPrice() {
                     var total_price = {{ cart.get_total_price }};
-                    var coupon_price = document.getElementById("discount").innerText
+                    var coupon_price = document.getElementById("discount").innerText;
                     document.getElementById("actual_price").innerText = total_price - parseInt(coupon_price);
                 }
                 function PricePost() {
                     var actual_price = document.getElementById("actual_price");
-
                     var form = document.createElement("form");
                     form.setAttribute("charset", "UTF-8");
                     form.setAttribute("method", "POST");
-
-                    /*var csrf_token = document.createElement("input");
-                    csrf_token.setAttribute("type", "hidden");
-                    csrf_token.setAttribute("name", "csrfmiddlewaretoken");
-                    csrf_token.setAttribute("value", {% csrf_token %});
-                    form.appendChild(csrf_token);
-                    document.body.appendChild(form);*/
-
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("aria-label", "price_post");
-                    hiddenField.setAttribute("placeholder", "price_post");
-                    hiddenField.setAttribute("name", "price_post");
-                    hiddenField.setAttribute("value", actual_price);
-                    form.appendChild(hiddenField);
-                    document.body.appendChild(form);
-                    form.submit();
+                    form.setAttribute("name", "price_post");
                 }
             </script>
     </div>

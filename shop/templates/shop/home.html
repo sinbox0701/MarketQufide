@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../../static/js/instafeed.min.js"></script>
+    <link rel="stylesheet" href="../../../static/css/pdf.css" type="text/css">
     {% load static %}
     <script src="{% static 'js/instafeed.min.js' %}" type="text/javascript">
         var feed = new Instafeed({
@@ -91,7 +92,18 @@
                 </script>
             </div>
         </div>
-
+<button onclick="show();">1:1문의</button>
+    <script type="text/javascript">
+    function show() {
+        var x = document.getElementById("ch-plugin-script");
+        x.setAttribute('class', 'ch-desk-manager rightPosition');
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+    }
+    </script>
 <!-- for channeltalk -->
 <script>
   ;window.channelPluginSettings = {
@@ -115,6 +127,7 @@
       if (w.ChannelIOInitialized) {
         return;
       }
+      console.log("here");
       w.ChannelIOInitialized = true;
       var s = document.createElement('script');
       s.type = 'text/javascript';
@@ -134,7 +147,6 @@
     }
   })();
 </script>
-
 
 <div id="best-comment">
     <h3>베스트 후기</h3>
