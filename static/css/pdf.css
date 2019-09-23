@@ -1,42 +1,145 @@
-body {
-    font-family:Helvetica, sans-serif;
-    color:#222;
-    line-height:1.5;
-}
+      .header1{
+        display:block;height:43px; font-family: NanumGothic;font-size: 15px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 43px;letter-spacing: normal;text-align: center;color: #32b09d;text-decoration: none;
+        background-color: #d7f7f5;
+      }
+      .header1:hover{
+        color:white;background-color: #32b09d;
+      }
+      .header2{
+        background-color: #f1f3f5;height:38px;margin:0;
+      }
+      #h2_word{
+      width:500px;font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 38px;letter-spacing: -0.24px;text-align:left; margin-left: 35px;color: #707070; float:left;
+      }
+          #basket,#logout,#login,#join{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 10px; text-decoration: none;
+    }
+    #myq{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 60px;text-decoration: none;
+    }
+    #basket:hover,#logout:hover,#login:hover#join:hover,#myq:hover{
+      color:#32b09b; font-weight: 900;
+    }
+      #h2_i{
+        float:right; margin-right:50px; margin-top: 10px;
+      }
+      .search_line2{
+        float:right; margin-top:20px;width: 280px;height: 38px;border: solid 1px #dee2e6;
+        border-top-left-radius: 19px; border-bottom-left-radius: 19px;  line-height: 38px; border-right: solid 0.5px #dee2e6; font-family: NanumGothic;font-size: 14px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 2.6;letter-spacing: -0.28px;text-align: left;color: #c3c3c3;
+      }
+      .search_img{
+        float:right; margin-right: 42px; border: solid 1px #dee2e6;
+        margin-top:20px; border-top-right-radius: 19px; border-bottom-right-radius: 19px;border-left: solid 0.5px #dee2e6; padding:10.5px; background-color: white;
+      }
+      #rank_word{
+        padding: 5px;width: 350px;height: 16px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.14;letter-spacing: -0.28px;text-align: left;color: #070707;
+      }
+      #rank_i{
+        float:left; margin-right: 10px; margin-left: 35px;
+      }
+      .category{
+        margin-left: 35px;float:left;width: 200px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align:left;vertical-align: middle;color: #ffffff;text-decoration: none;
+        background-color: #343a40;
+      }
+      .somun,.recommendation,.best,.new_item,.Exhibitions,.Event,.Recipe{
+        float:left;width: 142px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #070707;text-decoration: none;
 
-table {
-    width:100%;
-    border-spacing:0;
-    border-collapse: collapse;
-    margin:20px 0;
-}
+        background-color: #ffffff;
+      }
+      .somun:hover,.recommendation:hover,.best:hover,.new_item:hover,.Exhibitions:hover,.Event:hover,.Recipe:hover{color:#32b09d;}
+      .list-group-item:hover{background-color: gray}
 
-table th, table td {
-    text-align:left;
-    font-size:14px;
-    padding:10px;
-    margin:0;
-}
+      .list-group-item{
+          margin-left:27px; width:200px;height:40px;background-color: #646664; opacity: 0.9; position:absolute; top: 215px; left:16px;
+      }
+      .list-group-item,#tteok,#hangoa,#bread,#guk,#fruit,#bunsik,#sauce,#yukgagong,#healthyfood,#drink{
+        display:block; font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.28px;line-height: 40px;text-align:center;text-decoration: none;color: #ffffff;
+      }
+      .tteok_back,.hangoa_back,.bread_back,.guk_back,.fruit_back,.bunsik_back,.sauce_back,.yukgagong_back,.healthyfood_back,.drink_back{
+        margin-left: 35px; width:200px;height:40px;background-color:#646664; opacity: 0.9;
+      }
+      .tteok_menu,.hangoa_menu,.bread_menu,.guk_menu,.fruit_menu,.bunsik_menu,.sauce_menu,.yukgagong_menu,.healthyfood_menu,.drink_menu {
+          display: none;margin-left: 227px; background-color: white;width: 180px;height:40px;border: solid 1px #646664;
+          font-family: NanumGothic;font-size: 14px;font-weight: bold;letter-spacing: -0.28px;line-height: 40px;text-align:center;text-decoration: none;color:#646664;
+      }
+      .tteok_menu:hover{
+          color:#32b09b;
+      }
 
-tbody tr:nth-child(odd) {
-    background:#efefef;
-}
+      .hangoa_back:hover .hangoa_menu{display: block;}
+      .bread_back:hover .bread_menu{display: block;}
+      .fruit_back:hover .fruit_menu{display: block;}
+      .guk_back:hover .guk_menu{display: block;}
+      .bunsik_back:hover .bunsik_menu{display: block;}
+      .sauce_back:hover .sauce_menu{display: block;}
+      .healthyfood_back:hover .healthyfood_menu{display: block;}
+      .yukgagong_back:hover .yukgagong_menu{display: block;}
+      .drink_back:hover .drink_menu{display: block;}
+      .list-group-item:hover .tteok_menu{display:block;}
 
-thead th, tbody tr.discount {
-    background:#46a500;
-    color:#fff;
-    font-weight:bold;
-}
 
-thead th, tbody tr.total {
-    background:#5993bb;
-    color:#fff;
-    font-weight:bold;
-}
 
-h1 {
-    margin:0;
-}
+      .t_somun,.t_recommendation,.t_Hot_clip{
+        margin-left:50px;margin-top:50px; margin-bottom:30px;font-family: NanumGothic;font-size: 26px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.15;letter-spacing: normal;text-align:center;color: #32b09d;
+      }
+      #item_box{
+        display:inline-block; width:250px; height:250px; background-color:#f1f3f5; margin:10px; margin-bottom:40px;
+      }
+      .item_more{
+        display:block; margin-left:540px;margi8n-bottom:90px;font-family: NanumGothic;font-size: 19px;font-weight: normal;font-style: normal;font-stretch: normal;line-height:2.8;letter-spacing: normal;text-align:center; vertical-align: middle; color: #c3c3c3;width: 265px;height: 54px;border-radius: 7px;border: solid 1px #dee2e6;background-color: #ffffff;text-decoration: none;
+      }
+      .t_best,.t_best_review,.t_instagram {
+        margin-left:15px;margin-top:50px; margin-bottom:30px;font-family: NanumGothic;font-size: 26px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.15;letter-spacing: normal;text-align: center;color: #32b09d;
+      }
+      .banner3{
+        width:1050px; height:200px; background-color:silver; margin-left:150px; text-align: center; vertical-align: middle; font-family: NanumGothic;font-size: 20px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 9;letter-spacing: -0.28px;
+      }
+      .instagram_id{
+        margin-left:50px;margin-bottom: 100px; width: 137px;height: 21px;object-fit: contain;font-family: NanumGothic;font-size: 18px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: normal;text-align: left;color: #707070;
+      }
+      #Customer_Service{
+      width: 300px;height: 3px;margin-left: 90px;font-family: NanumGothic;font-size: 25px;font-weight: bold;line-height: 1.7;letter-spacing: normal;text-align: left;color: #070707;
+      }
+
+      #hours_of_business{
+        float:left; width: 560px;height: 3px; margin-left: 90px; margin-bottom: 50px; font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.8;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      .b_insta_l{
+        float:left; margin-right:12px;width: 94px;height: 37px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff; margin-top: -16px;
+      }
+      #b_insta{
+        display:block; font-family: NanumGothic;font-size: 16px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 37px; text-decoration: none;color: #444
+      }
+      #b_inquiry,#b_kakao{
+      width: 94px;height: 38px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff;font-family: NanumGothic;font-size: 16px;font-weight: bold;line-height: 35px;letter-spacing: -0.32px;text-align: center;color: #444444;
+      cursor: pointer; margin-right:15px; margin-top:-17px;
+          float: left;
+    }
+      #tail_mq
+      {
+        float:left; margin-left: 90px; margin-right:500px; height:20px;object-fit: contain;font-family: 'NanumGothic';font-size: 12px;font-weight: 900;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info1{
+        float:left; margin-left: 90px; margin-bottom: 60px; object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info2{
+        float:left; margin-left:326px; margin-top:5px; object-fit: contain;font-family: 'Nanum Gothic';font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #partnership,#terms,#p_info{
+       float:left; margin-right:15px;object-fit: contain; font-family: 'Nanum Gothic';font-size: 14px;font-weight:900; text-decoration: none;font-stretch: normal;line-height:1.2 ;letter-spacing: -0.28px;text-align: left;color: #070707;
+      }
+      #logo_img{
+        width:140px ;height:135px; position:absolute; top:65px; left:600px;
+      }
+      #line9{
+        border:solid 1px #dee2e6;
+      }
+      #line8{
+        border:solid 1px #dee2e6;
+      }
+
+
+
 
 .secondary {
     color:#bbb;
@@ -45,4 +148,37 @@ h1 {
 
 .num {
     text-align:right;
+}
+
+ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+li {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    border : 0;
+    float: left;
+}
+#insta {
+    margin-left: 140px;
+    border: 1px;
+}
+#instafeed.ul{
+    float:left;
+    margin-left: 140px;
+}
+#instafeed.ul.li{
+    vertical-align: middle;
+    margin-right: 40px;
+}
+.insta-content-img {
+    margin-right: 40px;
+}
+
+.slideshow-container{
+    width: 1280px;
+
 }

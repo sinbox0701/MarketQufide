@@ -3,10 +3,17 @@
 {% block content %}
 
 
-    <div class="row">
+ <div class="row">
         <div class="col">
             <div class="alert alert-info" role="alert">
-              {% if current_category %}{{current_category.name}}{% else %}All Products{% endif %}
+                {% if current_category %}
+                    {{current_category.name}}
+                    {% for child in descendant_categories %}
+                        <a href="{{child.get_absolute_url}}" class="list-group-item {% if current_category.slug == child.slug %}active{% endif %}">{{child.name}}</a>
+                    {% endfor %}
+                {% else %}
+                    All Products
+                {% endif %}
             </div>
         </div>
     </div>
