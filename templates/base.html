@@ -90,6 +90,9 @@
         {% for c in categories %}
             {% if not c.get_parent_node %}
                 <a href="{{c.get_absolute_url}}" class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
+                {% for child in c.get_descendants %}
+                    <a href="{{child.get_absolute_url}}" class="{% if current_category.slug == child.slug %}active{% endif %}">{{child.name}}</a>
+                {% endfor %}
             {% endif %}
         {% endfor %}
     </div>

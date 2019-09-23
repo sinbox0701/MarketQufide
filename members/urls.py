@@ -20,7 +20,8 @@ urlpatterns = [
     path('verify_phone/', verify_phone, name='verify_phone'),
     path('check_verification_code/', check_verification_code, name='check_verification_code'),
     path('mypage/', mypage, name='mypage'),
-    path('mypage/coupon', coupon, name="coupon")
+    path('mypage/coupon', coupon, name="coupon"),
+    path('profile/delete', delete, name='delete'),
     #path('admin/', admin.site.urls), # 이유진
 ]
 
