@@ -51,7 +51,6 @@ class Category(MPTTModel):
     def get_parent_node(self):
         return self.parent
 
-
 class Delivery(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField()

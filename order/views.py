@@ -42,18 +42,21 @@ from django.http import JsonResponse
 class OrderCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({"authenticated":False}, status=403)
+            return JsonResponse({"authenticated":False}, status=403)     
         cart = Cart(request)
         form = OrderCreateForm(request.POST)
-
+       
         if form.is_valid():
             order = form.save()
             for item in cart:
-                OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
-#            cart.clear()
+                OrderItem.objects.create(order=order, product=item['product'], option=item['option'],
+                                         price=item['price'], quantity=item['quantity'])
+            cart.clear()
+
             data = {
                 "order_id": order.id
             }
+            #print(data)
             return JsonResponse(data)
         else:
             return JsonResponse({}, status=401)
@@ -62,25 +65,34 @@ class OrderCreateAjaxView(View):
 class OrderCheckoutAjaxView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
+            print("start1")
             return JsonResponse({"authenticated":False}, status=403)
 
         order_id = request.POST.get('order_id')
+        #print("order_id: "+order_id)
         order = Order.objects.get(id=order_id)
+        #print("order: ")
+        print(order)
         amount = request.POST.get('amount')
+        #print('amount: '+amount)
 
         try:
+            print("try")
             merchant_order_id = OrderTransaction.objects.create_new(
                 order=order,
                 amount=amount
             )
+            print(merchant_order_id)
         except:
             merchant_order_id = None
 
         if merchant_order_id is not None:
+            print("Start2")
             data = {
                 "works": True,
                 "merchant_id": merchant_order_id
             }
+            #print("data "+data)
             return JsonResponse(data)
         else:
             return JsonResponse({}, status=401)

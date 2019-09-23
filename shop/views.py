@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
-
+from order.models import *
 # ------- 인증번호 -------
 from rest_framework import status
 from rest_framework.response import Response
@@ -73,7 +73,6 @@ def category(request, category_slug=None): # 카테고리 페이지
     results = results.order_by('-count_order')
     context = {'current_category': current_category, 'categories': categories, 'products': results, 'descendant_categories':descendant_categories}
     return render(request,'shop/list.html', context)
-
 
 
 def product_detail(request, id, product_slug=None): # 제품 상세 뷰
@@ -221,13 +220,12 @@ def comment_select(request):
 
 
 
-def home(request) :
+def home(request, category_slug=None) :
     categories = Category.objects.all()
     current_category = None
+
     banners = Banner.objects.all()
     comments = Comment.objects.filter(best=True)
-
-
     return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners, 'comments': comments})
 
 
@@ -238,10 +236,19 @@ def search(request, search_term = ''):
     if 'search' in request.GET:
         search_term = request.GET['search']
         products = products.filter(Q(name__contains=search_term)|Q(tag_description__contains=search_term))
-        print (search_term)
+
     return render(request, 'shop/search.html',
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
 
+def searchOrder(request, search_term = ''):
+    orders = Order.objects.all()
+
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+        orders= orders.filter(orderno=search_term)
+
+    return render(request, 'shop/searchorder.html',
+                  {'orders': orders, 'search_term' : search_term})
 
 def best_item(request):
     categories = Category.objects.all()
@@ -319,5 +326,4 @@ def recipe_detail(request, id, recipe_slug=None):
 
     context = {'categories': categories, 'recipe': recipe, 'products':products}
     return render(request, 'shop/recipe_detail.html', context)
-
 

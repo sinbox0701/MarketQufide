@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Search Order{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <div class="row">
+            {% for order in orders %}
+                <div class="col-4">
+                    {{ order.first_name }} - {{ order.last_name }}<br>
+                    {{ order.zip }} <br>
+                    {{ order.addr1 }} - {{ order.addr2 }}<br>
+                    {{ order.price }}
+                </div>
+
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
