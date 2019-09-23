@@ -4,10 +4,13 @@
     <nav class="navbar navbar-default">
       <div class="container">
         <ul class="nav navbar-nav">
+            이유가 뭡니꽈??
 
-            <li><a href="{% url 'members:coupon' %}">쿠폰함/쿠폰등록</a></li>
-            <li><a href="{% url 'members:profile' %}">개인정보확인/수정</a></li>
 
+            <form action="" method ="post">
+                {% csrf_token%}
+                <input type="submit" value="계정 삭제">
+            </form>
 
         </ul>
       </div>

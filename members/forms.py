@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model, authenticate, login
+from members.models import Marketing
 
 User = get_user_model()
 
@@ -38,3 +39,21 @@ class LogInForm(forms.Form):
 
     def _login(self, request):
         login(request, self.user)
+
+    def clean_verify_password(self):
+        password1 = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('verify_password')
+        if password1 != password2:
+            raise forms.ValidationError('Emails must match')
+        return password2
+
+CHOICES1=[('male','남자'),
+         ('female','여자')]
+
+class ProfileForm(forms.ModelForm):
+    sex = forms.ChoiceField(choices=CHOICES1, widget=forms.RadioSelect())
+    birthdate = forms.DateField(widget = forms.SelectDateWidget(years=range(1960, 2019)))
+    marketing = forms.ModelMultipleChoiceField(queryset=Marketing.objects.all(), widget=forms.CheckboxSelectMultiple(), required=False)
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'phone', 'birthdate', 'sex', 'marketing']
