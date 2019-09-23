@@ -2,10 +2,9 @@ import hashlib
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from coupon.models import Coupon
-from shop.models import Product,Option
+from shop.models import Product, Option
 from .iamport import payments_prepare, find_transaction
 from .orderNumber import get_order_code
-
 
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
@@ -17,9 +16,10 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
-    discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
+    #discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
     price = models.IntegerField(default=0)
     orderno = models.CharField(max_length=18, default=get_order_code)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ['-created']
@@ -39,7 +39,7 @@ class OrderItem(models.Model): # 주문에 포함 된 제품 정보
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
-    option = models.ForeignKey(Option, on_delete=models.CASCADE)
+    option = models.ForeignKey(Option, on_delete=models.CASCADE, default=0)
 
     def __str__(self):
         return '{}'.format(self.id)
