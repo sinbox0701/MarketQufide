@@ -149,36 +149,3 @@
 .num {
     text-align:right;
 }
-
-ul {
-    list-style:none;
-    margin:0;
-    padding:0;
-}
-
-li {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    border : 0;
-    float: left;
-}
-#insta {
-    margin-left: 140px;
-    border: 1px;
-}
-#instafeed.ul{
-    float:left;
-    margin-left: 140px;
-}
-#instafeed.ul.li{
-    vertical-align: middle;
-    margin-right: 40px;
-}
-.insta-content-img {
-    margin-right: 40px;
-}
-
-.slideshow-container{
-    width: 1280px;
-
-}
