@@ -3,6 +3,8 @@
 {% block content %}
 {% load social_share %}
 
+
+
 <script type="text/javascript">
 
 var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100;
@@ -51,7 +53,6 @@ function del(){
                 </div>
                 <div class="col">
                     <h1 class="display-6">{{product.name}}</h1>
-
                     <div class="share-discount">
                         <div class="share-count">
                             <span class="count count-off" id="count-0">empty</span>
@@ -61,7 +62,6 @@ function del(){
                         </div>
                             <a href="javascript: void sendDetailSns();" class="btn btn-danger btn-gray disabled" id="kakaoShareBtn">카카오톡 공유하고 1,500원 할인쿠폰 받기</a>
                     </div>
-
                     <p>
                         <h5><span class="badge badge-secondary">Price</span>  {% if product.sale_percent == 0 %}
                         <span class="cart-text">{{product.price}}원</span>
@@ -282,13 +282,13 @@ $(document).ready(function(){
     <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
     </a>
     <script type='text/javascript'>
-    var count=0;
+
       //<![CDATA[
         // // 사용할 앱의 JavaScript 키를 설정해 주세요.
         Kakao.init('92dd12b816c6f2824075b01c8b9446f2');
         // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
         localhost='127.0.0.1:8000'
-        Kakao.Link.createDefaultButton({
+            Kakao.Link.createDefaultButton({
           container: '#kakao-link-btn',
           objectType: 'feed',
           content: {
@@ -311,6 +311,7 @@ $(document).ready(function(){
             ],
           success: function(){	          serverCallbackArgs : '{"product_id":"{{product.id}}", "user_id":"{{ user }}"}',
             count++;	          callback: function(){
+
                 for (var i = 0; i < 3; i++) {
                     if ($("#count-" + i).hasClass("count-off")) {
                         $("#count-" + i).removeClass("count-off");
@@ -325,7 +326,6 @@ $(document).ready(function(){
                     alert("쿠폰발급");
                 }
           }
-
         });
 
 

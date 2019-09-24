@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_links %} 
+
+<title>Sign In</title>
+
+{% endblock %}
+
+{% block head_title %}{% trans "Sign In" %} {% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+ {% block messages %}
+    {% if messages %}
+    <div>
+        <ul>
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+  {% endblock %}
+
+<h3 class="h3" id="head_banner">{% trans "Sign In" %}</h3>
+
+<form class="container-fluid text-center" id="login_form" method="POST" action="{% url 'members:profile' %}">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+
+  {% if redirect_field_value %}
+
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+
+  {% endif %}
+
+  <button  class="btn btn-outline-primary " type="submit">확인</button>
+
+</form>
+</div>
+{% endblock %}

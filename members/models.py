@@ -22,11 +22,20 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
         return self._create_user(email, password)
 
-class Phone(models.Model):
-    #user = models.OneToOneField(User, on_delete=models.CASCADE)
-    number = models.CharField(max_length=16, null=True)
-    before_verified = models.CharField(max_length=16, null=True)
-    verification_code = models.CharField(max_length=6, null=True)
+
+class Marketing(models.Model):
+    name = models.CharField(max_length=20, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Marketing(models.Model):
+    name = models.CharField(max_length=20, null=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Marketing(models.Model):
     name = models.CharField(max_length=20, null=True)
@@ -47,3 +56,4 @@ class User(AbstractUser): # 원래는 AbstractBaseUser
     sex = models.CharField(max_length=10, null=True, blank=True)
 
     objects = UserManager()
+

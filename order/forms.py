@@ -15,8 +15,7 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'email', 'coupon']
-
+        fields = ['first_name', 'last_name', 'email','zip','addr1','addr2','coupon']
 
 
 '''class CouponSelectForm(forms.ModelForm):

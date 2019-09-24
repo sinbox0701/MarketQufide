@@ -48,8 +48,6 @@ order_complete_url = '{% url "orders:order_complete" %}';
         {{ order_create_form.as_p}}
         <button type="button" style="width:60px; height:32px;" onclick="openZipSearch()">검색</button><br>
         {{ coupon_select_form }}
-
-
         <br>
         {% csrf_token %}
         <!-- hidden field 추가-->

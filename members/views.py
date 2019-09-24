@@ -2,13 +2,13 @@
 from random import randint
 
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout, get_user_model
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from sdk.api.message import Message
 from sdk.exceptions import CoolsmsException
 from django.conf import settings
 
-from members.models import Phone
-from .forms import SignUpForm, LogInForm
+from members.models import *
+from .forms import *
 
 #from django.shortcuts import render, get_object_or_404
 from shop.models import Category
@@ -19,7 +19,6 @@ from django.http import HttpResponseRedirect
 
 
 
-User = settings.AUTH_USER_MODEL
 
 def index(request):
     return render(request, 'base.html')
@@ -50,13 +49,43 @@ def login(request):
     return render(request, 'account/login.html', {'form': form})
 
 
+def relogin(request):
+    if request.method == 'POST':
+        form = LogInForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            form.clean_verify_password()
+            form.login(request)
+            return redirect('index')
+    else:
+        form = LogInForm()
+    return render(request, 'account/relogin.html', {'form': form})
+
+
+
 def logout(request):
     django_logout(request)
     return redirect('index')
 
 
 def profile(request):
-    return render(request, 'members/profile.html')
+    member = get_object_or_404(User, username=request.user)
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=member)
+        if form.is_valid():
+            form.save()
+            return redirect('members:profile')
+    else:
+        form = ProfileForm(instance=member)
+
+    return render(request, 'members/profile.html', {'form':form})
+
+def delete(request):
+    member = get_object_or_404(User, username=request.user)
+    if request.method == "POST":
+        member.delete()
+        return redirect('shop:product_all')
+    return render(request, 'members/memberdelete.html')
 
 
 def verify_page(request):
@@ -125,10 +154,6 @@ def mypage(request):
     categories = Category.objects.all()
     context = {'categories':categories}
     return render(request, 'members/mypage.html', context)
-
-
-
-
 
 
 

@@ -21,6 +21,7 @@ urlpatterns = [
     path('check_verification_code/', check_verification_code, name='check_verification_code'),
     path('mypage/', mypage, name='mypage'),
     path('mypage/coupon', CouponRegister, name="CouponRegister"),
+    path('profile/delete', delete, name='delete'),
     #path('admin/', admin.site.urls), # 이유진
 ]
 
