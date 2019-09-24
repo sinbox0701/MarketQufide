@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- jquery slim 지우고 minified 추가 -->
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    {% block script %}
+    {% endblock %}
+
+    {% block style %}
+    {% endblock %}
+</head>
+
+
+
+<body>
+<style>
+    #nav_content{font-size: xx-large}
+
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Django Shop</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <ul class="navbar-nav justify-content-end">
+        <li class="nav-item">
+            {% load socialaccount %}
+
+    {% if user.is_authenticated %}
+    <span>{{ user }}님이 로그인중입니다.</span>
+
+    {% for account in user.socialaccount_set.all %}
+
+     {% comment %} show avatar from url {% endcomment %}
+     <h2 style="text-transform:capitalize;">{{ account.provider }} account data</h2>
+
+     <p><img width="50" height="50" src="{{ account.get_avatar_url }}"/></p>
+
+     <p>UID: <a href="{{ account.extra_data.link }}">{{ account.uid }}</a></p>
+
+     <p>Username: {{ account.extra_data.username }}</p>
+      <p>First Name: {{ account.extra_data.first_name }}</p>
+      <p>Last Name: {{ account.extra_data.last_name }}</p>
+
+      <p>Dashboard Link:
+      <a href="{{ account.extra_data.link }}">{{ account.extra_data.link }}</a></p>
+      {% empty %}
+      <p>you haven't any social account please</p>
+    {% endfor %}
+
+
+    {% endif %}
+    <h2><a href="/accounts/login">로그인</a></h2>
+    <h2><a href="/accounts/logout">로그아웃</a></h2>
+    <h2><a href="/accounts/signup">회원가입</a></h2>
+        </li>
+        <li class="nav-item ">
+        <a class="nav-link btn btn-outline-success" href="{% url 'cart:detail' %}">Cart
+        </a>
+            <a href="{% url 'members:mypage' %}" class="btn btn-primary">마이큐피드</a>
+      </li>
+
+
+
+
+        <!--for search-->
+        <li>
+            <form action="{% url 'shop:search' %}" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="search" aria-label="search" name="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </li>
+    </ul>
+  </div>
+</nav>
+<!--category-->
+<div class="col-2">
+    <div class="list-group">
+        <a href="/" class="list-group-item {% if not current_category %}active{% endif %}">All</a>
+        {% for c in categories %}
+            {% if not c.get_parent_node %}
+                <a href="{{c.get_absolute_url}}" class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a href="{% url 'shop:best_item' %}">베스트</a></li>
+            <li><a href="{% url 'shop:new_item' %}">신상품</a></li>
+            <li><a href="{% url 'shop:frugal_shopping' %}">알뜰쇼핑</a></li>
+            <li><a href="{% url 'shop:collection' %}">기획전</a></li>
+            <li><a href="{% url 'shop:event' %}">이벤트</a></li>
+            <li><a href="{% url 'shop:recipe' %}">레시피</a></li>
+        </ul>
+      </div>
+    </nav>
+
+
+
+<div class="container">
+{% block content %}
+{% endblock %}
+</div>
+
+</body>
+<input type="button" value="입점신청" onClick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfdGy1Jvt9uyhN9IzDiGU-oceGBfSGLGAhTr7CY4BamBRDFpw/viewform?usp=pp_url')">
+
+</html>
+

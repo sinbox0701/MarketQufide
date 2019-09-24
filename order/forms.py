@@ -15,11 +15,12 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'email', 'coupon']
+        fields = ['first_name', 'last_name', 'email','zip','addr1','addr2','coupon']
 
 
 
-'''class CouponSelectForm(forms.ModelForm):
+'''
+class CouponSelectForm(forms.ModelForm):
     coupon_select = forms.ChoiceField(choices=[])
 
     class Meta:
@@ -40,5 +41,6 @@ class OrderCreateForm(forms.ModelForm):
 
     def get_answer_by_something(request):
         ss = CouponUser.objects.filter(user=user).values()
-        querySet_to_list(ss)  # python list return.(json-able)'''
+        querySet_to_list(ss)  # python list return.(json-able)
+'''
 
