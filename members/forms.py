@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model, authenticate, login
+from .models import SmsSend
 
 User = get_user_model()
 
@@ -8,7 +9,7 @@ User = get_user_model()
 class SignUpForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2',)
+        fields = ('email', 'password1', 'password2', 'phone')
 
 class LogInForm(forms.Form):
     email = forms.CharField(
@@ -38,3 +39,17 @@ class LogInForm(forms.Form):
 
     def _login(self, request):
         login(request, self.user)
+
+class SmsForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['msg_getter'].required = True
+        #self.fields['msg_text'].required = True
+    class Meta:
+        model = SmsSend
+        fields = (
+            #'msg_type',
+            'msg_getter',
+            #'msg_sender',
+            #'msg_text'
+        )

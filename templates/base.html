@@ -63,7 +63,7 @@
     {% endif %}
     <h2><a href="/accounts/login">로그인</a></h2>
     <h2><a href="/accounts/logout">로그아웃</a></h2>
-    <h2><a href="/accounts/signup">회원가입</a></h2>
+    <h2><a href="{% url 'members:signup' %}">회원가입</a></h2>
         </li>
         <li class="nav-item ">
         <a class="nav-link btn btn-outline-success" href="{% url 'cart:detail' %}">Cart

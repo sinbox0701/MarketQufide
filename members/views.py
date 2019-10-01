@@ -6,10 +6,12 @@ from django.shortcuts import render, redirect
 from sdk.api.message import Message
 from sdk.exceptions import CoolsmsException
 from django.conf import settings
-
-from members.models import Phone
-from .forms import SignUpForm, LogInForm
-
+from django.http import HttpResponse
+from allauth.account.views import SignupView
+#from members.models import Phone
+from .forms import SignUpForm, LogInForm,SmsForm
+from .models import SmsSend
+from .CertiNum import get_centification_number
 #from django.shortcuts import render, get_object_or_404
 from shop.models import Category
 from coupon.models import *
@@ -21,9 +23,72 @@ from django.http import HttpResponseRedirect
 
 User = settings.AUTH_USER_MODEL
 
+# allauth customizing
+class CustomSignupView(SignupView):
+    '''
+    def signup(request):
+        if request.method == 'POST':
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data.get('email')
+                raw_password = form.cleaned_data.get('password1')
+                User.objects.create_user(email=email, password=raw_password)
+                user = authenticate(email=email, password=raw_password)
+                #            django_login(request, user)
+                return redirect('index')
+        else:
+            form = SignUpForm()
+'''
+    def test(request):
+        form = SmsForm(data=request.POST)
+        def get_valid_sms_info_and_save():
+            get_valid_params = {
+                'type': 'sms',
+                'to': request.POST.get('msg_getter'),
+                'from': settings.SENDER,
+                'text': str(get_centification_number(4)),
+            }
+            form.save()
+
+            return get_valid_params
+
+        if request.method == "POST":
+            try:
+                params = get_valid_sms_info_and_save()
+                cool = Message(settings.COOLSMS_API_KEY, settings.COOLSMS_API_SECRET)
+                response = cool.send(params)
+                success_count = response['success_count']
+                print(success_count)
+                error_count = response['error_count']
+                print(error_count)
+                print('Group ID : {}'.format(response['group_id']))
+
+                if 'error_list' in response:
+                    print('Error List : {}'.format(response['error_list']))
+                context = {
+                    'form': form,
+                    'success_count': success_count,
+                    'error_count': error_count,
+                }
+                print(context)
+                return render(request, 'members/test.html', context)
+
+            except CoolsmsException as e:
+                return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
+        else:
+            form = SmsForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'members/test.html', context)
+
+signup = CustomSignupView.as_view()
+# allauth customizing
+
 def index(request):
     return render(request, 'base.html')
 
+'''
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -32,12 +97,11 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             User.objects.create_user(email=email, password=raw_password)
             user = authenticate(email=email, password=raw_password)
-            django_login(request, user)
+#            django_login(request, user)
             return redirect('index')
     else:
         form = SignUpForm()
-    #return render(request, 'member/signup.html', {'form': form})
-    return render(request, 'account/signup.html', {'form': form})
+
 
 def login(request):
     if request.method == 'POST':
@@ -54,72 +118,52 @@ def logout(request):
     django_logout(request)
     return redirect('index')
 
-
+'''
 def profile(request):
     return render(request, 'members/profile.html')
 
+'''
+def test(request):
+    form = SmsForm(data=request.POST)
+    def get_valid_sms_info_and_save():
+        get_valid_params = {
+            'type': request.POST.get('msg_type'),
+            'to': request.POST.get('msg_getter'),
+            'from': request.POST.get('msg_sender'),
+            'text': request.POST.get('msg_text'),
+        }
+        form.save()
+        return get_valid_params
 
-def verify_page(request):
-    return render(request, 'members/verify_phone.html')
-
-
-def verify_phone(request):
-    if request.method == 'POST':
-        api_key = settings.COOLSMS_API_KEY
-        api_secret = settings.COOLSMS_API_SECRET
-        recipient = request.POST.get('phone_number')
-        code = ''.join([str(randint(0, 9)) for i in range(6)])
-
-        params = dict()
-        params['type'] = 'sms'
-        params['to'] = recipient
-        params['from'] = settings.SENDER
-        params['text'] = 'Verification code: ' + code
-        url = 'https://api.coolsms.co.kr/sms/2/send'
-        cool = Message(api_key, api_secret)
+    if request.method == "POST":
         try:
+            params = get_valid_sms_info_and_save()
+            cool = Message(settings.COOLSMS_API_KEY, settings.COOLSMS_API_SECRET)
             response = cool.send(params)
-            print("Success Count : %s" % response['success_count'])
-            print("Error Count : %s" % response['error_count'])
-            print("Group ID : %s" % response['group_id'])
+            success_count = response['success_count']
+            print(success_count)
+            error_count = response['error_count']
+            print(error_count)
+            print('Group ID : {}'.format(response['group_id']))
 
-            if "error_list" in response:
-                print("Error List : %s" % response['error_list'])
+            if 'error_list' in response:
+                print('Error List : {}'.format(response['error_list']))
+            context = {
+                'form': form,
+                'success_count': success_count,
+                'error_count': error_count,
+            }
+            return render(request, 'members/test.html', context)
 
         except CoolsmsException as e:
-            print("Error Code : %s" % e.code)
-            print("Error Message : %s" % e.msg)
-
-        else:
-            print('-----------------------------')
-            print('verification code: {code}')
-            print('-----------------------------')
-            phone = Phone.objects.get(user=request.user)
-            phone.verification_code = code
-            phone.before_verified = recipient
-            phone.save()
-
-        context = {
-            'called': True,
-        }
+            return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
     else:
-        context = None
-    return render(request, 'verify_phone.html', context)
-
-
-def check_verification_code(request):
-    input_code = request.POST.get('verification_code')
-    phone = Phone.objects.get(user=request.user)
-    if phone.verification_code == input_code:
-        phone.number = phone.before_verified
-        phone.before_verified = None
-        phone.save()
-        return render(request, 'members/profile.html')
+        form = SmsForm()
     context = {
-        'called': True,
-        'verification_fail': True
+        'form': form,
     }
-    return render(request, 'members/verify_phone.html', context)
+    return render(request, 'members/test.html', context)
+'''
 
 def mypage(request):
     categories = Category.objects.all()

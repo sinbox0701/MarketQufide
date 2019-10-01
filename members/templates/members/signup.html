@@ -36,6 +36,7 @@
 
 <form class="container-fluid text-center" id="signup_form" method="post" action="{% url 'members:signup' %}">
   {% csrf_token %}
+    <h1>ss</h1>
   {{ form.as_p }}
 
   {% if redirect_field_value %}
