@@ -99,6 +99,9 @@ class Product(models.Model):
     count_order = models.IntegerField(default=0)
     sale_percent = models.IntegerField(default=0)
 
+    recommend = models.BooleanField(default=False) #큐피드추천
+    group = models.IntegerField(default=0)  #연관상품
+
     class Meta:
         ordering = ['-created']
         index_together = [['id', 'slug']] # 멀티 컬럼 색인 기능

@@ -30,3 +30,5 @@ class OptionForm(forms.ModelForm):
         super(OptionForm, self).__init__(*args, **kwargs)
         self.fields[name].label = "옵션"
 
+
+

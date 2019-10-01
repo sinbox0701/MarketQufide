@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}My Page{% endblock %}
+{% block content %}
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <ul class="nav navbar-nav">
+            이유가 뭡니꽈??
+
+
+            <form action="" method ="post">
+                {% csrf_token%}
+                <input type="submit" value="계정 삭제">
+            </form>
+
+        </ul>
+      </div>
+    </nav>
+{% endblock %}

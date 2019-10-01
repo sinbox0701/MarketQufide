@@ -6,55 +6,64 @@
 {% endblock %}
 
 {% block content %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Image</th>
-                <th scope="col">Product</th>
-                <th scope="col">Option</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Remove</th>
-                <th scope="col">Unit price</th>
-                <th scope="col">Price</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for item in cart %}
-            {% with product=item.product %}
-            {% with option=item.option %}
-            <tr>
-                <th scope="row">
-                    <a href="{{ product.get_absolute_url }}">
-                        <img src="{{ product.image.url }}" class="img-thumbnail">
-                    </a>
-                </th>
-                <td>{{ product.name }}</td>
-                <td>{{ option.name }}</td>
-                <td>
-                    <form action="{% url 'cart:product_add' product.id %}" method="post">
-                        {{ item.quantity_form.option_id }}
-                        {{ item.quantity_form.quantity }}
-                        {{ item.quantity_form.is_update }}
-                        <input type="submit" class="btn btn-primary" value="Update">
-                        {% csrf_token %}
-                    </form>
-                </td>
-                <td><a href="{% url 'cart:product_remove' product.id option.id %}">Remove</a></td>
-                <td class="num">${{ item.price }}</td>
-                <td class="num">${{ item.total_price }}</td>
-            </tr>
-            {% endwith %}
-            {% endwith %}
-        {% endfor %}
+    {% for company in companies %}
+            {{company.name}}
 
-        <tr class="total">
-            <td>Total</td>
-            <td colspan="4"></td>
-            <td class="num">${{ cart.get_total_price|floatformat:"2" }}</td>
-        </tr>
-        </tbody>
+    <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Option</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Remove</th>
+                    <th scope="col">Unit price</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for item in cart %}
+            {% if item.product.company.name == company.name %}
+                {% with product=item.product %}
+                {% with option=item.option %}
+                <tr>
+                    <th scope="row">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="{{ product.image.url }}" class="img-thumbnail">
+                        </a>
+                    </th>
+                    <td>{{ product.name }}</td>
+                    <td>{{ option.name }}</td>
+                    <td>
+                        <form action="{% url 'cart:product_add' product.id %}" method="post">
+                            {{ item.quantity_form.option_id }}
+                            {{ item.quantity_form.quantity }}
+                            {{ item.quantity_form.is_update }}
+                            <input type="submit" class="btn btn-primary" value="Update">
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                    <td><a href="{% url 'cart:product_remove' product.id option.id %}">Remove</a></td>
+                    <td class="num">${{ item.price }}</td>
+                    <td class="num">${{ item.total_price }}</td>
+                </tr>
+                {% endwith %}
+                {% endwith %}
+            {% endif %}
+            {% endfor %}
+
+
+            </tbody>
     </table>
 
+
+    {% endfor %}
+    <tr class="total">
+                <td>Total</td>
+                <td colspan="4"></td>
+                <td class="num">${{ cart.get_total_price|floatformat:"2" }}</td>
+            </tr>
 
 
     <p class="text-right">

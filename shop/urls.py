@@ -13,6 +13,7 @@ urlpatterns = [
     path('best_item/', best_item, name="best_item"),
     path('new_item/', new_item, name="new_item"),
     path('frugal_shopping/', frugal_shopping, name="frugal_shopping"),
+    path('recommend/', recommend, name='recommend'),
     path('event/', event, name="event"),
     path('event/<slug:event_slug>', event_detail, name="event_detail"),
     path('recipe/', recipe, name="recipe"),

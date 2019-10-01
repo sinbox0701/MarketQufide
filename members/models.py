@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 from .CertiNum import get_centification_number
+
 # Create your models here.
 
 #class User(AbstractUser):
@@ -51,6 +52,7 @@ class Address(models.Model):
     addr2 = models.CharField(max_length=100)
     phone = models.CharField(max_length=20, null=True, blank=True)
 
+
 class SmsSend(models.Model):
     MSG_TYPE_CHOICES = (
         ('sms', 'sms'),
@@ -63,3 +65,4 @@ class SmsSend(models.Model):
 
     def __str__(self):
         return self.msg_text
+
