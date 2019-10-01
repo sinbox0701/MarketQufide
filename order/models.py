@@ -5,11 +5,13 @@ from coupon.models import Coupon
 from shop.models import Product, Option
 from .iamport import payments_prepare, find_transaction
 from .orderNumber import get_order_code
+from members.models import User as mUser
+
 
 
 class Order(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    order_id = models.ForeignKey(mUser, on_delete=models.CASCADE)
     email = models.EmailField()
     addr1 = models.CharField(max_length=250)
     zip = models.CharField(max_length=20)
@@ -17,7 +19,7 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
-    discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
+#    discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
     price = models.IntegerField(default=0)
     orderno = models.CharField(max_length=18, default=get_order_code)
 
@@ -32,7 +34,7 @@ class Order(models.Model):
 
     def get_total_price(self):
         total_product = self.get_total_product()
-        return total_product - self.discount
+        return total_product
 
 class OrderItem(models.Model): # 주문에 포함 된 제품 정보
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
@@ -40,6 +42,7 @@ class OrderItem(models.Model): # 주문에 포함 된 제품 정보
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
     option = models.ForeignKey(Option, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return '{}'.format(self.id)

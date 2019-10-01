@@ -6,4 +6,3 @@ class CouponUserAdmin(admin.ModelAdmin):
 
 admin.site.register(CouponUser, CouponUserAdmin)
 admin.site.register(Coupon)
-admin.site.register(Discount)

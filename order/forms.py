@@ -6,8 +6,10 @@ from members.models import User
 class OrderCreateForm(forms.ModelForm):
     class Meta:
         model = Order
+        fields = ['name', 'email','zip','addr1','addr2']
 
-        fields = ['first_name', 'last_name', 'email','zip','addr1','addr2']
+    def __init__(self, *args, **kwargs):
+        super(OrderCreateForm, self).__init__(*args,**kwargs)
 
 '''def GetCouponList(request):
     user = User.objects.get(id=request.user.id)

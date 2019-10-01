@@ -44,7 +44,9 @@
   {% endif %}
   
   <button  class="btn btn-outline-primary " type="submit">{% trans "Sign In" %}</button>
-  <a  class="btn btn-outline-dark" href="{% url 'account_reset_password' %}">{% trans "Forgot Password ?" %}</a>  
+  <a class="btn btn-outline-dark" href="{% url 'account_reset_password' %}">{% trans "Forgot Password ?" %}</a>
+    <a class="btn btn-outline-dark" href="{% url 'members:findID' %}">{% trans "Forgot ID ?" %}</a>
+
 
 </form>
     {% load account socialaccount %}
