@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser # 유진이
-from coupon.models import Coupon
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.conf import settings
 # Create your models here.
 
 #class User(AbstractUser):
@@ -30,13 +30,6 @@ class Marketing(models.Model):
         return self.name
 
 
-class Marketing(models.Model):
-    name = models.CharField(max_length=20, null=True)
-
-    def __str__(self):
-        return self.name
-
-
 class User(AbstractUser): # 원래는 AbstractBaseUser
     mileage = models.IntegerField(default=0)
 
@@ -50,3 +43,22 @@ class User(AbstractUser): # 원래는 AbstractBaseUser
 
     objects = UserManager()
 
+
+class Address(models.Model):
+    addr_name = models.CharField(max_length=30)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    zip = models.CharField(max_length=20)
+    addr1 = models.CharField(max_length=250)
+    addr2 = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20, null=True, blank=True)
+
+
+class SmsSend(models.Model):
+    MSG_TYPE_CHOICES = (
+        ('sms', 'sms'),
+    )
+    msg_type = models.CharField(max_length=3, choices=MSG_TYPE_CHOICES, default='sms')
+    # IntegerField로 하면 휴대폰 전화번호 첫자리 '0' 이 사라진다.
+    msg_getter = models.CharField(max_length=20, blank=False)
+    msg_sender = models.CharField(max_length=20, blank=False, default=settings.SENDER)
+    msg_text = models.TextField(blank=False)

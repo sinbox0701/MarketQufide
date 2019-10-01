@@ -13,6 +13,7 @@ from .forms import *
 #from django.shortcuts import render, get_object_or_404
 from shop.models import Category
 from coupon.models import *
+from order.models import *
 
 from django.http import HttpResponseRedirect
 # Create your views here.
@@ -60,6 +61,80 @@ def relogin(request):
     else:
         form = LogInForm()
     return render(request, 'account/relogin.html', {'form': form})
+
+
+def address(request):
+    member = get_object_or_404(User, username=request.user)
+    addresses = Address.objects.filter(username=request.user)
+
+
+    return render(request, 'members/address.html', {'addresses':addresses})
+
+
+def update_address(request, id):
+    address = get_object_or_404(Address, id=id)
+
+    if request.method == "POST":
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            return redirect('members:address')
+    else:
+        form = AddressForm(instance=address)
+
+    return render(request, 'members/update_address.html', {'form': form})
+
+def delete_address(request, id):
+    address = get_object_or_404(Address, id=id)
+
+    if request.method == "POST":
+        address.delete()
+        return redirect('members:address')
+    else:
+        return render(request, 'members/delete_address.html', {'object':address})
+
+
+def add_address(request):
+    member = get_object_or_404(User, username=request.user)
+    if request.method == "POST":
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.username=request.user
+            address.save()
+            print (address)
+            return redirect('members:address')
+    else:
+        form = AddressForm(instance=member)
+
+    return render(request, 'members/add_address.html', {'form': form})
+
+
+def order(request):
+    member = get_object_or_404(User, username=request.user)
+    orders = Order.objects.filter(order_id=member, paid=True)
+    for order in orders:
+        orderitems = OrderItem.objects.filter(order=order)
+    print (member)
+    print (orders)
+    print (orderitems)
+
+    return render(request, 'members/order.html', {'orders':orders, 'orderitems':orderitems})
+
+def findID(request):
+    if request.method == "POST":
+        form = findIDForm(request.POST or None)
+        if form.is_valid():
+            try :
+                member = User.objects.get(phone=form['phone'].value())
+                return render(request, 'members/confirmID.html', {'member':member})
+            except:
+                return render(request, 'members/wrongID.html')
+
+    else:
+        form = findIDForm(request.POST)
+
+    return render(request, 'members/findID.html', {'form':form})
 
 
 

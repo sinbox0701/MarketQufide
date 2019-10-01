@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model, authenticate, login
-from members.models import Marketing
+from members.models import Marketing, Address
 
 User = get_user_model()
 
@@ -57,3 +57,19 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'username', 'phone', 'birthdate', 'sex', 'marketing']
+
+
+class AddressForm(forms.ModelForm):
+
+    class Meta:
+        model = Address
+        fields = ['addr_name', 'phone', 'zip','addr1','addr2']
+
+    def __init__(self, *args, **kwargs):
+        super(AddressForm, self).__init__(*args,**kwargs)
+
+
+class findIDForm(forms.Form):
+    username = forms.CharField(max_length=20)
+    phone = forms.CharField(max_length=20)
+

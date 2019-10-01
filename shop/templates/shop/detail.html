@@ -84,11 +84,19 @@ function del(){
                         <select id="option" name="option_id" onchange="optionchange(this);">
                             <option class="option-0">옵션선택
                             {% for option in options %}
-                            <option value="{{option.id}}">
-                                {{option.name}}&nbsp;&nbsp;
-                                남은수량: {{option.stock}}&nbsp;&nbsp;
-                                추가금: +{{option.add_price}}원
-                            </option>
+                                {% if option.stock == 0 %}
+                                    <option value="{{option.id}}" disabled="disabled">
+                                    {{option.name}}&nbsp;&nbsp;
+                                    남은수량: {{option.stock}}&nbsp;&nbsp 품절!!
+                                    추가금: +{{option.add_price}}원
+                                    </option>
+                                {% else %}
+                                    <option value="{{option.id}}">
+                                        {{option.name}}&nbsp;&nbsp;
+                                        남은수량: {{option.stock}}&nbsp;&nbsp;
+                                        추가금: +{{option.add_price}}원
+                                    </option>
+                                {% endif %}
                             {% endfor %}
                         </select>
 
@@ -158,7 +166,8 @@ function del(){
                 </div>
             </div>
 
-	        <h3>묶음배송</h3>
+            {% if relative_products != None %}
+	        <h3>연관상품</h3>
                 <div class="row">
                     {% for relative_product in relative_products %}
                        <div class="col-4">
@@ -172,6 +181,7 @@ function del(){
                        </div>
                     {% endfor %}
                 </div>
+            {% endif %}
 
 
         </div>

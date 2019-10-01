@@ -21,7 +21,6 @@ from datetime import datetime, timedelta
 
 
 
-
 def category(request, category_slug=None): # 카테고리 페이지
     current_category = None
     categories = Category.objects.all()
@@ -79,7 +78,7 @@ def product_detail(request, id, product_slug=None): # 제품 상세 뷰
     categories = Category.objects.all()
     product = get_object_or_404(Product, id=id, slug=product_slug)
 
-    relative_products = Product.objects.filter(company=product.company).exclude(slug=product_slug)
+    relative_products = Product.objects.filter(group=product.group).exclude(slug=product_slug)
     recipes = Recipe.objects.filter(products=product)
 
 
@@ -326,4 +325,11 @@ def recipe_detail(request, id, recipe_slug=None):
 
     context = {'categories': categories, 'recipe': recipe, 'products':products}
     return render(request, 'shop/recipe_detail.html', context)
+
+
+def recommend(request):
+    categories = Category.objects.all()
+    products = Product.objects.filter(recommend=True)
+    context = {'categories': categories, 'products': products}
+    return render(request, 'shop/recommend.html', context)
 
