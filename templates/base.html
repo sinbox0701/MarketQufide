@@ -63,7 +63,8 @@
     {% endif %}
     <h2><a href="/accounts/login">로그인</a></h2>
     <h2><a href="/accounts/logout">로그아웃</a></h2>
-    <h2><a href="/accounts/signup">회원가입</a></h2>
+    <h2><a href="{% url 'members:signup' %}">회원가입</a></h2>
+
         </li>
         <li class="nav-item ">
         <a class="nav-link btn btn-outline-success" href="{% url 'cart:detail' %}">Cart
@@ -91,9 +92,11 @@
         {% for c in categories %}
             {% if not c.get_parent_node %}
                 <a href="{{c.get_absolute_url}}" class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
+
                 {% for child in c.get_descendants %}
                     <a href="{{child.get_absolute_url}}" class="{% if current_category.slug == child.slug %}active{% endif %}">{{child.name}}</a>
                 {% endfor %}
+
             {% endif %}
         {% endfor %}
     </div>
@@ -109,10 +112,10 @@
             <li><a href="{% url 'shop:event' %}">이벤트</a></li>
             <li><a href="{% url 'shop:recipe' %}">레시피</a></li>
             <li><a href="{% url 'shop:recommend' %}">큐피드 추천</a></li>
+
         </ul>
       </div>
     </nav>
-
 
 
 <div class="container">

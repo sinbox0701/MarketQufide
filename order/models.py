@@ -8,7 +8,6 @@ from .orderNumber import get_order_code
 from members.models import User as mUser
 
 
-
 class Order(models.Model):
     name = models.CharField(max_length=50)
     order_id = models.ForeignKey(mUser, on_delete=models.CASCADE)
@@ -19,9 +18,11 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
-#    discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
+    #discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
+
     price = models.IntegerField(default=0)
     orderno = models.CharField(max_length=18, default=get_order_code)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ['-created']
@@ -41,7 +42,7 @@ class OrderItem(models.Model): # 주문에 포함 된 제품 정보
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
-    option = models.ForeignKey(Option, on_delete=models.CASCADE)
+    option = models.ForeignKey(Option, on_delete=models.CASCADE, default=0)
 
 
     def __str__(self):

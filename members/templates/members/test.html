@@ -1,3 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>SEND SMS!</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <div>{{ form }}</div>
+    <button type="submit">전송하기</button>
+</form>
+{% endblock %}
+
 <!-- 택배조회Coll -->
 <style type="text/css">
 #deliveryColl .collTitle {margin-bottom:16px;}
@@ -196,3 +207,4 @@ document.kocn_mm.action = url;
 SF.M.addStayLogColl({code: "CQX", id: "deliveryColl"});
 </script>
 <!-- end 택배조회Coll -->
+

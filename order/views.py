@@ -2,14 +2,44 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 from members.models import User as mUser
 from cart.cart import Cart
-from .forms import *
+from .forms import OrderCreateForm
+# from coupon.forms import SelectCouponForm
 from shop.models import *
 from django.views.decorators.csrf import csrf_exempt
+from coupon.models import *
 from members.models import User as mUser, Address
 
+
 @csrf_exempt
-def order_create(request): # 주문서 입력
+def order_create(request):  # 주문서 입력
     cart = Cart(request)
+    user = mUser.objects.get(id=request.user.id)
+    coupons = CouponUser.objects.filter(user=user)
+
+    if request.method == 'POST':
+        order_create_form = OrderCreateForm(request.POST)
+
+        if order_create_form.is_valid():
+            order = order_create_form.save()
+            for item in cart:
+                OrderItem.objects.create(order=order, product=item['product'], option=item['option'],
+                                         price=item['price'], quantity=item['quantity'])
+
+            '''if 'price_post' in request.POST:
+                price = request.POST['price_post']
+            order_price = Order.objects.get(order=order)
+            order_price.price = price
+            order_price.save()'''
+    else:
+        order_create_form = OrderCreateForm(user)
+
+    '''if coupon_select_form.is_valid():
+        order_without_coupon = Order.objects.get(id=order)'''
+
+    return render(request, 'order/create.html',
+                  {'cart': cart, 'order_create_form': order_create_form, 'coupons': coupons})
+
+
     if request.user.id != None :
         user = mUser.objects.get(id=request.user.id)
         coupons = CouponUser.objects.filter(user=user)
@@ -62,16 +92,19 @@ def order_complete(request):
         orderitem.product.save()
     return render(request, 'order/created.html', {'order': order})
 
+
 from django.views.generic.base import View
 from django.http import JsonResponse
+
 
 class OrderCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         #if not request.user.is_authenticated:
         #    return JsonResponse({"authenticated":False}, status=403)
         cart = Cart(request)
+        #form = OrderCreateForm(mUser,request.POST) #기웅
         form = OrderCreateForm(request.POST)
-       
+
         if form.is_valid():
             order = form.save()
             for item in cart:
@@ -82,52 +115,47 @@ class OrderCreateAjaxView(View):
             data = {
                 "order_id": order.id
             }
-            #print(data)
+
             return JsonResponse(data)
         else:
             return JsonResponse({}, status=401)
+
 
 # 결제 정보 생성
 class OrderCheckoutAjaxView(View):
     def post(self, request, *args, **kwargs):
-        #if not request.user.is_authenticated:
-        #    print("start1")
-        #    return JsonResponse({"authenticated":False}, status=403)
+        if not request.user.is_authenticated:
+            return JsonResponse({"authenticated": False}, status=403)
+
 
         order_id = request.POST.get('order_id')
-        #print("order_id: "+order_id)
         order = Order.objects.get(id=order_id)
-        #print("order: ")
-        print(order)
         amount = request.POST.get('amount')
-        #print('amount: '+amount)
 
         try:
-            print("try")
             merchant_order_id = OrderTransaction.objects.create_new(
                 order=order,
                 amount=amount
             )
-            print(merchant_order_id)
         except:
             merchant_order_id = None
 
         if merchant_order_id is not None:
-            print("Start2")
             data = {
                 "works": True,
                 "merchant_id": merchant_order_id
             }
-            #print("data "+data)
             return JsonResponse(data)
         else:
             return JsonResponse({}, status=401)
 
+
 # 결제 검증
 class OrderImpAjaxView(View):
     def post(self, request, *args, **kwargs):
-        #if not request.user.is_authenticated:
-        #    return JsonResponse({"authenticated":False}, status=403)
+        if not request.user.is_authenticated:
+            return JsonResponse({"authenticated": False}, status=403)
+
 
         order_id = request.POST.get('order_id')
         order = Order.objects.get(id=order_id)
@@ -152,33 +180,20 @@ class OrderImpAjaxView(View):
             order.save()
 
             data = {
-                "works" : True
+                "works": True
             }
 
             return JsonResponse(data)
         else:
             return JsonResponse({}, status=401)
 
+
 from django.contrib.admin.views.decorators import staff_member_required
 
-@staff_member_required # 관리자 권한이 있을때만 호출 가능
+
+@staff_member_required  # 관리자 권한이 있을때만 호출 가능
 def admin_order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'order/admin/detail.html', {'order': order})
 
-'''
-# pdf 만들기
-from django.conf import settings
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-import weasyprint
 
-@staff_member_required
-def admin_order_pdf(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    html = render_to_string('order/admin/pdf.html', {'order':order})
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename=order_{}.pdf'.format(order.id)
-    weasyprint.HTML(string=html).write_pdf(response, stylesheets=[weasyprint.CSS(settings.STATICFILES_DIRS[0]+'/css/pdf.css')])
-    return response
-'''
