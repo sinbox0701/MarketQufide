@@ -222,6 +222,7 @@ class Recipe(models.Model):
     content = models.ImageField()
     products = models.ManyToManyField(Product)
     slug = models.SlugField(max_length=200, db_index=True, unique=True, allow_unicode=True, default=0)
+    created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
 

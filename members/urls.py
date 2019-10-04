@@ -19,7 +19,8 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('mypage/', mypage, name='mypage'),
     path('mypage/coupon', coupon, name="coupon"),
-    path('test/', CustomSignupView.test, name='test'),
+    path('test/', CustomSignupView.send_and_confirm, name='test'),
+
 
     #path('admin/', admin.site.urls), # 이유진
 ]

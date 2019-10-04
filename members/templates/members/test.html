@@ -3,9 +3,34 @@
 
 {% block content %}
 <h1>SEND SMS!</h1>
-<form action="" method="post">
+<form action="" method="post" name="send">
     {% csrf_token %}
-    <div>{{ form }}</div>
-    <button type="submit">전송하기</button>
+    <div>{{ send_form }}</div>
+    <button type="button" id="send1" onclick="sending();" value="seend">전송하기</button>
 </form>
+
+<form action="" method="post" name="confirm">
+    {% csrf_token %}
+    <div>{{ confirm_form }}</div>
+    <button type="submit">인증하기</button>
+</form>
+
+<script type="text/javascript">
+function sending() {
+    var send_form = document.send;
+    if($('#id_msg_getter').val()){
+        var value = $('#id_msg_getter').val();
+        sessionStorage.setItem('sent',value);
+        send_form.submit();
+    //alert(value);
+        return value;
+    }
+    //document.getElementById("id_msg_getter").setAttribute("value",value);
+    //document.getElementById("divId").innerHTML += "<input type='text' name='' id=''/>";
+}
+if(sessionStorage.getItem('sent')!=null)
+    document.getElementById("id_msg_getter").setAttribute("value",sessionStorage.getItem('sent'));
+
+</script>
+
 {% endblock %}

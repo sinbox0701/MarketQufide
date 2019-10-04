@@ -51,5 +51,8 @@ class SmsForm(forms.ModelForm):
             #'msg_type',
             'msg_getter',
             #'msg_sender',
-            #'msg_text'
+            #'msg_text',
+
         )
+class ConfirmForm(forms.Form):
+    conf = forms.CharField(max_length=4)
