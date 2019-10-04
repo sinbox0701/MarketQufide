@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from members.views import signup, profile
+from members.views import *
 from django.urls import re_path
 from .views import *
 from coupon.views import coupon
@@ -19,7 +19,7 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('mypage/', mypage, name='mypage'),
     path('mypage/coupon', coupon, name="coupon"),
-    path('test/', CustomSignupView.test, name='test'),
+    #path('test/', CustomSignupView.test, name='test'),
     path('mypage/address', address, name="address"),
     path('mypage/address/add', add_address, name="add_address"),
     path('mypage/address/<int:id>/update', update_address, name="update_address"),

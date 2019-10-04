@@ -33,6 +33,7 @@ class Marketing(models.Model):
 
 
 class User(AbstractUser): # 원래는 AbstractBaseUser
+    name = models.CharField(max_length=20)
     mileage = models.IntegerField(default=0)
     #coupon = models.ManyToManyField(Coupon)
     #email = models.EmailField(max_length=255, unique=True)

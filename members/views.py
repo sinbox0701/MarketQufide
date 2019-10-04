@@ -7,13 +7,13 @@ from sdk.api.message import Message
 from sdk.exceptions import CoolsmsException
 from django.conf import settings
 from django.http import HttpResponse
-from allauth.account.views import SignupView
+from allauth.account.views import *
 #from members.models import Phone
-from .forms import SignUpForm, LogInForm,SmsForm
+from .forms import ProfileForm, LogInForm,SmsForm
 from .models import SmsSend
 from .CertiNum import get_centification_number
 from members.models import *
-from .forms import *
+from kwShop.forms import CustomSignupForm
 #from django.shortcuts import render, get_object_or_404
 from shop.models import Category
 from coupon.models import *
@@ -23,24 +23,36 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 
+def index(request):
+    return render(request, 'base.html')
 
+'''
+def signup(request):
+    if request.method == 'POST':
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+            phone = form.cleaned_data.get('phone')
+            name = form.cleaned_data.get('name')
+            user = User.objects.create_user(email=email, password=raw_password)
+            user.phone = phone
+            user.name = name
+            user.save()
+            user = authenticate(email=email, password=raw_password)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = CustomSignupForm()
 
+    return render(request, 'members/signup.html',{'form':form})
+
+'''
 # allauth customizing
 class CustomSignupView(SignupView):
+
+    form_class = CustomSignupForm
     '''
-    def signup(request):
-        if request.method == 'POST':
-            form = SignUpForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data.get('email')
-                raw_password = form.cleaned_data.get('password1')
-                User.objects.create_user(email=email, password=raw_password)
-                user = authenticate(email=email, password=raw_password)
-                #            django_login(request, user)
-                return redirect('index')
-        else:
-            form = SignUpForm()
-'''
     def test(request):
         form = SmsForm(data=request.POST)
         def get_valid_sms_info_and_save():
@@ -83,12 +95,13 @@ class CustomSignupView(SignupView):
             'form': form,
         }
         return render(request, 'members/test.html', context)
+        '''
 
 signup = CustomSignupView.as_view()
+
 # allauth customizing
 
-def index(request):
-    return render(request, 'base.html')
+
 
 '''
 def signup(request):
@@ -177,15 +190,14 @@ def add_address(request):
 
 
 def order(request):
-    member = get_object_or_404(User, username=request.user)
-    orders = Order.objects.filter(order_id=member, paid=True)
-    for order in orders:
-        orderitems = OrderItem.objects.filter(order=order)
-    print (member)
-    print (orders)
-    print (orderitems)
-
-    return render(request, 'members/order.html', {'orders':orders, 'orderitems':orderitems})
+    try:
+        member = get_object_or_404(User, username=request.user)
+        orders = Order.objects.filter(order_id=member, paid=True)
+        for order in orders:
+            orderitems = OrderItem.objects.filter(order=order)
+        return render(request, 'members/order.html', {'orders':orders, 'orderitems':orderitems})
+    except:
+        return render(request, 'members/order.html', {'orders':None, 'orderitems':None})
 
 def findID(request):
     if request.method == "POST":

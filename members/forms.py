@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from allauth.account.forms import SignupForm
 from django.contrib.auth import get_user_model, authenticate, login
 from .models import SmsSend
 from members.models import Marketing, Address
@@ -7,10 +8,16 @@ from members.models import Marketing, Address
 User = get_user_model()
 
 
-class SignUpForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('email', 'password1', 'password2', 'phone')
+class CustomSignupForm(SignupForm):
+    name = forms.CharField(max_length=30, label='name')
+    phone = forms.CharField(max_length=30, label='phone')
+
+    def signup(self, request, user):
+        user.name = self.cleaned_data['name']
+        user.phone = self.cleaned_data['phone']
+        print("**********************")
+        user.save()
+        return user
 
 class LogInForm(forms.Form):
     email = forms.CharField(
@@ -71,7 +78,7 @@ class ProfileForm(forms.ModelForm):
     marketing = forms.ModelMultipleChoiceField(queryset=Marketing.objects.all(), widget=forms.CheckboxSelectMultiple(), required=False)
     class Meta:
         model = User
-        fields = ['email', 'username', 'phone', 'birthdate', 'sex', 'marketing']
+        fields = ['email', 'first_name', 'phone', 'birthdate', 'sex', 'marketing']
 
 
 class AddressForm(forms.ModelForm):
