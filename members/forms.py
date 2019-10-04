@@ -47,14 +47,14 @@ class LogInForm(forms.Form):
 
     def _login(self, request):
         login(request, self.user)
-        
+
     def clean_verify_password(self):
         password1 = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('verify_password')
         if password1 != password2:
             raise forms.ValidationError('Emails must match')
         return password2
-      
+
 class SmsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -68,6 +68,8 @@ class SmsForm(forms.ModelForm):
             #'msg_sender',
             #'msg_text'
         )
+class ConfirmForm(forms.Form):
+    conf = forms.CharField(max_length=4)
 
 CHOICES1=[('male','남자'),
          ('female','여자')]
