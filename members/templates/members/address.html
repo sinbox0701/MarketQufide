@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}My Page{% endblock %}
+{% block content %}
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+
+<script language="JavaScript">
+        function openZipSearch() {
+	        new daum.Postcode({
+		        oncomplete: function(data) {
+			        $('[name=zip]').val(data.zonecode); // 우편번호 (5자리)
+			        $('[name=addr1]').val(data.address);
+			        $('[name=addr2]').val(data.buildingName);
+		        }
+	        }).open();
+        }
+</script>
+
+    <nav class="navbar navbar-default">
+      <div class="container">
+        배송지관리<br>
+          {% for address in addresses %}
+          <div class="media-body">
+              <h5 class="mt-0">{{address.addr_name}}</h5>
+              <h5 class="mt-0">{{address.phone}}</h5>
+              <h5 class="mt-0">{{address.zip}}</h5>
+              <h5 class="mt-0">{{address.addr1}}</h5>
+              <h5 class="mt-0">{{address.addr2}}</h5>
+              <a href="{% url 'members:update_address' address.id %}">수정</a>
+              <a href="{% url 'members:delete_address' address.id %}">삭제</a>
+
+          </div>
+          {% endfor %}
+          <a href="{% url 'members:add_address' %}">배송지추가</a>
+
+
+      </div>
+    </nav>
+
+{% endblock %}

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model, authenticate, login
 from .models import SmsSend
+from members.models import Marketing, Address
 
 User = get_user_model()
 
@@ -40,6 +41,13 @@ class LogInForm(forms.Form):
     def _login(self, request):
         login(request, self.user)
 
+    def clean_verify_password(self):
+        password1 = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('verify_password')
+        if password1 != password2:
+            raise forms.ValidationError('Emails must match')
+        return password2
+
 class SmsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -51,8 +59,35 @@ class SmsForm(forms.ModelForm):
             #'msg_type',
             'msg_getter',
             #'msg_sender',
-            #'msg_text',
-
+            #'msg_text'
         )
 class ConfirmForm(forms.Form):
     conf = forms.CharField(max_length=4)
+
+CHOICES1=[('male','남자'),
+         ('female','여자')]
+
+class ProfileForm(forms.ModelForm):
+    sex = forms.ChoiceField(choices=CHOICES1, widget=forms.RadioSelect())
+    birthdate = forms.DateField(widget = forms.SelectDateWidget(years=range(1960, 2019)))
+    marketing = forms.ModelMultipleChoiceField(queryset=Marketing.objects.all(), widget=forms.CheckboxSelectMultiple(), required=False)
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'phone', 'birthdate', 'sex', 'marketing']
+
+
+class AddressForm(forms.ModelForm):
+
+    class Meta:
+        model = Address
+        fields = ['addr_name', 'phone', 'zip','addr1','addr2']
+
+    def __init__(self, *args, **kwargs):
+        super(AddressForm, self).__init__(*args,**kwargs)
+
+
+class findIDForm(forms.Form):
+    username = forms.CharField(max_length=20)
+    phone = forms.CharField(max_length=20)
+
+

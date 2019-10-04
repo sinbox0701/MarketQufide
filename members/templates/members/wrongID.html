@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}My Page{% endblock %}
+{% block content %}
+
+ID 찾기<br>
+
+등록된 ID가 없습니다.<br>
+
+    <a class="btn btn-outline-dark" href="/accounts/signup">회원가입</a>
+    <a class="btn btn-outline-dark" href="{% url 'members:findID' %}">ID 찾기</a>
+
+{% endblock %}

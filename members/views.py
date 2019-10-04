@@ -1,5 +1,6 @@
 # Create your views here.
 from random import randint
+
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout, get_user_model
 from django.shortcuts import render, redirect,get_object_or_404
 from sdk.api.message import Message
@@ -11,14 +12,16 @@ from allauth.account.views import SignupView
 from .forms import SignUpForm, LogInForm,SmsForm,ConfirmForm
 from .models import SmsSend
 from .CertiNum import get_centification_number
+from members.models import *
+from .forms import *
 #from django.shortcuts import render, get_object_or_404
 from shop.models import Category
 from coupon.models import *
 import datetime
+from order.models import *
 
 from django.http import HttpResponseRedirect
 # Create your views here.
-
 
 User = settings.AUTH_USER_MODEL
 
@@ -75,8 +78,8 @@ class CustomSignupView(SignupView):
             'confirm_form': confirm_form
         }
         return render(request, 'members/test.html', context)
-signup = CustomSignupView.as_view()
 
+signup = CustomSignupView.as_view()
 # allauth customizing
 
 def index(request):
@@ -108,13 +111,117 @@ def login(request):
     return render(request, 'account/login.html', {'form': form})
 
 
+def relogin(request):
+    if request.method == 'POST':
+        form = LogInForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            form.clean_verify_password()
+            form.login(request)
+            return redirect('index')
+    else:
+        form = LogInForm()
+    return render(request, 'account/relogin.html', {'form': form})
+'''
+
+def address(request):
+    member = get_object_or_404(User, username=request.user)
+    addresses = Address.objects.filter(username=request.user)
+
+
+    return render(request, 'members/address.html', {'addresses':addresses})
+
+
+def update_address(request, id):
+    address = get_object_or_404(Address, id=id)
+
+    if request.method == "POST":
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            return redirect('members:address')
+    else:
+        form = AddressForm(instance=address)
+
+    return render(request, 'members/update_address.html', {'form': form})
+
+def delete_address(request, id):
+    address = get_object_or_404(Address, id=id)
+
+    if request.method == "POST":
+        address.delete()
+        return redirect('members:address')
+    else:
+        return render(request, 'members/delete_address.html', {'object':address})
+
+
+def add_address(request):
+    member = get_object_or_404(User, username=request.user)
+    if request.method == "POST":
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.username=request.user
+            address.save()
+            print (address)
+            return redirect('members:address')
+    else:
+        form = AddressForm(instance=member)
+
+    return render(request, 'members/add_address.html', {'form': form})
+
+
+def order(request):
+    member = get_object_or_404(User, username=request.user)
+    orders = Order.objects.filter(order_id=member, paid=True)
+    for order in orders:
+        orderitems = OrderItem.objects.filter(order=order)
+    print (member)
+    print (orders)
+    print (orderitems)
+
+    return render(request, 'members/order.html', {'orders':orders, 'orderitems':orderitems})
+
+def findID(request):
+    if request.method == "POST":
+        form = findIDForm(request.POST or None)
+        if form.is_valid():
+            try :
+                member = User.objects.get(phone=form['phone'].value())
+                return render(request, 'members/confirmID.html', {'member':member})
+            except:
+                return render(request, 'members/wrongID.html')
+
+    else:
+        form = findIDForm(request.POST)
+
+    return render(request, 'members/findID.html', {'form':form})
+
+
+'''
 def logout(request):
     django_logout(request)
     return redirect('index')
 
 '''
 def profile(request):
-    return render(request, 'members/profile.html')
+    member = get_object_or_404(User, username=request.user)
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=member)
+        if form.is_valid():
+            form.save()
+            return redirect('members:profile')
+    else:
+        form = ProfileForm(instance=member)
+
+    return render(request, 'members/profile.html', {'form':form})
+
+def delete(request):
+    member = get_object_or_404(User, username=request.user)
+    if request.method == "POST":
+        member.delete()
+        return redirect('shop:product_all')
+    return render(request, 'members/memberdelete.html')
 
 '''
 def test(request):

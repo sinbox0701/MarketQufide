@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from shop.models import Product, Option
+from shop.models import Product, Option, Company
 from .forms import AddProductForm
 from .cart import Cart
 #from coupon.forms import AddCouponForm
@@ -29,9 +29,13 @@ def remove(request, product_id, option_id): # 카트에서 제품 삭제
 
 def detail(request): # 장바구니 페이지
     cart = Cart(request)
+    companies = Company.objects.none()
     for item in cart:
         item['quantity_form'] = AddProductForm(initial={'option_id':item['option'].id, 'quantity':item['quantity'], 'is_update':True})
+        companies  = companies | Company.objects.filter(name=item['product'].company)
     #add_coupon = AddCouponForm()
     #for product in cart:
         #product['quantity_form'] = AddProductForm(initial={'quantity':product['quantity'], 'is_update':True})
-    return render(request, 'cart/detail.html', {'cart': cart})
+
+
+    return render(request, 'cart/detail.html', {'cart': cart, 'companies':companies})

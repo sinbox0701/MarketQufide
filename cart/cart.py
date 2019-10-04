@@ -26,8 +26,9 @@ class Cart(object):
             self.cart[str(option.id)]['product'] = option.product
             self.cart[str(option.id)]['option'] = option
 
+
         for item in self.cart.values():
-            item['price'] = Decimal(item['product'].price*(100-item['product'].sale_percent)/100*10/10) + Decimal(item['option'].add_price)
+            item['price'] = int(Decimal(item['product'].price*(100-item['product'].sale_percent)/100) + Decimal(item['option'].add_price))
             item['total_price'] = item['price'] * item['quantity']
 
             yield item

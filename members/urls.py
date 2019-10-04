@@ -20,8 +20,13 @@ urlpatterns = [
     path('mypage/', mypage, name='mypage'),
     path('mypage/coupon', coupon, name="coupon"),
     path('test/', CustomSignupView.send_and_confirm, name='test'),
-
-
+    path('mypage/address', address, name="address"),
+    path('mypage/address/add', add_address, name="add_address"),
+    path('mypage/address/<int:id>/update', update_address, name="update_address"),
+    path('mypage/address/<int:id>/delete', delete_address, name="delete_address"),
+    path('profile/delete', delete, name='delete'),
+    path('mypage/order', order, name='order'),
+    path('findID/', findID, name='findID'),
     #path('admin/', admin.site.urls), # 이유진
 ]
 
