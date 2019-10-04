@@ -7,13 +7,13 @@ from sdk.api.message import Message
 from sdk.exceptions import CoolsmsException
 from django.conf import settings
 from django.http import HttpResponse
-from allauth.account.views import SignupView
+from allauth.account.views import *
 #from members.models import Phone
 from .forms import SignUpForm, LogInForm,SmsForm,ConfirmForm
 from .models import SmsSend
 from .CertiNum import get_centification_number
 from members.models import *
-from .forms import *
+from kwShop.forms import CustomSignupForm
 #from django.shortcuts import render, get_object_or_404
 from shop.models import Category
 from coupon.models import *
@@ -30,6 +30,7 @@ class CustomSignupView(SignupView):
     def send_and_confirm(request):
         send_form = SmsForm(data=request.POST)
         # confirm_form = ConfirmForm(request.POST)
+
         def get_valid_sms_info_and_save():
             get_valid_params = {
                 'type': 'sms',
@@ -80,10 +81,8 @@ class CustomSignupView(SignupView):
         return render(request, 'members/test.html', context)
 
 signup = CustomSignupView.as_view()
-# allauth customizing
 
-def index(request):
-    return render(request, 'base.html')
+# allauth customizing
 
 '''
 def signup(request):
@@ -123,6 +122,9 @@ def relogin(request):
         form = LogInForm()
     return render(request, 'account/relogin.html', {'form': form})
 '''
+
+def index(request):
+    return render(request, 'base.html')
 
 def address(request):
     member = get_object_or_404(User, username=request.user)
@@ -172,15 +174,14 @@ def add_address(request):
 
 
 def order(request):
-    member = get_object_or_404(User, username=request.user)
-    orders = Order.objects.filter(order_id=member, paid=True)
-    for order in orders:
-        orderitems = OrderItem.objects.filter(order=order)
-    print (member)
-    print (orders)
-    print (orderitems)
-
-    return render(request, 'members/order.html', {'orders':orders, 'orderitems':orderitems})
+    try:
+        member = get_object_or_404(User, username=request.user)
+        orders = Order.objects.filter(order_id=member, paid=True)
+        for order in orders:
+            orderitems = OrderItem.objects.filter(order=order)
+        return render(request, 'members/order.html', {'orders':orders, 'orderitems':orderitems})
+    except:
+        return render(request, 'members/order.html', {'orders':None, 'orderitems':None})
 
 def findID(request):
     if request.method == "POST":

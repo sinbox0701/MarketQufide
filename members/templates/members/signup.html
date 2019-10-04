@@ -34,7 +34,7 @@
 
 <p class="exist_account_info">{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
-<form class="container-fluid text-center" id="signup_form" method="post" action="{% url 'members:signup' %}">
+<form class="container-fluid text-center" id="signup_form" method="post" action="{% url 'members:signup' %}" enctype="multipart/form-data">
   {% csrf_token %}
     <h1>ss</h1>
   {{ form.as_p }}

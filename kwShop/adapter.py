@@ -18,3 +18,4 @@ class CustomProcessAdapter(DefaultAccountAdapter):
         if len(password) > 20:
             raise ValidationError('Please Enter a password greater that you can remember.')
         return DefaultAccountAdapter.clean_password(self,password)
+

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from members.views import signup, profile
+from members.views import *
 from django.urls import re_path
 from .views import *
 from coupon.views import coupon
