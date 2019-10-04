@@ -61,7 +61,7 @@ class SmsSend(models.Model):
     # IntegerField로 하면 휴대폰 전화번호 첫자리 '0' 이 사라진다.
     msg_getter = models.CharField(max_length=20, blank=False)
     msg_sender = models.CharField(max_length=20, blank=False, default=settings.SENDER)
-    msg_text = models.CharField(max_length=4, default=get_centification_number)
+    msg_text = models.CharField(max_length=4)
 
     def __str__(self):
         return self.msg_text
