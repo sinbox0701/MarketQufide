@@ -53,3 +53,4 @@ class OrderAdmin(admin.ModelAdmin):
     actions = [export_to_csv]
 
 admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem)

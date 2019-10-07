@@ -2,14 +2,14 @@
 from random import randint
 
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout, get_user_model
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect,get_object_or_404
 from sdk.api.message import Message
 from sdk.exceptions import CoolsmsException
 from django.conf import settings
 from django.http import HttpResponse
 from allauth.account.views import *
 #from members.models import Phone
-from .forms import ProfileForm, LogInForm,SmsForm
+from .forms import SignupForm, LogInForm,SmsForm,ConfirmForm, ProfileForm, findIDForm
 from .models import SmsSend
 from .CertiNum import get_centification_number
 from members.models import *
@@ -17,92 +17,78 @@ from kwShop.forms import CustomSignupForm
 #from django.shortcuts import render, get_object_or_404
 from shop.models import Category
 from coupon.models import *
+import datetime
 from order.models import *
 
 from django.http import HttpResponseRedirect
 # Create your views here.
 
+#User = settings.AUTH_USER_MODEL
 
-def index(request):
-    return render(request, 'base.html')
-
-'''
-def signup(request):
-    if request.method == 'POST':
-        form = CustomSignupForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
-            phone = form.cleaned_data.get('phone')
-            name = form.cleaned_data.get('name')
-            user = User.objects.create_user(email=email, password=raw_password)
-            user.phone = phone
-            user.name = name
-            user.save()
-            user = authenticate(email=email, password=raw_password)
-            login(request, user)
-            return redirect('index')
-    else:
-        form = CustomSignupForm()
-
-    return render(request, 'members/signup.html',{'form':form})
-
-'''
 # allauth customizing
 class CustomSignupView(SignupView):
-
+    template_name = "members/signup." + app_settings.TEMPLATE_EXTENSION
     form_class = CustomSignupForm
-    '''
-    def test(request):
-        form = SmsForm(data=request.POST)
-        def get_valid_sms_info_and_save():
-            get_valid_params = {
-                'type': 'sms',
-                'to': request.POST.get('msg_getter'),
-                'from': settings.SENDER,
-                'text': str(get_centification_number(4)),
-            }
-            form.save()
 
-            return get_valid_params
 
-        if request.method == "POST":
+
+signup = CustomSignupView.as_view()
+
+# allauth customizing
+def send_and_confirm(request):
+    send_form = SmsForm(data=request.POST)
+
+    # confirm_form = ConfirmForm(request.POST)
+
+    def get_valid_sms_info_and_save():
+        get_valid_params = {
+            'type': 'sms',
+            'to': request.POST.get('msg_getter'),
+            'from': settings.SENDER,
+            'text': str(get_centification_number(4)),
+        }
+        send_form.save()
+        return get_valid_params
+
+    if request.method == "POST":
+        confirm_form = ConfirmForm(request.POST)
+        if send_form.is_valid():
             try:
                 params = get_valid_sms_info_and_save()
                 cool = Message(settings.COOLSMS_API_KEY, settings.COOLSMS_API_SECRET)
                 response = cool.send(params)
+                '''
                 success_count = response['success_count']
                 print(success_count)
                 error_count = response['error_count']
                 print(error_count)
                 print('Group ID : {}'.format(response['group_id']))
-
+                '''
                 if 'error_list' in response:
                     print('Error List : {}'.format(response['error_list']))
-                context = {
-                    'form': form,
-                    'success_count': success_count,
-                    'error_count': error_count,
-                }
-                print(context)
-                return render(request, 'members/test.html', context)
-
+                return redirect('members:test')
             except CoolsmsException as e:
                 return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
-        else:
-            form = SmsForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'members/test.html', context)
-        '''
-
-signup = CustomSignupView.as_view()
-
-# allauth customizing
-
-
-
+        if confirm_form.is_valid():
+            try:
+                params2 = dict()
+                # params2['send_time'] = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+                cool = Message(settings.COOLSMS_API_KEY, settings.COOLSMS_API_SECRET)
+                response2 = cool.sent(params2)
+                data = response2['data']
+                # print(data)
+                if request.POST.get('conf') == data[0]['text']:
+                    return HttpResponse('okt')
+            except CoolsmsException as e:
+                return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
+    else:
+        send_form = SmsForm()
+        confirm_form = ConfirmForm()
+    context = {
+        'send_form': send_form,
+        'confirm_form': confirm_form
+    }
+    return render(request, 'members/signup.html', context)
 '''
 def signup(request):
     if request.method == 'POST':
@@ -141,6 +127,9 @@ def relogin(request):
         form = LogInForm()
     return render(request, 'account/relogin.html', {'form': form})
 '''
+
+def index(request):
+    return render(request, 'base.html')
 
 def address(request):
     member = get_object_or_404(User, username=request.user)
@@ -192,27 +181,37 @@ def add_address(request):
 def order(request):
     try:
         member = get_object_or_404(User, username=request.user)
-        orders = Order.objects.filter(order_id=member, paid=True)
+        orders = Order.objects.filter(order_userID=member, paid=True)
         for order in orders:
             orderitems = OrderItem.objects.filter(order=order)
-        return render(request, 'members/order.html', {'orders':orders, 'orderitems':orderitems})
+        count=0
+        for orderitem in orderitems:
+            count+=1
+        return render(request, 'members/order.html', {'orders':orders, 'orderitem':orderitems[0], 'count':count-1})
     except:
         return render(request, 'members/order.html', {'orders':None, 'orderitems':None})
+
+def order_detail(request, orderno):
+    order= get_object_or_404(Order, orderno=orderno)
+    orderitems = OrderItem.objects.filter(order=order)
+    print(orderitems)
+    return render(request, 'members/order_detail.html',
+                  {'order': order, 'orderitems': orderitems})
+
 
 def findID(request):
     if request.method == "POST":
         form = findIDForm(request.POST or None)
         if form.is_valid():
             try :
-                member = User.objects.get(phone=form['phone'].value())
+                member = User.objects.get(name=form['username'].value(), phone=form['phone'].value())
                 return render(request, 'members/confirmID.html', {'member':member})
             except:
                 return render(request, 'members/wrongID.html')
 
     else:
         form = findIDForm(request.POST)
-
-    return render(request, 'members/findID.html', {'form':form})
+        return render(request, 'members/findID.html', {'form':form})
 
 
 '''
@@ -222,6 +221,7 @@ def logout(request):
 
 '''
 def profile(request):
+    print(request.user)
     member = get_object_or_404(User, username=request.user)
     if request.method == "POST":
         form = ProfileForm(request.POST, instance=member)
@@ -274,24 +274,7 @@ def test(request):
             return render(request, 'members/test.html', context)
 
         except CoolsmsException as e:
-        
             return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
-            print("Error Code : %s" % e.code)
-            print("Error Message : %s" % e.msg)
-
-        else:
-            print('-----------------------------')
-            print('verification code: {code}')
-            print('-----------------------------')
-            phone = Phone.objects.get(user=request.user)
-            phone.verification_code = code
-            phone.before_verified = recipient
-            phone.save()
-
-        context = {
-            'called': True,
-        }
-
     else:
         form = SmsForm()
     context = {
@@ -304,6 +287,10 @@ def mypage(request):
     categories = Category.objects.all()
     context = {'categories':categories}
     return render(request, 'members/mypage.html', context)
+
+
+
+
 
 
 
