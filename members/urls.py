@@ -6,7 +6,6 @@ from .views import *
 from coupon.views import coupon
 
 
-
 app_name = 'members'
 
 urlpatterns = [
@@ -27,6 +26,7 @@ urlpatterns = [
     path('profile/delete', delete, name='delete'),
     path('mypage/order', order, name='order'),
     path('findID/', findID, name='findID'),
+
     #path('admin/', admin.site.urls), # 이유진
 ]
 

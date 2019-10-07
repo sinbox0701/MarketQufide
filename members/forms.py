@@ -7,7 +7,7 @@ from members.models import Marketing, Address
 
 User = get_user_model()
 
-
+'''
 class CustomSignupForm(SignupForm):
     name = forms.CharField(max_length=30, label='name')
     phone = forms.CharField(max_length=30, label='phone')
@@ -18,7 +18,7 @@ class CustomSignupForm(SignupForm):
         print("**********************")
         user.save()
         return user
-
+'''
 class LogInForm(forms.Form):
     email = forms.CharField(
         widget=forms.TextInput(
@@ -68,8 +68,15 @@ class SmsForm(forms.ModelForm):
             #'msg_sender',
             #'msg_text'
         )
+        labels = {
+            #'msg_type',
+            'msg_getter':'핸드폰번호',
+            #'msg_sender',
+            #'msg_text'
+        }
+
 class ConfirmForm(forms.Form):
-    conf = forms.CharField(max_length=4)
+    conf = forms.CharField(max_length=4, label="인증번호")
 
 CHOICES1=[('male','남자'),
          ('female','여자')]
@@ -94,7 +101,7 @@ class AddressForm(forms.ModelForm):
 
 
 class findIDForm(forms.Form):
-    username = forms.CharField(max_length=20)
+    name = forms.CharField(max_length=20)
     phone = forms.CharField(max_length=20)
 
 

@@ -32,6 +32,20 @@ class Marketing(models.Model):
         return self.name
 
 
+class SmsSend(models.Model):
+    MSG_TYPE_CHOICES = (
+        ('sms', 'sms'),
+    )
+    msg_type = models.CharField(max_length=3, choices=MSG_TYPE_CHOICES, default='sms')
+    # IntegerField로 하면 휴대폰 전화번호 첫자리 '0' 이 사라진다.
+    msg_getter = models.CharField(max_length=20, blank=False)
+    msg_sender = models.CharField(max_length=20, blank=False, default=settings.SENDER)
+    msg_text = models.CharField(max_length=4)
+
+    def __str__(self):
+        return self.msg_text
+
+
 class User(AbstractUser): # 원래는 AbstractBaseUser
     name = models.CharField(max_length=20)
     mileage = models.IntegerField(default=0)
@@ -53,17 +67,4 @@ class Address(models.Model):
     addr2 = models.CharField(max_length=100)
     phone = models.CharField(max_length=20, null=True, blank=True)
 
-
-class SmsSend(models.Model):
-    MSG_TYPE_CHOICES = (
-        ('sms', 'sms'),
-    )
-    msg_type = models.CharField(max_length=3, choices=MSG_TYPE_CHOICES, default='sms')
-    # IntegerField로 하면 휴대폰 전화번호 첫자리 '0' 이 사라진다.
-    msg_getter = models.CharField(max_length=20, blank=False)
-    msg_sender = models.CharField(max_length=20, blank=False, default=settings.SENDER)
-    msg_text = models.CharField(max_length=4)
-
-    def __str__(self):
-        return self.msg_text
 

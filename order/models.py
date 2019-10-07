@@ -1,8 +1,10 @@
+
+
 import hashlib
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from coupon.models import Coupon
-from shop.models import Product, Option
+from shop.models import Product, Option, Delivery
 from .iamport import payments_prepare, find_transaction
 from .orderNumber import get_order_code
 from members.models import User as mUser
@@ -10,7 +12,7 @@ from members.models import User as mUser
 
 class Order(models.Model):
     name = models.CharField(max_length=50)
-    order_id = models.ForeignKey(mUser, on_delete=models.CASCADE)
+    order_userID = models.ForeignKey(mUser, on_delete=models.CASCADE, null=True, blank=True)
     email = models.EmailField()
     addr1 = models.CharField(max_length=250)
     zip = models.CharField(max_length=20)
@@ -18,11 +20,13 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
+    delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE, related_name='delivery', null=True, blank=True)
     #discount = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
-
     price = models.IntegerField(default=0)
     orderno = models.CharField(max_length=18, default=get_order_code)
-    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True)
+    transno = models.CharField(max_length=30, null=True, blank=True)
+    phone = models.CharField(max_length=11)
+    orderco = models.TextField()
 
     class Meta:
         ordering = ['-created']
@@ -42,7 +46,7 @@ class OrderItem(models.Model): # 주문에 포함 된 제품 정보
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
-    option = models.ForeignKey(Option, on_delete=models.CASCADE, default=0)
+    option = models.ForeignKey(Option, on_delete=models.CASCADE, null=True, blank=True)
 
 
     def __str__(self):

@@ -13,33 +13,6 @@ from members.models import User as mUser, Address
 @csrf_exempt
 def order_create(request):  # 주문서 입력
     cart = Cart(request)
-    user = mUser.objects.get(id=request.user.id)
-    coupons = CouponUser.objects.filter(user=user)
-
-    if request.method == 'POST':
-        order_create_form = OrderCreateForm(request.POST)
-
-        if order_create_form.is_valid():
-            order = order_create_form.save()
-            for item in cart:
-                OrderItem.objects.create(order=order, product=item['product'], option=item['option'],
-                                         price=item['price'], quantity=item['quantity'])
-
-            '''if 'price_post' in request.POST:
-                price = request.POST['price_post']
-            order_price = Order.objects.get(order=order)
-            order_price.price = price
-            order_price.save()'''
-    else:
-        order_create_form = OrderCreateForm(user)
-
-    '''if coupon_select_form.is_valid():
-        order_without_coupon = Order.objects.get(id=order)'''
-
-    return render(request, 'order/create.html',
-                  {'cart': cart, 'order_create_form': order_create_form, 'coupons': coupons})
-
-
     if request.user.id != None :
         user = mUser.objects.get(id=request.user.id)
         coupons = CouponUser.objects.filter(user=user)

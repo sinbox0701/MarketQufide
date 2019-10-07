@@ -69,7 +69,11 @@
         <li class="nav-item ">
         <a class="nav-link btn btn-outline-success" href="{% url 'cart:detail' %}">Cart
         </a>
-            <a href="{% url 'members:mypage' %}" class="btn btn-primary">마이큐피드</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'members:mypage' %}" class="btn btn-primary">마이큐피드</a>
+            {% else %}
+                <a href="/accounts/login" class="btn btn-primary">마이큐피드</a>
+            {% endif %}
       </li>
 
 
@@ -127,4 +131,3 @@
 <input type="button" value="입점신청" onClick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfdGy1Jvt9uyhN9IzDiGU-oceGBfSGLGAhTr7CY4BamBRDFpw/viewform?usp=pp_url')">
 
 </html>
-

@@ -240,14 +240,26 @@ def search(request, search_term = ''):
                   {'products': products, 'search_term' : search_term, 'categories' : categories})
 
 def searchOrder(request, search_term = ''):
-    orders = Order.objects.all()
-
     if 'search' in request.GET:
         search_term = request.GET['search']
-        orders= orders.filter(orderno=search_term)
-
+        order= get_object_or_404(Order, orderno=search_term)
+        orderitems = OrderItem.objects.filter(order=order)
     return render(request, 'shop/searchorder.html',
-                  {'orders': orders, 'search_term' : search_term})
+                  {'order': order, 'orderitems': orderitems,'search_term' : search_term})
+
+
+def qufide_recommend(request):
+    categories = Category.objects.all()
+    products = Product.objects.filter(recommend=1)
+    product_count=0
+    for i in products:
+        product_count += 1
+    context = {'categories' : categories, 'products':products, 'product_count':product_count}
+    return render(request, 'shop/qufide_recommend.html', context)
+
+
+def nonmember(request):
+    return render(request,'shop/nonmember.html')
 
 def best_item(request):
     categories = Category.objects.all()

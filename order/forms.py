@@ -5,17 +5,10 @@ import itertools
 
 
 class OrderCreateForm(forms.ModelForm):
-    coupon = forms.ModelChoiceField(queryset=CouponUser.objects.none())
-
-    def __init__(self, user):
-        super(OrderCreateForm, self).__init__()
-        coupon_ids = CouponUser.objects.filter(user=user).values_list('coupon_id', flat=True)
-        for id in coupon_ids:
-            self.fields['coupon'].queryset = self.fields['coupon'].queryset | Coupon.objects.filter(id=id)
 
     class Meta:
         model = Order
-        fields = ['name', 'email','zip','addr1','addr2']
+        fields = ['name', 'email','zip','addr1','addr2','phone','orderco']
 
     def __init__(self, *args, **kwargs):
         super(OrderCreateForm, self).__init__(*args,**kwargs)

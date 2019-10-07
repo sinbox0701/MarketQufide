@@ -1,6 +1,5 @@
 # Create your views here.
 from random import randint
-
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout, get_user_model
 from django.shortcuts import render, redirect,get_object_or_404
 from sdk.api.message import Message
@@ -9,7 +8,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from allauth.account.views import *
 #from members.models import Phone
-from .forms import SignUpForm, LogInForm,SmsForm,ConfirmForm
+from .forms import *
 from .models import SmsSend
 from .CertiNum import get_centification_number
 from members.models import *
@@ -19,14 +18,19 @@ from shop.models import Category
 from coupon.models import *
 import datetime
 from order.models import *
-
+from kwShop.forms import *
 from django.http import HttpResponseRedirect
 # Create your views here.
 
-User = settings.AUTH_USER_MODEL
+#User = settings.AUTH_USER_MODEL
 
 # allauth customizing
 class CustomSignupView(SignupView):
+    success_url =  '/test/'
+
+    def get_success_url(self):
+        return '/test/'
+
     def send_and_confirm(request):
         send_form = SmsForm(data=request.POST)
         # confirm_form = ConfirmForm(request.POST)
@@ -47,13 +51,6 @@ class CustomSignupView(SignupView):
                     params = get_valid_sms_info_and_save()
                     cool = Message(settings.COOLSMS_API_KEY, settings.COOLSMS_API_SECRET)
                     response = cool.send(params)
-                    '''
-                    success_count = response['success_count']
-                    print(success_count)
-                    error_count = response['error_count']
-                    print(error_count)
-                    print('Group ID : {}'.format(response['group_id']))
-                    '''
                     if 'error_list' in response:
                         print('Error List : {}'.format(response['error_list']))
                     return redirect('members:test')
@@ -68,7 +65,7 @@ class CustomSignupView(SignupView):
                     data = response2['data']
                     #print(data)
                     if request.POST.get('conf') == data[0]['text']:
-                            return HttpResponse('okt')
+                            return HttpResponseRedirect('/')
                 except CoolsmsException as e:
                     return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
         else:
@@ -188,16 +185,14 @@ def findID(request):
         form = findIDForm(request.POST or None)
         if form.is_valid():
             try :
-                member = User.objects.get(phone=form['phone'].value())
+                member = User.objects.get(name=form['name'].value(), phone=form['phone'].value())
                 return render(request, 'members/confirmID.html', {'member':member})
             except:
                 return render(request, 'members/wrongID.html')
 
     else:
         form = findIDForm(request.POST)
-
-    return render(request, 'members/findID.html', {'form':form})
-
+        return render(request, 'members/findID.html', {'form':form})
 
 '''
 def logout(request):

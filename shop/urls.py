@@ -9,10 +9,12 @@ urlpatterns = [
 
     path('', home, name='product_all'),
     path('search/', search, name='search'),
+    path('nonmember/', nonmember, name='nonmember'),
     path('searchOrder/',searchOrder, name='searchOrder'),
     path('best_item/', best_item, name="best_item"),
     path('new_item/', new_item, name="new_item"),
     path('frugal_shopping/', frugal_shopping, name="frugal_shopping"),
+    path('qufide_recommend', qufide_recommend, name="qufide_recommend"),
     path('recommend/', recommend, name='recommend'),
     path('event/', event, name="event"),
     path('event/<slug:event_slug>', event_detail, name="event_detail"),
