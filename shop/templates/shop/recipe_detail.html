@@ -1,31 +1,92 @@
 {% extends 'base.html' %}
 {% block title %}Recipe Detail Page{% endblock %}
 {% block content %}
-    <img src="{{ recipe.content.url }}" alt="recipe_content">
-        <div class="row">
+    <h2 class="recipe_name">{{ recipe.name }}</h2>
+    <hr width="85.7%" style="border:solid 1px #32b09b; margin-left: 90px; margin-bottom:14px;">
+    <!--<div class="upload_date">2017.01.15</div>
+    <div class="views_num" style="margin-right:98px;">3,327</div>
+    <div class="views">조회수</div>
+    <div class="upload_date">2017.01.15</div>-->
+    <br>
+    <hr width="85.7%" style="border:solid 1px #f1f3f5; margin-left: 90px;"> <!--라인-->
+    <br>
+    <div class="recipe_content"><img src="{{ recipe.content.url }}"></div>
+    <br><br><br><br><br><br><br><br>
+    <hr width="85.7%" style="border:solid 1px #32b09b; margin-left: 90px;"> <!--라인-->
+    <br>
+    <h2 class="go_shopping">쇼핑하러 가기</h2>
+      <ul class="card_list">
         {% for product in products %}
-            <div class="col-4">
-                <div class="card">
-                  <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
-                  <div class="card-body">
-                    <h5 class="card-title">{{product.name}}</h5>
-                    <p class="card-text">{{product.description}}</p>
-                      {% if product.sale_percent == 0 %}
-                      <span class="cart-text">{{product.price}}원</span>
-                      {% else %}
-                      <span class="cart-text">
-                          <script>var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100
-                      document.write(Math.floor(saled_price));</script>원
-                      </span>
-                      <strike class="cart-text">{{product.price}}</strike>
-                      <span class="cart-text">-{{product.sale_percent}}%</span>
-                      {% endif %}
-
-                    <a href="{{product.get_absolute_url}}" class="btn btn-primary">View Detail</a>
-
-                  </div>
+            <li class="card_item">
+                <a href="{{ product.get_absolute_url }}"><img class="image" src="{{product.image.url}}"></a>
+                <strong class="name">{{ product.name }}</strong>
+                <strong class="count_order">{{ product.count_order }}개</strong>
+                <span><strong class="actual_price">
+                    {% if product.sale_percent == 0 %}
+                        <span>{{product.price}}원</span></strong>>
+                    {% else %}
+                        <script>var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100;
+                        document.write(Math.floor(saled_price));</script>원</strong>
+                        <strong class="price"><strike>{{product.price}}</strike>원</strong>
+                    {% endif %}
+                    <div class="percent">{{ product.sale_percent }}%</div></span><br><br>
+                <div class="tags" style="margin-top:-13px;">
+                    {% load tagging_tags %}
+                    {% tags_for_object product as tags %}
+                    {% for tag in tags %}
+                    <a href="/search/?search={{ tag.name }}" class="tag">{{tag.name}}</a>
+                    {% endfor %}
                 </div>
-            </div>
+            </li>
         {% endfor %}
-        </div>
+    </ul>
+    <style>
+    .recipe_name, .go_shopping{
+        font-family: NanumGothic;
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 1.15;
+    letter-spacing: normal;
+    text-align: left;
+    color: #070707;
+    margin-left: 90px;
+    }
+        .recipe_content img {
+                width: 1144px;
+    height: 1233px;
+    object-fit: contain;
+    background-color: #f1f3f5;
+    margin-left: 90px;
+        }
+    .card_list{
+      width: 80%;margin: 0 auto;display: flex;flex-wrap: wrap;
+  }
+.card_item{
+    display: flex;flex-direction: column;flex: none;flex-basis: 25%;margin-top: 20px;padding: 0 7px;box-sizing: border-box;
+  }
+  .image{
+      flex: flex;width: 268px; height: 270px;background-color: #dcdcdf;
+  }
+  .channel_list .name{
+      flex: none;min-height: 0;margin-top: 8px;font-size: 16px;font-weight: bold;
+  }
+  .name{
+      font-family: NanumGothic;font-size:16px;font-weight: bold;line-height: 1.19;letter-spacing: -0.32px;text-align: left;color: #070707;margin-top: 8px;
+  }
+  .count_order{
+     font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #909090; margin-bottom: 6px; margin-top: 6px;
+  }
+  .actual_price{
+     font-family: NanumGothic;font-size: 20px;font-weight: 800;line-height: 1.15;letter-spacing: -0.4px;text-align: left;color: #303030;margin-left: -3px; float:left;
+  }
+  .price{
+     font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #909090; float:left; margin-left: 0px; margin-top: 5px;
+  }
+.percent{
+    font-family: NanumGothic;font-size: 20px;font-weight: 800;line-height: 1.15;letter-spacing: -0.4px;text-align: left;color: #ef2f35; float:right;
+}
+.tag{
+    font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #32b09d;border: solid 1px #32b09d; background-color: #ffffff; padding:4px; text-decoration: none;
+}
+    </style>
 {% endblock %}

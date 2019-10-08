@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Home{% endblock %}
-{% block content %}
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+{% block title %}Market Qufide{% endblock %}
+{% block script %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../../static/js/instafeed.min.js"></script>
     {% load static %}
     <script src="{% static 'js/instafeed.min.js' %}" type="text/javascript">
@@ -18,54 +17,216 @@
         });
         feed.run();
     </script>
-</head>
-    <!--for banner slider-->
-    <div class="slideshow-container">
-        {% for banner in banners %}
-            <div class="mySlides">
-                <a href="{{ banner.url }}"><img  src="{{ banner.image.url }}"></a>
-            </div>
+        <script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("slides");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+</script>
+{% endblock %}
+{% block content %}
+<div class="total_group">
+        {% for c in categories %}
+             {% if not c.get_parent_node %}
+                 <div class="p_group">
+                 <li class="{% if current_category.slug == c.slug %}active{% endif %}">
+                    <a href="{{c.get_absolute_url}}">{{c.name}}</a>
+                 </li>{% endif %}
+                 <div class="c_group">
+                 {% for child in c.get_descendants %}
+                         <li class="{% if current_category.slug == child.slug %}active{% endif %}">
+                             <a href="{{child.get_absolute_url}}">{{child.name}}</a>
+                         </li>
+                 {% endfor %}
+                 </div>
+                </div>
+
         {% endfor %}
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+    <style>
+    .p_group li {
+        display: block; width: 200px;height:42px;background-color: #646664;margin-left: 35px;
+    }
+    .c_group li {background-color: #ffffff;}
+    .c_group:hover .p_group li:hover{background-color: #ffffff;}
+    .c_group li a{color: #646664;}
+    .p_group li:hover {background-color: #ffffff;}
+
+    .p_group a {
+        font-family: NanumGothic;font-size: 14px;font-weight: bold;font-stretch: normal;text-decoration: none;line-height: normal;
+        color: #ffffff;cursor: pointer;
+    }
+
+    .p_group li:hover a{color: #32b09d;}
+    .c_group {display: none; position: absolute; top: 270px;margin-left: 200px;}
+    .p_group:hover .c_group {display: block;}
+    .p_group a {margin-left: 55px;line-height: 40px;}
+    .c_group a {margin-left: 35px;line-height: 40px;}
+
+    .p_group, c_group {line-height: 40px;}
+    .p_group:hover {cursor: pointer; color: #32b09d;}
+    .c_group:hover {cursor: pointer;}
+    </style>
+    <div class="slider_banner">
+    {% for banner in banners %}
+        <div class="slides">
+                <a href="{{ banner.url }}"><img src="{{ banner.image.url }}"></a>
+        </div>
+    {% endfor %}
+
     </div>
-    <script>
-        var slideIndex = 1;
-        showSlides(slideIndex);
-
-        function plusSlides(n) {
-          showSlides(slideIndex += n);
-        }
-
-        function currentSlide(n) {
-          showSlides(slideIndex = n);
-        }
-
-        function showSlides(n) {
-          var i;
-          var slides = document.getElementsByClassName("mySlides");
-          var dots = document.getElementsByClassName("dot");
-          if (n > slides.length) {slideIndex = 1}
-          if (n < 1) {slideIndex = slides.length}
-          for (i = 0; i < slides.length; i++) {
-              slides[i].style.display = "none";
-          }
-          for (i = 0; i < dots.length; i++) {
-              dots[i].className = dots[i].className.replace(" active", "");
-          }
-          slides[slideIndex-1].style.display = "block";
-          dots[slideIndex-1].className += " active";
-        }
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+     <script>
+         var slideIndex = 1;
+         showSlides(slideIndex);
+         function plusSlides(n) {
+             showSlides(slideIndex += n);
+         }
+         function currentSlide(n) {
+             showSlides(slideIndex = n);
+         }
+         function showSlides(n) {
+             var i;
+             var slides = document.getElementsByClassName("slides");
+             if (n > slides.length) {slideIndex = 1}
+             if (n < 1) {slideIndex = slides.length}
+             for (i = 0; i < slides.length; i++) {
+                 slides[i].style.display = "none";
+             }
+             slides[slideIndex-1].style.display = "block";
+             dots[slideIndex-1].className += " active";
+         }
     </script>
+    <br><br>
 
 
 
-        <!--for instagram-->
-        <div id="instagram-container">
-            <a href="https://www.instagram.com/market_qufide/">
-                <h3>인스타그램</h3>
-            </a>
-            <div id="instafeed">
+
+
+    <p class="small_title" style="margin-top: 50px;">초특가 할인<img src="{% static "image/확성기.PNG" %}"></p>
+    <ul class="card_list">
+        {% for product in sale_products %}
+            <li class="card_item">
+                <a href="{{ product.get_absolute_url }}"><img class="image" src="{{product.image.url}}"></a>
+                <strong class="name">{{ product.name }}</strong>
+                <strong class="count_order">{{ product.count_order }}개</strong>
+                <span><strong class="actual_price">
+                    {% if product.sale_percent == 0 %}
+                        <span>{{product.price}}원</span></strong>>
+                    {% else %}
+                        <script>var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100;
+                        document.write(Math.floor(saled_price));</script>원</strong>
+                        <strong class="price"><strike>{{product.price}}</strike>원</strong>
+                    {% endif %}
+                    <div class="percent">{{ product.sale_percent }}%</div></span><br><br>
+                <div class="tags" style="margin-top:-13px;">
+                    {% load tagging_tags %}
+                    {% tags_for_object product as tags %}
+                    {% for tag in tags %}
+                    <a href="/search/?search={{ tag.name }}" class="tag">{{tag.name}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a class="item_more" href="{% url 'shop:frugal_shopping'%}">특가상품 더보기</a>
+    <p class="small_title">큐피드 추천<img src="{% static "image/그룹 70.png" %}"></p>
+    <ul class="card_list">
+        {% for product in sale_products %}
+            <li class="card_item">
+                <a href="{{ product.get_absolute_url }}"><img class="image" src="{{product.image.url}}"></a>
+                <strong class="name">{{ product.name }}</strong>
+                <strong class="count_order">{{ product.count_order }}개</strong>
+                <span><strong class="actual_price">
+                    {% if product.sale_percent == 0 %}
+                        <span>{{product.price}}원</span></strong>>
+                    {% else %}
+                        <script>var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100;
+                        document.write(Math.floor(saled_price));</script>원</strong>
+                        <strong class="price"><strike>{{product.price}}</strike>원</strong>
+                    {% endif %}
+                    <div class="percent">{{ product.sale_percent }}%</div></span><br><br>
+                <div class="tags" style="margin-top:-13px;">
+                    {% load tagging_tags %}
+                    {% tags_for_object product as tags %}
+                    {% for tag in tags %}
+                    <a href="/search/?search={{ tag.name }}" class="tag">{{tag.name}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <p class="small_title"><a href="https://www.youtube.com/channel/UCdGe2MGM03RwtHDJJ6jlipA">HOT 클립</a><img src="{% static "image/패스 31.png" %}"></p>
+    <p class="banner3" style="width: 268px;height: 196px;">배너3(이미지)</p>
+
+    <p class="small_title">베스트</p>
+    <ul class="card_list">
+        {% for product in best_products %}
+            <li class="card_item">
+                <a href="{{ product.get_absolute_url }}"><img class="image" src="{{product.image.url}}"></a>
+                <strong class="name">{{ product.name }}</strong>
+                <strong class="count_order">{{ product.count_order }}개</strong>
+                <span><strong class="actual_price">
+                    {% if product.sale_percent == 0 %}
+                        <span>{{product.price}}원</span></strong>>
+                    {% else %}
+                        <script>var saled_price = {{product.price}}*(100-{{product.sale_percent}})/100;
+                        document.write(Math.floor(saled_price));</script>원</strong>
+                        <strong class="price"><strike>{{product.price}}</strike>원</strong>
+                    {% endif %}
+                    <div class="percent">{{ product.sale_percent }}%</div></span><br><br>
+                <div class="tags" style="margin-top:-13px;">
+                    {% load tagging_tags %}
+                    {% tags_for_object product as tags %}
+                    {% for tag in tags %}
+                    <a href="/search/?search={{ tag.name }}" class="tag">{{tag.name}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <p class="small_title">베스트 후기</p>
+    {% for comment in best_comments %}
+        <div class="best_comment" style=" margin-left: 160px;width:530px; float:left; margin-bottom: 10px;">
+            <div><img class="comment_image" src="{{ comment.comment_image.url }}"></div>
+            <div class="comment_product_name">{{ comment.product.name }}</div>
+            <div class="comment_like">
+                {% if comment.like == 1 %}★
+                {% elif comment.like == 2 %}★★
+                {% elif comment.like == 3 %}★★★
+                {% elif comment.like == 4 %}★★★★
+                {% elif comment.like == 5 %}★★★★★{% endif %}
+            </div>
+            <div class="comment_text">{{ comment.comment_text }}</div>
+        </div>
+    {% endfor %}
+    {% if request.user.is_superuser %}
+    <td><a href="{% url 'shop:comment_select' %}" target="_blank">선택하기</a></td>
+    {% endif %}
+    <br><br><br><br><br>
+    <p class="small_title">인스타그램</p>
+       <div id="insta">
+        <div id="instafeed">
                 <script type="text/javascript">
                     console.log("here")
                     var access_token="9533696900.b62fa1c.58f8e2395c1c430a94f6239bde18af45";
@@ -81,17 +242,87 @@
                         for (var i=0 ; i<limit ; i++) {
                             outputHtml += '<li>';
                             outputHtml += '<a href="'+myfeed[i].link+'" target=" blank">';
-                            outputHtml += '<img src="' +myfeed[i].images.thumbnail.url+'" />';
+                            outputHtml += '<img class="insta-content-img" src="' +myfeed[i].images.thumbnail.url+'" />';
                             outputHtml += '</a>';
                             outputHtml += '</li>';
                         }
-                        outputHtml += "</ul>";
+                        outputHtml += '</ul>';
                         instabanner.html(outputHtml);
                     });
                 </script>
-            </div>
         </div>
+       </div>
+       <br>
+   <div class="instagram_id"><a href="https://www.instagram.com/market_qufide/">@market_qufide</a></div>
+    <style>
+.small_title{
+font-family: NanumGothic;font-size: 26px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.15;
+letter-spacing: normal;text-align: center;color: #32b09d;margin-top: 100px;
+}
+.item_more{
+display: block;margin-left: 600px;font-family: NanumGothic;font-size: 19px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 2.8;
+letter-spacing: normal;text-align: center;vertical-align: middle;color: #c3c3c3;width: 265px;height: 54px;border-radius: 7px;
+border: solid 1px #dee2e6;background-color: #ffffff;text-decoration: none;margin-top: 20px;margin-bottom: 90px;
+}
+.item_more:hover{
+    text-decoration: none;
+}
+.card_list{
+      width: 80%;margin: 0 auto;display: flex;flex-wrap: wrap;
+  }
+.card_item{
+    display: flex;flex-direction: column;flex: none;flex-basis: 25%;margin-top: 20px;padding: 0 7px;box-sizing: border-box;
+  }
+  .image{
+      flex: flex;width: 268px; height: 270px;background-color: #dcdcdf;
+  }
+  .channel_list .name{
+      flex: none;min-height: 0;margin-top: 8px;font-size: 16px;font-weight: bold;
+  }
+  .name{
+      font-family: NanumGothic;font-size:16px;font-weight: bold;line-height: 1.19;letter-spacing: -0.32px;text-align: left;color: #070707;margin-top: 8px;
+  }
+  .count_order{
+     font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #909090; margin-bottom: 6px; margin-top: 6px;
+  }
+  .actual_price{
+     font-family: NanumGothic;font-size: 20px;font-weight: 800;line-height: 1.15;letter-spacing: -0.4px;text-align: left;color: #303030;margin-left: -3px; float:left;
+  }
+  .price{
+     font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #909090; float:left; margin-left: 0px; margin-top: 5px;
+  }
+.percent{
+    font-family: NanumGothic;font-size: 20px;font-weight: 800;line-height: 1.15;letter-spacing: -0.4px;text-align: left;color: #ef2f35; float:right;
+}
+.tag{
+    font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #32b09d;border: solid 1px #32b09d; background-color: #ffffff; padding:4px; text-decoration: none;
+}
 
+    .comment_image{
+        width: 120px;height: 124px;object-fit: contain;opacity: 0.93;background-color: #f1f3f5; font-family: NanumGothic;font-size: 20px;font-weight: 800;line-height: 1.15;letter-spacing: normal;text-align: center;color: #707070; border-radius: 75px; float:left;margin-right: 17px;
+      }
+.comment_product_name{
+    width: 505px;font-family: NanumGothic;font-size: 16px;font-weight: bold;line-height: 1.19;letter-spacing: -0.32px;text-align: left;color: #070707;
+}
+.comment_like{
+    font-family: NanumGothic;font-size:20px;font-weight: bold;line-height: 1.5;letter-spacing: -0.24px;text-align: left;color:red;
+}
+      .comment_text{
+        width: 505px;height: 68px;object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.5;letter-spacing: -0.24px;text-align: left;color: #707070;
+
+      }
+
+    #insta {margin-top: 20px;}
+    #instafeed img {width: 185px; height: 190px;margin-right: 40px;margin-left: -10px;}
+    .instagram_id {margin-top: 190px; text-align: center;font-family: NanumGothic;font-size: 18px;font-weight: bold;}
+    .instagram_id a{color: #707070;}
+    #instafeed ul{
+        margin-left: 200px;
+    }
+    #instafeed li{
+        list-style: none;vertical-align: middle;float: left;margin-bottom: 10px;
+    }
+    </style>
 <!-- for channeltalk -->
 <script>
   ;window.channelPluginSettings = {
@@ -134,29 +365,66 @@
     }
   })();
 </script>
+<style>
+.slides {display: none;}
+.slides img {
+    height: 400px;width: 100%;
+}
+.slider_banner {
+    width: 100%;margin-top: -124px;position: relative;z-index:-5;
+}
+.prev, .next {
+    cursor: pointer;position: absolute;top: 102%;width: auto;padding: 10px;color: #ffffff;font-weight: bold;
+    font-size: 18px;transition: 0.6s ease;border-radius: 0 3px 3px 0;user-select: none;margin-left: 1250px;z-index: 5;border-radius: 80px;background-color: #32b09d;
+}
+.next {
+    left: 100px;
+}
+.prev:hover, .next:hover {
+    background-color: #ffffff;color: #32b09d;text-decoration: none;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+.list-group {position: absolute;top: 600px;left: 35px;}
+    .list-group-item {
+        background-color: #646664;border: none;width: 200px;height: 42px;display:block; font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;
+        font-stretch: normal;letter-spacing: -0.28px;text-align:center;text-decoration: none;color: #ffffff;cursor: pointer;
+    }
+    .list-group-item a{
+        font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: normal;
+        letter-spacing: -0.28px;color: #ffffff;text-decoration: none;margin-left: -60px;
+}
+    .list-group-item:hover {
+        background-color: #ffffff;
+    }
+    .list-group-item:hover .list-group-item-a{
+        color: #32b09d;
+    }
+    .list-group-item:hover .child-list-group{
+        display: block;
+    }
 
 
-<div id="best-comment">
-    <h3>베스트 후기</h3>
-        {% for comment in comments %}
-                            {% if comment.comment_image.url != None %}
-                            <img src="{{comment.comment_image.url}}" width="10%">
-                            {% endif %}
-                            {% if comment.comment_image2.url != None %}
-                                <img src="{{comment.comment_image2.url}}" width="10%">
-                            {% endif %}
-                            {% if comment.comment_image3.url != None %}
-                                <img src="{{comment.comment_image3.url}}" width="10%">
-                            {% endif %}
-                            <div class="media-body">
-                            <a href="{% url 'shop:comment_detail' comment.id %}" class="mt-0">{{comment.comment_created}}</a>
-                            <h5 class="mt-0">{{comment.comment_text}}</h5>
-                         </div>
-        {% endfor %}
+    .child-list-group {
+        display: none;list-style: none;background-color: white;width: 180px;height:40px;
+        font-family: NanumGothic;font-size: 14px;font-weight: bold;letter-spacing: -0.28px;line-height: 40px;
 
-    {% if request.user.is_superuser %}
-    <td><a href="{% url 'shop:comment_select' %}" target="_blank">선택하기</a></td>
-    {% endif %}
+    }
+    .child-list-group a{
+        font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 42px;
+        color:#646664; text-decoration: none;
+    }
+</style>
 
-</div>
 {% endblock %}
+

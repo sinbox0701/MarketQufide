@@ -1,13 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Event Detail Page{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            {{ event.name }}
-        </div>
-        <div class="col-md">
-            <img src="{{ event.content.url }}" alt="event_content">
-        </div>
-    </div>
-
+    <div><img class="event_content" src="{{ event.content.url }}"></div>
+<style>
+.event_content{
+    width: 1167px;height:auto;margin-left: 90px;margin-top: 10px;
+}
+</style>
 {% endblock %}

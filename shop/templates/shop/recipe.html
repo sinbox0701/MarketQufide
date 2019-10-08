@@ -1,19 +1,64 @@
 {% extends 'base.html' %}
 {% block title %}Recipe Page{% endblock %}
 {% block content %}
-    <div class="row">
-            {% for recipe in recipes %}
+    {% load static %}
+    <p class="small_title">레시피</p>
+    <div class="recipes">
+    {% for recipe in recipes %}
+        <div class="recipe_card">
+          <a href="{{ recipe.get_absolute_url }}">
+              <img class="recipe_thumbnail" src="{{ recipe.thumbnail.url }}">
+          </a><br><br>
+          <div class="recipe_name">{{ recipe.name }}</div><br><br>
+          <img src="{% static "image/그룹 579.png" %}" srcset="그룹 579@2x.png 2x,  그룹 579@3x.png 3x" class="date_i">
+          <div class="recipe_date">2019.01.23</div>
+          <!--<img src="{% static "image/그룹 580.png" %}" srcset="그룹 580@2x.png 2x,  그룹 580@3x.png 3x" class="view_i">
+          <div id="recipe_view" style="margin-top: -11px; ">3,770</div>-->
+        </div>
+    {% endfor %}
+    </div>
 
-                <div class="col-4">
-                    <div class="card">
-                      <img class="card-img-top" src="{{recipe.thumbnail.url}}" alt="Recipe Thumbnail">
-                      <div class="card-body">
-                        <h5 class="card-title">{{product.recipe_name}}</h5>
-                          <a href="{{recipe.get_absolute_url}}" class="btn btn-primary">레시피보기</a>
-                      </div>
-                    </div>
-                </div>
-
-            {% endfor %}
-            </div>
+    <style>
+    .small_title{
+font-family: NanumGothic;font-size: 26px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.15;
+letter-spacing: normal;text-align: center;color: #32b09d;margin-top: 100px;
+}
+    .recipes {margin-left: 90px;margin-top: 30px;}
+    .recipe_card {float: left;}
+    .recipe_card a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+    .recipe_name{
+        float: left;
+    object-fit: contain;
+    font-family: NanumGothic;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 0px;
+    letter-spacing: -0.44px;
+    text-align: left;
+    color: #070707;
+    }
+    .recipe_thumbnail {
+        margin-left:11px;display: inline-block;width: 374px;height: 374px;background-color: #f1f3f5;margin-right: 21px;margin-top: 20px;
+    }
+    .recipe_name{margin-left: 10px;}
+    .recipe_date {margin-top: -10px;}
+    .date_i {margin-left: 100px;float:left; margin-right: 8px; margin-top:-10px;}
+    .view_i {margin-top: -8px;}
+    .recipe_date{
+    float: left;
+    object-fit: contain;
+    font-family: NanumGothic;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.19;
+    letter-spacing: -0.32px;
+    text-align: left;
+    color: #909090;
+    margin-bottom: 35px;
+    }
+    </style>
 {% endblock %}

@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Event Page{% endblock %}
 {% block content %}
-    <div class="row">
+    <p class="small_title">이벤트</p>
+    <div class="events">
     {% for event in events %}
-        <div class="card">
-            <a href="{{ event.get_absolute_url }}"><img src="{{ event.title_image.url }}" alt="Event Title Image"></a>
-        </div>
+        <a href="{{ event.get_absolute_url }}"><img class="title_image" src="{{ event.title_image.url }}"></a>
     {% endfor %}
     </div>
-
+    <style>
+    .small_title{
+font-family: NanumGothic;font-size: 26px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.15;
+letter-spacing: normal;text-align: center;color: #32b09d;margin-top: 100px;
+}
+    .events {
+        margin-left: 150px;margin-top: 90px;
+    }
+    .title_image {
+        width: 570px;height: 570px;margin-right: 11px;margin-bottom: 12px;}
+    </style>
 {% endblock %}

@@ -1,16 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<link>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
     <!-- jquery slim 지우고 minified 추가 -->
-    <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!--bootstrap-->
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
     {% block script %}
     {% endblock %}
@@ -20,114 +25,170 @@
 </head>
 
 
+<body style="width: 1519.2px;">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pdf.css' %}?ver=1">
 
-<body>
-<style>
-    #nav_content{font-size: xx-large}
-
-</style>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Django Shop</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-    <ul class="navbar-nav justify-content-end">
-        <li class="nav-item">
-            {% load socialaccount %}
-
-    {% if user.is_authenticated %}
-    <span>{{ user }}님이 로그인중입니다.</span>
-
-    {% for account in user.socialaccount_set.all %}
-
-     {% comment %} show avatar from url {% endcomment %}
-     <h2 style="text-transform:capitalize;">{{ account.provider }} account data</h2>
-
-     <p><img width="50" height="50" src="{{ account.get_avatar_url }}"/></p>
-
-     <p>UID: <a href="{{ account.extra_data.link }}">{{ account.uid }}</a></p>
-
-     <p>Username: {{ account.extra_data.username }}</p>
-      <p>First Name: {{ account.extra_data.first_name }}</p>
-      <p>Last Name: {{ account.extra_data.last_name }}</p>
-
-      <p>Dashboard Link:
-      <a href="{{ account.extra_data.link }}">{{ account.extra_data.link }}</a></p>
-      {% empty %}
-      <p>you haven't any social account please</p>
-    {% endfor %}
-
-
-    {% endif %}
-    <h2><a href="/accounts/login">로그인</a></h2>
-    <h2><a href="/accounts/logout">로그아웃</a></h2>
-    <h2><a href="{% url 'members:signup' %}">회원가입</a></h2>
-
-        </li>
-        <li class="nav-item ">
-        <a class="nav-link btn btn-outline-success" href="{% url 'cart:detail' %}">Cart
-        </a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'members:mypage' %}" class="btn btn-primary">마이큐피드</a>
-            {% else %}
-                <a href="/accounts/login" class="btn btn-primary">마이큐피드</a>
-            {% endif %}
-      </li>
-
-
-
-
-        <!--for search-->
-        <li>
-            <form action="{% url 'shop:search' %}" class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="search" aria-label="search" name="search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </li>
-    </ul>
-  </div>
-</nav>
-<!--category-->
-<div class="col-2">
-    <div class="list-group">
-        <a href="/" class="list-group-item {% if not current_category %}active{% endif %}">All</a>
-        {% for c in categories %}
-            {% if not c.get_parent_node %}
-                <a href="{{c.get_absolute_url}}" class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
-
-                {% for child in c.get_descendants %}
-                    <a href="{{child.get_absolute_url}}" class="{% if current_category.slug == child.slug %}active{% endif %}">{{child.name}}</a>
-                {% endfor %}
-
-            {% endif %}
-        {% endfor %}
+    <a href="#" class="header1"> 좋은 품질의 제품만 쏜다! 마켓큐피드 혜택 보기</a>
+    <div class="header2">
+        <div class="header2_left"> 고객센터 031-606-8808 (평일 l 오전 10시~오후 6시, 점심시간 l 오후 12시~오후 1시)</div>
+        {% if user.is_authenticated %}
+            <a href='{% url 'members:mypage' %}' class="header2_right">마이큐피드</a>
+        {% else %}
+            <a href='{% url 'shop:nonmember' %}' class="header2_right">마이큐피드</a>
+        {% endif %}
+        <a href="/accounts/signup/" class="header2_right">회원가입</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'account_logout' %}" class="header2_right">로그아웃 </a>
+        {% else %}
+            <a href="{% url 'account_login' %}" class="header2_right">로그인 </a>
+        {% endif %}
+        <a href="{% url 'cart:detail' %}" class="header2_right">장바구니</a>
     </div>
-</div>
+    <a href="{% url 'shop:product_all' %}"><img class="logo" src="{% static "image/logo.png" %}"></a>
+    <form action="{% url 'shop:search' %}">
+        <button class="search_img" type="submit"><img id="search_img" src="{% static "image/그룹 10.png" %}"></button>
+        <input class="search_line" type="search" placeholder="search" aria-label="search" name="search">
+    </form>
 
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <ul class="nav navbar-nav">
-            <li><a href="{% url 'shop:best_item' %}">베스트</a></li>
-            <li><a href="{% url 'shop:new_item' %}">신상품</a></li>
-            <li><a href="{% url 'shop:frugal_shopping' %}">알뜰쇼핑</a></li>
-            <li><a href="{% url 'shop:collection' %}">기획전</a></li>
-            <li><a href="{% url 'shop:event' %}">이벤트</a></li>
-            <li><a href="{% url 'shop:recipe' %}">레시피</a></li>
-            <li><a href="{% url 'shop:recommend' %}">큐피드 추천</a></li>
+        <!--<p class="search_ranking">
+          <img src="그룹 11.png" srcset="그룹 11@2x.png 2x, 그룹 11@3x.png 3x" id = "rank_i"></img>
+          <div id="rank_word">족발 한줄_이젠 김밥 대신 족발들고 소풍가자!</div>
+        </p>-->
+    <br><br><br><br>
 
-        </ul>
-      </div>
-    </nav>
+    <div class="custom_nav">
+        <a href="#" class="category">
+            <img src="{%  static "image/그룹 26.png" %}"  srcset="그룹 26@2x.png 2x,  그룹 26@3x.png 3x" id="category_i" style="float:left; margin-top:14px; margin-left:36px; margin-right:20px;"></img>
+            전체 카테고리
+        </a>
+        <a href="{% url 'shop:frugal_shopping'%}" class="nav_content">초특가 할인</a>
+        <a href="{% url 'shop:qufide_recommend' %}" class="nav_content">큐피드 추천</a>
+        <a href="{% url 'shop:best_item' %}" class="nav_content">베스트</a>
+        <a href="{% url 'shop:new_item' %}" class="nav_content">신상품</a>
+        <a href="{% url 'shop:collection' %}" class="nav_content">기획전</a>
+        <a href="{% url 'shop:event' %}" class="nav_content">이벤트</a>
+        <a href="{% url 'shop:recipe' %}" class="nav_content">레시피</a>
+          <!--<div style="position: relative;">
+            <img src="마스크 그룹 4.png" srcset="마스크 그룹 4@2x.png 2x, 마스크 그룹 4@3x.png 3x">
+          </div>-->
+    </div>
 
+    <br><br>
 
-<div class="container">
-{% block content %}
-{% endblock %}
-</div>
+    {% block content %}
+    {% endblock %}
+    <br><br><br><br>
+    <hr style="border:solid 1px #f1f3f5;" width="100%"> <!--라인-->
+
+    <p id="customer_service">
+        고객센터 031-606-8808
+    </p>
+    <br>
+    <p id="hours_of_business">
+        평일 l 오전 10시~오후 6시, 점심시간 l 오후 12시~오후 1시
+    </p>
+
+    <button id="b_inquiry">1:1문의</button>
+    <button id="b_kakao">카카오톡</button>
+    <div class="b_insta_l">
+        <a href="https://www.instagram.com/market_qufide/" id="b_insta">인스타그램</a>
+    </div>
+    <br>
+    <hr id="line8" width="86%"> <!--라인-->
+    <br>
+
+    <div id="tail_mq">마켓큐피드</div>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfdGy1Jvt9uyhN9IzDiGU-oceGBfSGLGAhTr7CY4BamBRDFpw/viewform?usp=pp_url" id="partnership">입점신청/OME/제휴 </a>
+    <a href="#" id="terms">이용약관 </a>
+    <a href="#" id="p_info">개인정보처리방침</a>
+    <br>
+    <div id="info_left">대표이사 : 김혜미 <br> 사업자등록번호 : 655-04-01258 <br> 통신판매업신고 : 2019-성남분당B-0558<br> 주소 : 경기도 성남시 분당구 성남대로 52, 8층 <br> 호스팅 사업자 : 아마존 웹 서비스(AWS)</div>
+    <div id="info_right">전화번호 : 031-606-8808~9 <br> 이메일 : cowalkers@naver.com <br> Copyright(c) 2019 마켓큐드. All right reserverd</div>
 
 </body>
-<input type="button" value="입점신청" onClick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfdGy1Jvt9uyhN9IzDiGU-oceGBfSGLGAhTr7CY4BamBRDFpw/viewform?usp=pp_url')">
-
+<style>
+/*headers*/
+.header1{
+        display:block;font-family: NanumGothic;font-size: 15px;font-weight: 800;font-style: normal;font-stretch: normal;letter-spacing: normal;
+        text-align: center;color: #32b09d;text-decoration: none;background-color: #d7f7f5;padding: 11px;width: 100%;line-height: 1.7;
+    }
+.header1:hover{
+        color:white;background-color: #32b09d;
+    }
+.header2{
+        background-color:#f1f3f5;height:38px;width: 100%;margin:0;
+    }
+.header2_left{
+          width:500px;font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;
+          letter-spacing: -0.24px;text-align:left; margin-left: 2.4%;color: #707070; float:left;line-height: 38px;
+    }
+.header2_right{
+        float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;letter-spacing: -0.24px;text-align: left;
+        color: #707070;margin-right: 0.7%; text-decoration: none;line-height: 38px;
+    }
+.header2_right:hover {
+       color:#32b09b; font-weight: 900;
+    }
+.logo {
+    width: 140px;height: 135px;margin-left: 650px;margin-top: ;
+}
+.search_line{
+        float:right; margin-top:-80px;margin-right:74px;width: 282px;height: 40px;border: solid 1px #dee2e6;
+        border-top-left-radius: 19px; border-bottom-left-radius: 19px;  line-height: 38px; border-right: solid 0.5px #dee2e6;
+        font-family: NanumGothic;font-size: 14px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 2.6;letter-spacing: -0.28px;text-align: left;color: #c3c3c3;
+    }
+.search_img{
+        float:right; margin-right: 40px; border: solid 1px #dee2e6;
+        margin-top:-80px; border-top-right-radius: 19px; border-bottom-right-radius: 19px;border-left: solid 0.5px #dee2e6; padding:10px; background-color: white;
+    }
+/*--headers--*/
+/*navbar*/
+.custom_nav {margin-top: -70px;}
+.category{
+        margin-left: 35px;float:left;width: 200px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;
+        line-height: 2.8;letter-spacing: -0.28px;text-align:left;vertical-align: middle;color: #ffffff;text-decoration: none;background-color: #343a40;
+      }
+.nav_content{
+        float:left;width: 142px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;
+        font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #070707;text-decoration: none;
+        background-color: #ffffff;
+      }
+.nav_content:hover{color:#32b09b;}
+/*--navbar--*/
+/*footer*/
+#customer_service{
+        width: 300px;height: 3px;margin-left: 90px;font-family: NanumGothic;font-size: 25px;font-weight: bold;line-height: 1.7;letter-spacing: normal;text-align: left;color: #070707;
+    }
+#hours_of_business{
+        float:left; width: 560px;height: 3px; margin-left: 90px; margin-bottom: 50px; font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.8;letter-spacing: -0.24px;text-align: left;color: #070707;
+    }
+.b_insta_l{
+        float:left; margin-right:12px;width: 94px;height: 37px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff; margin-top: -16px;
+    }
+#b_insta{
+        display:block; font-family: NanumGothic;font-size: 16px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 37px; text-decoration: none;color: #444
+    }
+#b_inquiry,#b_kakao{
+        width: 94px;height: 38px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff;font-family: NanumGothic;font-size: 16px;font-weight: bold;line-height: 35px;letter-spacing: -0.32px;text-align: center;color: #444444;
+        cursor: pointer; margin-right:15px; margin-top:-17px;
+        float: left;
+    }
+#tail_mq {
+        float:left; margin-left: 90px; margin-right:500px; height:20px;object-fit: contain;font-family: 'NanumGothic';font-size: 12px;font-weight: 900;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #070707;
+    }
+#info_left{
+        float:left; margin-left: 90px; margin-bottom: 60px; object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+    }
+#info_right{
+        float:left; margin-left:326px; margin-top:5px; object-fit: contain;font-family: 'Nanum Gothic';font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+    }
+#partnership,#terms,#p_info{
+        float:left; margin-right:15px;object-fit: contain; font-family: 'Nanum Gothic';font-size: 14px;font-weight:900; text-decoration: none;font-stretch: normal;line-height:1.2 ;letter-spacing: -0.28px;text-align: left;color: #070707;
+    }
+#line8{
+        border:solid 1px #dee2e6;
+    }
+/*--footer-*/
+</style>
 </html>
