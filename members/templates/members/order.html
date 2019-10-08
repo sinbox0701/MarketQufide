@@ -5,14 +5,15 @@
       <div class="container">
           주문내역확인<br><br>
           {% for order in orders %}
-            주문번호 : {{order.orderno}}<br><br>
+          주문번호 : <a href="{% url 'members:order_detail' order.orderno %}">{{order.orderno}}</a><br><br>
             주문정보<br><br>
-            {% for orderitem in orderitems %}
-                {{orderitem.product}} <br>
-                {{orderitem.option.name}}<br>
-                {{orderitem.quantity}}<br>
-                {{orderitem.price}}원<br><br>
-            {% endfor %}
+                {% if count == 0 %}
+                    {{orderitem.product}} ({{orderitem.option.name}}) <br>
+                {% else %}
+                    {{orderitem.product}} ({{orderitem.option.name}}) 외 {{count}}건 <br>
+                {% endif %}
+            {{order.price}}원<br>
+            {{order.created}}<br>
           <br><br>
 
 

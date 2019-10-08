@@ -1,9 +1,12 @@
 
 from allauth.account.forms import SignupForm
 from django import forms
-from django.contrib.auth import get_user_model, authenticate, login
 
-User = get_user_model()
+from django.contrib.auth import get_user_model, authenticate, login
+from members.forms import SmsForm, ConfirmForm
+#User = get_user_model()
+
+
 
 
 class CustomSignupForm(SignupForm):
@@ -29,7 +32,11 @@ class CustomSignupForm(SignupForm):
         # You don't want the `remember` field?
         #if 'remember' in self.fields.keys():
          #   del self.fields['remember']
-    
+
+    send_form = SmsForm()
+    confirm_form = ConfirmForm()
+
+
     def signup(self, request, user):
         user.name = self.cleaned_data['name']
         user.phone = self.cleaned_data['phone']

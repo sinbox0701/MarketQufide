@@ -3,7 +3,6 @@ from .models import Order
 from coupon.models import CouponUser, Coupon
 import itertools
 
-
 class OrderCreateForm(forms.ModelForm):
 
     class Meta:

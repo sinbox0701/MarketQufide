@@ -215,7 +215,7 @@ def comment_select(request):
             false_comment.best=False
             false_comment.save()
 
-    return render(request, 'shop/commentselect.html', {'comments': comments})
+    return render(request, 'shop/`.html', {'comments': comments})
 
 
 
