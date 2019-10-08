@@ -1,42 +1,47 @@
 from django.shortcuts import render, get_object_or_404
 from .models import *
-from members.models import User as mUser
 from cart.cart import Cart
 from .forms import OrderCreateForm
 # from coupon.forms import SelectCouponForm
 from shop.models import *
 from django.views.decorators.csrf import csrf_exempt
 from coupon.models import *
-from members.models import User as mUser, Address
+from members.models import User as mUser
+from members.models import Address
 
 
 @csrf_exempt
 def order_create(request):  # 주문서 입력
     cart = Cart(request)
     if request.user.id != None :
-        user = mUser.objects.get(id=request.user.id)
-        coupons = CouponUser.objects.filter(user=user)
         address = Address.objects.get(username=request.user)
+        print ("*****************************111")
         if request.method == 'POST':
+            print ("*****************************222")
             order_create_form = OrderCreateForm(request.POST)
             if order_create_form.is_valid():
+                print ("*****************************333")
                 order = order_create_form.save(commit=False)
                 order.save()
                 for item in cart:
-                    OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
+                    print (item['product'])
+                    if item['product'] != None:
+                        OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
                 if 'price_post' in request.POST:
+                    print ("*****************************444")
                     price = request.POST['price_post']
-                order_price = Order.objects.get(order=order)
-                order_price.price = price
-                order_price.save()
+                    order_price = Order.objects.get(order=order)
+                    order_price.price = price
+                    order_price.save()
         else:
+            print ("*****************************555")
             order_create_form = OrderCreateForm()
             order = order_create_form.save(commit=False)
             order.zip = address.zip
             order.addr1 = address.addr1
             order.addr2 = address.addr2
             order_create_form = OrderCreateForm(instance=order)
-            return render(request, 'order/create.html', {'cart' : cart, 'order_create_form' : order_create_form, 'coupons':coupons})
+            return render(request, 'order/create.html', {'cart' : cart, 'order_create_form' : order_create_form})
 
     else:
         if request.method == 'POST':
@@ -45,12 +50,14 @@ def order_create(request):  # 주문서 입력
                 order = order_create_form.save(commit=False)
                 order.save()
                 for item in cart:
-                    OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
+                    print (item['product'])
+                    if item['product'] != None:
+                        OrderItem.objects.create(order=order, product=item['product'], option=item['option'], price=item['price'], quantity=item['quantity'])
                 if 'price_post' in request.POST:
                     price = request.POST['price_post']
-                order_price = Order.objects.get(order=order)
-                order_price.price = price
-                order_price.save()
+                    order_price = Order.objects.get(order=order)
+                    order_price.price = price
+                    order_price.save()
         else:
             order_create_form = OrderCreateForm()
             return render(request, 'order/create.html', {'cart' : cart, 'order_create_form' : order_create_form})
@@ -59,10 +66,20 @@ def order_complete(request):
     order_id = request.GET.get('order_id')
     order = Order.objects.get(id=order_id)
     orderitems = OrderItem.objects.filter(order=order)
+    sum = 0
     for orderitem in orderitems:
         orderitem.product.count_order+=orderitem.quantity
         orderitem.option.stock-=orderitem.quantity
         orderitem.product.save()
+        sum += orderitem.get_item_price()
+
+    if order.price == 0:
+        order.price=sum
+        order.save()
+
+    order.order_userID = request.user
+    order.save()
+
     return render(request, 'order/created.html', {'order': order})
 
 
@@ -77,7 +94,6 @@ class OrderCreateAjaxView(View):
         cart = Cart(request)
         #form = OrderCreateForm(mUser,request.POST) #기웅
         form = OrderCreateForm(request.POST)
-
         if form.is_valid():
             order = form.save()
             for item in cart:
@@ -97,8 +113,8 @@ class OrderCreateAjaxView(View):
 # 결제 정보 생성
 class OrderCheckoutAjaxView(View):
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse({"authenticated": False}, status=403)
+        #if not request.user.is_authenticated:
+        #    return JsonResponse({"authenticated": False}, status=403)
 
 
         order_id = request.POST.get('order_id')
@@ -126,8 +142,8 @@ class OrderCheckoutAjaxView(View):
 # 결제 검증
 class OrderImpAjaxView(View):
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse({"authenticated": False}, status=403)
+        #if not request.user.is_authenticated:
+        #    return JsonResponse({"authenticated": False}, status=403)
 
 
         order_id = request.POST.get('order_id')
