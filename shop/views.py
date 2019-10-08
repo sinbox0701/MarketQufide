@@ -225,9 +225,16 @@ def home(request, category_slug=None) :
 
     banners = Banner.objects.all()
     comments = Comment.objects.filter(best=True)
-    return render(request, 'shop/home.html', {'categories' : categories, 'current_category' : current_category, 'banners' : banners, 'comments': comments})
 
 
+    sale_products = Product.objects.exclude(sale_percent=0).order_by('-count_order')[:4]
+    recommend_products = Product.objects.filter(recommend=1).order_by('-count_ordproducter')[:4]
+    best_products = Product.objects.order_by('-count_order')[:4]
+    best_comments = Comment.objects.filter(best=1)[:2]
+    return render(request, 'shop/home.html',
+              {'categories': categories, 'current_category': current_category, 'banners': banners,
+               'comments': comments, 'sale_products': sale_products, 'recommend_products': recommend_products,
+               'best_products': best_products, 'best_comments': best_comments})
 
 def search(request, search_term = ''):
     products = Product.objects.all()
@@ -235,9 +242,11 @@ def search(request, search_term = ''):
     if 'search' in request.GET:
         search_term = request.GET['search']
         products = products.filter(Q(name__contains=search_term)|Q(tag_description__contains=search_term))
-
+    product_count = 0
+    for i in products:
+        product_count += 1
     return render(request, 'shop/search.html',
-                  {'products': products, 'search_term' : search_term, 'categories' : categories})
+                  {'products': products, 'search_term' : search_term, 'categories' : categories, 'product_count':product_count})
 
 def searchOrder(request, search_term = ''):
     if 'search' in request.GET:

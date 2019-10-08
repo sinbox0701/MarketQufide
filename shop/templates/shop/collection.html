@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}Collection Page{% endblock %}
 {% block content %}
+    <p class="small_title">기획전</p>
+    <div class="collection">
     {% for collection in collections %}
-        {{ collection.name }}
-        <a href="{{ collection.get_absolute_url }}"><img src="{{collection.title_image.url }}" alt="title_image"></a>
-
+        <li><a href="{{ collection.get_absolute_url }}"><img src="{{collection.title_image.url }}" alt="title_image"></a></li>
     {% endfor %}
+    </div>
+    <style>
+        .small_title{
+font-family: NanumGothic;font-size: 26px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.15;
+letter-spacing: normal;text-align: center;color: #32b09d;margin-top: 100px;
+}   .collection img{width: 1150px;height: 270px;}
+    .collection li {margin-left: 180px;list-style: none;margin-top: 30px;}
+    </style>
 {% endblock %}

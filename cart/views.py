@@ -30,12 +30,27 @@ def remove(request, product_id, option_id): # 카트에서 제품 삭제
 def detail(request): # 장바구니 페이지
     cart = Cart(request)
     companies = Company.objects.none()
+    sale_products = Product.objects.all().exclude(sale_percent=0).order_by('-sale_percent')[:8]
+    user = request.user
     for item in cart:
         item['quantity_form'] = AddProductForm(initial={'option_id':item['option'].id, 'quantity':item['quantity'], 'is_update':True})
         companies  = companies | Company.objects.filter(name=item['product'].company)
     #add_coupon = AddCouponForm()
     #for product in cart:
         #product['quantity_form'] = AddProductForm(initial={'quantity':product['quantity'], 'is_update':True})
+    delivery_company_count = 0
+    for company in companies:
+        price_sum = 0
+        for item in cart:
+            if item['product'].company == company:
+                price_sum += item['price'] * item['quantity']
+        if price_sum < 30000:
+            delivery_company_count += 1
+    delivery_fee = 3000 * delivery_company_count
+    total_price_without_discount = 0
+    for item in cart:
+        total_price_without_discount += item['product'].price * item['quantity']
 
-
-    return render(request, 'cart/detail.html', {'cart': cart, 'companies':companies})
+    return render(request, 'cart/detail.html',
+                  {'cart': cart, 'companies': companies, 'user': user, 'delivery_fee': delivery_fee,
+                   'total_price_without_discount': total_price_without_discount, 'sale_products': sale_products})
