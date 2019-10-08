@@ -14,6 +14,12 @@ class CustomProcessAdapter(DefaultAccountAdapter):
             raise ValidationError('You are restricted from registering. Please contact admin.')
         return email
 
+    def clean_phone(self, phone):
+        RestrictedList = ['01000000000']
+        if phone in RestrictedList:
+            raise ValidationError('You are restricted from registering. Please contact admin.')
+        return phone
+
     def clean_password(self,password,user=None):
         if len(password) > 20:
             raise ValidationError('Please Enter a password greater that you can remember.')

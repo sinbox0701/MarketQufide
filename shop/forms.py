@@ -28,7 +28,7 @@ class OptionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(OptionForm, self).__init__(*args, **kwargs)
-        self.fields[name].label = "옵션"
+        self.fields['name'].label = "옵션"
 
 
 

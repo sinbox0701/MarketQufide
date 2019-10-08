@@ -13,8 +13,6 @@ from members.models import Address
 @csrf_exempt
 def order_create(request):  # 주문서 입력
     cart = Cart(request)
-
-
     if request.user.id != None :
         address = Address.objects.get(username=request.user)
         print ("*****************************111")

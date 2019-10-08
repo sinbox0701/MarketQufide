@@ -17,7 +17,7 @@ class CouponUser(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=16, default=get_random_code)
-#    discount = models.ForeignKey('Discount', on_delete=models.CASCADE)
+    #discount = models.ForeignKey('Discount', on_delete=models.CASCADE)
     created = models.DateTimeField()
     name = models.CharField(max_length=20)
     expiration_date = models.DateTimeField()
@@ -32,7 +32,7 @@ class Coupon(models.Model):
         coupon_user.times_used += 1
         coupon_user.save()
 
-
+    '''
     def get_discount(self):
         return {
             "value": self.discount.value,
@@ -48,7 +48,7 @@ class Coupon(models.Model):
             new_price = initial_value - discount['value']
             new_price = new_price if new_price >= 0.0 else 0.0
         return new_price
-
+    '''
     def save(self, *args, **kwargs):
         if not self.id:
             self.created = timezone.now()

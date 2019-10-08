@@ -1,6 +1,5 @@
 # Create your views here.
 from random import randint
-
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout, get_user_model
 from django.shortcuts import render, redirect,get_object_or_404
 from sdk.api.message import Message
@@ -9,7 +8,9 @@ from django.conf import settings
 from django.http import HttpResponse
 from allauth.account.views import *
 #from members.models import Phone
-from .forms import SignupForm, LogInForm,SmsForm,ConfirmForm, ProfileForm, findIDForm
+
+from .forms import *
+
 from .models import SmsSend
 from .CertiNum import get_centification_number
 from members.models import *
@@ -19,7 +20,7 @@ from shop.models import Category
 from coupon.models import *
 import datetime
 from order.models import *
-
+from kwShop.forms import *
 from django.http import HttpResponseRedirect
 # Create your views here.
 
@@ -27,9 +28,59 @@ from django.http import HttpResponseRedirect
 
 # allauth customizing
 class CustomSignupView(SignupView):
-    template_name = "members/signup." + app_settings.TEMPLATE_EXTENSION
-    form_class = CustomSignupForm
+    #template_name = "members/signup." + app_settings.TEMPLATE_EXTENSION
+    #form_class = CustomSignupForm
 
+    success_url =  '/test/'
+
+    def get_success_url(self):
+        return '/test/'
+
+    def send_and_confirm(request):
+        send_form = SmsForm(data=request.POST)
+        # confirm_form = ConfirmForm(request.POST)
+
+        def get_valid_sms_info_and_save():
+            get_valid_params = {
+                'type': 'sms',
+                'to': request.POST.get('msg_getter'),
+                'from': settings.SENDER,
+                'text': str(get_centification_number(4)),
+            }
+            send_form.save()
+            return get_valid_params
+        if request.method == "POST":
+            confirm_form = ConfirmForm(request.POST)
+            if send_form.is_valid():
+                try:
+                    params = get_valid_sms_info_and_save()
+                    cool = Message(settings.COOLSMS_API_KEY, settings.COOLSMS_API_SECRET)
+                    response = cool.send(params)
+                    if 'error_list' in response:
+                        print('Error List : {}'.format(response['error_list']))
+                    return redirect('members:test')
+                except CoolsmsException as e:
+                    return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
+            if confirm_form.is_valid():
+                try:
+                    params2 = dict()
+                    #params2['send_time'] = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+                    cool = Message(settings.COOLSMS_API_KEY, settings.COOLSMS_API_SECRET)
+                    response2 = cool.sent(params2)
+                    data = response2['data']
+                    #print(data)
+                    if request.POST.get('conf') == data[0]['text']:
+                            return HttpResponseRedirect('/')
+                except CoolsmsException as e:
+                    return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
+        else:
+            send_form = SmsForm()
+            confirm_form = ConfirmForm()
+        context = {
+            'send_form': send_form,
+            'confirm_form': confirm_form
+        }
+        return render(request, 'members/test.html', context)
 
 
 signup = CustomSignupView.as_view()
@@ -204,7 +255,7 @@ def findID(request):
         form = findIDForm(request.POST or None)
         if form.is_valid():
             try :
-                member = User.objects.get(name=form['username'].value(), phone=form['phone'].value())
+                member = User.objects.get(name=form['name'].value(), phone=form['phone'].value())
                 return render(request, 'members/confirmID.html', {'member':member})
             except:
                 return render(request, 'members/wrongID.html')

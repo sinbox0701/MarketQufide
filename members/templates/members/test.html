@@ -2,17 +2,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>SEND SMS!</h1>
+<style>
+    .outbox{
+           width: 1310px;height: 970px; margin-top: -8px; background-color: #f1f3f5;
+      }
+
+    .mainbox{
+          border: solid 1px white; width: 492px;height: 970px; margin-top: -8px; background-color: white;
+      }
+     .email_w
+      {
+        object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #070707;float:left; margin-left: 18px;margin-top: -3px;
+      }
+    #send1{
+          display:block; font-family: NanumGothic;font-size: 15px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.3px;text-align:center;line-height: 38px; text-decoration: none;color: white;
+        top: 500px;
+        left: 700px;
+    }
+    #confirm1{
+          display:block; font-family: NanumGothic;font-size: 15px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.3px;text-align:center;line-height: 38px; text-decoration: none;color: white;
+         top: 572px;
+        left: 700px;
+    }
+      .login{
+          position: absolute;
+        width: 100px;height: 38px;background-color:#32b09d;border-radius: 4px;
+
+      }
+     .login2{
+          position: absolute;
+        width: 100px;height: 38px;background-color:#32b09d;border-radius: 4px;
+
+      }
+</style>
+ <center><div class="outbox">
+ <center><div class="mainbox">
+<h3>인증하기</h3>
+     <br>
 <form action="" method="post" name="send">
     {% csrf_token %}
-    <div>{{ send_form }}</div>
-    <button type="button" id="send1" onclick="sending();" value="seend">전송하기</button>
+    <div class="email_w">{{ send_form }}</div>
+    <button type="button" class= "login" id="send1" onclick="sending();" value="seend">전송하기</button>
 </form>
-
+     <br><br><br>
 <form action="" method="post" name="confirm">
     {% csrf_token %}
-    <div>{{ confirm_form }}</div>
-    <button type="submit">인증하기</button>
+    <div class="email_w">{{ confirm_form }}</div>
+    <button class= "login2" id="confirm1" type="submit">인증하기</button>
 </form>
 
 <script type="text/javascript">

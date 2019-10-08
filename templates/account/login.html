@@ -11,6 +11,181 @@
 {% block head_title %}{% trans "Sign In" %} {% endblock %}
 
 {% block content %}
+        <style>
+      .header1{
+        display:block;width:1310px; height:25px; font-family: NanumGothic;font-size: 15px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.7;letter-spacing: normal;text-align: center;color: #32b09d;text-decoration: none;
+        background-color: #d7f7f5;padding:11px;
+      }
+      .header1:hover{
+        color:white;background-color: #32b09d;
+      }
+      .header2{
+        background-color: #f1f3f5;height:38px;margin:0;
+      }
+      #h2_word{
+        font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 38px;letter-spacing: -0.24px;text-align:left; margin-left: 35px;color: #707070;
+      }
+      #h2_i{
+        float:right; margin-right:80px; margin-top: 10px;
+      }
+      .search_line{
+        float:right; margin-top:20px; margin-right:75px;width: 280px;height: 38px;border-radius: 19px;border: solid 1px #dee2e6;
+      }
+      .search_line>div {
+        display:block; float:right; margin-right:140px; font-family: NanumGothic;font-size: 14px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 2.6;letter-spacing: -0.28px;text-align: left;color: #c3c3c3;
+      }
+      #search_img{
+        position: relative; top:20%; left:90%;
+      }
+
+      .category{
+        position:relative; display: inline-block; margin-left: 35px;float:left;width: 200px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #ffffff;text-decoration: none;
+
+        background-color: #343a40;
+      }
+      .tteok_back,.hangoa_back,.bread_back,.guk_back,.fruit_back,.bunsik_back,.sauce_back,.yukgagong_back,.healthyfood_back,.drink_back{
+        margin-left: 35px; width:200px;height:40px;background-color:#646664; opacity: 0.9;
+      }
+      #tteok,#hangoa,#bread,#guk,#fruit,#bunsik,#sauce,#yukgagong,#healthyfood,#drink{
+        display:block; margin-left: 60px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 40px;letter-spacing: -0.28px;text-align: left;color: #ffffff;text-decoration: none;
+      }
+      .tteok_back:hover,.hangoa_back:hover,.bread_back:hover,.guk_back:hover,.fruit_back:hover,.bunsik_back:hover,.sauce_back:hover,.yukgagong_back:hover,.healthyfood_back:hover,.drink_back:hover{background-color: #343a40;opacity: 0.9;}
+      #submenu{
+        display:none; position:absolute;
+      }
+      .top_menu:hover #submenu{
+        display: block;
+      }
+      .somun,.recommendation,.best,.new_item,.Exhibitions,.Event,.Recipe{
+        float:left;width: 142px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #070707;text-decoration: none;
+
+        background-color: #ffffff;
+      }
+      .somun:hover,.recommendation:hover,.best:hover,.new_item:hover,.Exhibitions:hover,.Event:hover,.Recipe:hover{color:red;}
+
+      .tteok_menu,.hangoa_menu,.bread_menu,.guk_menu,.fruit_menu,.bunsik_menu,.sauce_menu,.yukgagong_menu,.healthyfood_menu,.drink_menu{
+        margin-left: 200px; background-color: #ffffff; width:179px; height:400px;display:none; border:solid 1px;
+      }
+      #tteok1,#tteok2,#tteok3,#hangoa1,#hangoa2,#hangoa3,#hangoa4,#bread1,#bread2,#bread3,#bread4,#guk1,#guk2,#guk3,#guk4,#fruit1,#fruit2,#fruit3,#bunsik1,#bunsik2,#bunsik3,#bunsik4,#sauce1,#sauce2,#sauce3,#yukgagong1,#yukgagong2,#yukgagong3{
+        display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+      }
+      #healthyfood1,#healthyfood2,#healthyfood3,#drink1,#drink2,#drink3{
+        display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+      }
+      #tteok1:hover,#tteok2:hover,#tteok3:hover,#hangoa1:hover,#hangoa2:hover,#hangoa3:hover,#hangoa4:hover,#bread1:hover,#bread2:hover,#bread3:hover,#bread4:hover,#guk1:hover,#guk2:hover,#guk3:hover,#guk4:hover,#fruit1:hover,#fruit2:hover,#fruit3:hover{color:#32b09d; text-decoration: underline;}
+
+      #bunsik1:hover,#bunsik2:hover,#bunsik3:hover,#bunsik4:hover,#sauce1:hover,#sauce2:hover,#sauce3:hover,#healthyfood1:hover,#healthyfood2:hover,#healthyfood3:hover,#drink1:hover,#drink2:hover,#drink3:hover,#yukgagong1:hover,#yukgagong2:hover,#yukgagong3:hover{color:#32b09d; text-decoration: underline;}
+
+      .tteok_back:hover .tteok_menu{display: block;}
+      .hangoa_back:hover .hangoa_menu{display: block;}
+      .bread_back:hover .bread_menu{display: block;}
+      .fruit_back:hover .fruit_menu{display: block;}
+      .guk_back:hover .guk_menu{display: block;}
+      .bunsik_back:hover .bunsik_menu{display: block;}
+      .sauce_back:hover .sauce_menu{display: block;}
+      .healthyfood_back:hover .healthyfood_menu{display: block;}
+      .yukgagong_back:hover .yukgagong_menu{display: block;}
+      .drink_back:hover .drink_menu{display: block;}
+
+      #logo_img{
+        width:140px ;height:135px; position:absolute; top:65px; left:600px;}
+
+      #line4{
+        border:solid 1px #dee2e6;
+      }
+      #line5{
+        border:solid 1px #f1f3f5; margin-top: 20px;margin-bottom: 20px;float:inherit;
+      }
+      .outbox{
+           width: 1310px;height: 720px; margin-top: -8px; background-color: #f1f3f5;
+      }
+
+      .mainbox{
+          border: solid 1px white; width: 492px;height: 720px; margin-top: -8px; background-color: white;
+      }
+      .sns_login{
+        object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;line-height: 1.14;letter-spacing: -0.28px;text-align: center;color: #070707; float:left; margin-left: 18px;margin-right:114px;
+      }
+      .b_naver_l{
+        float:left; margin-right:8px;width: 85px;height: 35px;border: solid 1px #1ec800;background-color: #ffffff; margin-top: -16px;border-radius: 4px;
+      }
+      .b_facebook_l{
+        float:left; margin-right:8px;width: 85px;height: 35px;border: solid 1px #3b5998;background-color: #ffffff; margin-top: -16px;border-radius: 4px;
+      }
+      .b_google_l{
+        float:left; margin-right:12px;width: 85px;height: 35px;border: solid 1px #ea4335;background-color: #ffffff; margin-top: -16px;border-radius: 4px;
+      }
+      #b_naver,#b_facebook,#b_google{
+        display:block; font-family: NanumGothic;font-size: 16px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 33px; text-decoration: none;color: #444
+      }
+      .email_w,.pw_w
+      {
+        object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #070707;float:left; margin-left: 18px;
+      }
+      .star{
+        font-family: NanumGothic;font-size: 14px;font-weight: bold;color:#32d09b;float:left;margin-left: 3px;
+      }
+      .input_window{
+        border: solid 1px #dee2e6; width: 456px;height: 38px;margin-top: 8px;
+      }
+      .check{
+        font-family: NanumGothic;font-size: 14px;font-weight: bold;color:black;float:left;margin-left: 25px;
+      }
+      .login{
+        width: 456px;height: 38px;background-color:#32b09d;
+      }
+      .join{
+        width: 456px;height: 38px;background-color:#white; border: solid 1px #dee2e6;margin-top: 10px;
+      }
+      #b_login{
+        display:block; font-family: NanumGothic;font-size: 15px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 35px; text-decoration: none;color: white;
+      }
+      #b_join{
+        display:block; font-family: NanumGothic;font-size: 15px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 35px; text-decoration: none;color: #707070; margin-left: 200px;
+      }
+      #join_coupon{
+        display:block; font-family: NanumGothic;font-size: 11.5px;font-weight: bold;letter-spacing: -0.32px;text-align:center;line-height: 28px; text-decoration: none;color: #32b09d; float:left; margin-right:12px;width: 90px;height:28px;border-radius:17px; border:solid 1px #32b09d; background-color:white;margin-left: 8px; margin-top: 4px;
+      }
+      .pw_search,.oder_check,.n{
+        object-fit: contain;font-family: NanumGothic;font-size: 13px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.15;letter-spacing: -0.26px;text-align: left;color: #707070;float:left;text-decoration: none;
+      }
+      #Customer_Service{
+      width: 300px;height: 3px;margin-left: 90px;font-family: NanumGothic;font-size: 25px;font-weight: bold;line-height: 1.7;letter-spacing: normal;text-align: left;color: #070707;
+      }
+
+      #hours_of_business{
+        float:left; width: 560px;height: 3px; margin-left: 90px; margin-bottom: 50px; font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.8;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      .b_inquiry_l,.b_kakao_l,.b_insta_l{
+        float:left; margin-right:12px;width: 94px;height: 37px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff; margin-top: -16px;
+      }
+      #b_inquiry,#b_kakao,#b_insta{
+        display:block; font-family: NanumGothic;font-size: 16px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 37px; text-decoration: none;color: #444
+      }
+      #tail_mq
+      {
+        float:left; margin-left: 90px; margin-right:500px; height:20px;object-fit: contain;font-family: 'NanumGothic';font-size: 12px;font-weight: 900;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info1{
+        float:left; margin-left: 90px; margin-bottom: 60px; object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info2{
+        float:left; margin-left:326px; margin-top:5px; object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #partnership,#terms,#p_info{
+       float:left; margin-right:15px;object-fit: contain; font-family:NanumGothic;font-size: 14px;font-weight:900; text-decoration: none;font-stretch: normal;line-height:1.2 ;letter-spacing: -0.28px;text-align: left;color: #070707;
+      }
+      #line9{
+        border:solid 1px #dee2e6;
+      }
+      #line8{
+        border:solid 1px #dee2e6;
+      }
+      .or{
+        position: absolute; top:550px; left:659px; object-fit: contain;font-family: NanumGothic;font-size: 13px;font-weight: bold;line-height: 1.15;letter-spacing: -0.26px;text-align: center;color: #707070; width: 35px; height: 15px; background-color: white;
+      }
+
+    </style>
 <div class="container-fluid">
 
  {% block messages %}
@@ -30,33 +205,48 @@
     {% endif %}
   {% endblock %}
 
-<h3 class="h3" id="head_banner">{% trans "Sign In" %}</h3>
-
-<form class="container-fluid text-center" id="login_form" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  
-  {{ form.as_p }}
-
-  {% if redirect_field_value %}
-  
-    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  
-  {% endif %}
-  
-  <button  class="btn btn-outline-primary " type="submit">{% trans "Sign In" %}</button>
-  <a class="btn btn-outline-dark" href="{% url 'account_reset_password' %}">{% trans "Forgot Password ?" %}</a>
-    <a class="btn btn-outline-dark" href="{% url 'members:findID' %}">{% trans "Forgot ID ?" %}</a>
+   <hr id="line4" width="98%"> <!--라인-->
+    <center><div class="outbox">
+    <center><div class="mainbox">
+      <br>
+      <center><h2>로그인</h2></center><br>
+      <p class="sns_login">SNS 로그인</p><br>
 
 
-</form>
     {% load account socialaccount %}
 
     {% get_providers as socialaccount_providers %}
     <ul class="social_providers_list">
     {% for provider in socialaccount_providers %}
-        <a title="{{provider.name}}" class="btn btn-outline-dark" 
+        <a title="{{provider.name}}" class="b_naver_l"
          href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"><i class="fa fa-{{provider.name}}" id="social_icon"></i>{{provider.name}}</a>
     {% endfor %}
     </ul>
+      <hr id="line5" width="90%"> <!--라인-->
+      <div class="or">OR</div>
+      <br>
+     <form class="container-fluid text-center" id="login_form" method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+
+    <div class= "email_w">{{ form.as_p }}</div>
+
+    {% if redirect_field_value %}
+
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+
+    {% endif %}
+
+    <button  class="login" id="b_login" type="submit">{% trans "Sign In" %}</button>
+         <div class="join">
+        <a href="{% url 'account_signup' %}" id="b_join" style="float:left;">회원가입</a>
+        <a href="#" id="join_coupon">+ 신규가입쿠폰</a>
+      </div><br><br>
+    </form>
+      <a href="{% url 'members:findID' %}"class="pw_search" style="margin-left:125px;">이메일/비밀번호 찾기</a>
+      <div class="n" style="margin-left:10px;margin-right:10px;">|</div>
+      <a href="{% url 'shop:nonmember' %}" class="oder_check">비회원 주문조회</a>
+    </div></center>
+  </div></center>
 </div>
+
 {% endblock %}
