@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}My Page{% endblock %}
+{% block content %}
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+
+<script language="JavaScript">
+        function openZipSearch() {
+	        new daum.Postcode({
+		        oncomplete: function(data) {
+			        $('[name=zip]').val(data.zonecode); // 우편번호 (5자리)
+			        $('[name=addr1]').val(data.address);
+			        $('[name=addr2]').val(data.buildingName);
+		        }
+	        }).open();
+        }
+</script>
+
+    <nav class="navbar navbar-default">
+      <div class="container">
+        배송지추가<br>
+          <form method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <p>
+        {{ form.as_p}}
+            </p>
+
+        <button type="button" style="width:60px; height:32px;" onclick="openZipSearch()">검색</button><br>
+        <button type="submit" class="save btn btn-default">추가하기</button>
+          </form>
+      </div>
+    </nav>
+
+
+{% endblock %}
