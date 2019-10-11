@@ -9,6 +9,20 @@ class OrderCreateForm(forms.ModelForm):
         model = Order
         fields = ['name', 'email','zip','addr1','addr2','phone','orderco']
 
+    def clean(self):
+        cleaned_data = super(OrderCreateForm, self).clean()
+        name = cleaned_data.get('name')
+        email = cleaned_data.get('email')
+        zip = cleaned_data.get('zip')
+        addr1 = cleaned_data.get('addr1')
+        addr2 = cleaned_data.get('addr2')
+        phone = cleaned_data.get('phone')
+        orderco = cleaned_data.get('orderco')
+
+
+
+
+
     def __init__(self, *args, **kwargs):
         super(OrderCreateForm, self).__init__(*args,**kwargs)
 
