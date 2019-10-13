@@ -261,6 +261,53 @@ Order Complete
     <div class="gray_box">
       <div id="gray_word" style="float:left; font-weight:bolder">{{ orderitem.product.company }}</div>
     </div>
+
+</div>
+
+    <br>
+    <center><h2 class="basket_title">주문완료</h2></center><br>
+    <img src="그룹 8532.png" srcset="그룹 8532@2x.png 2x, 그룹 8532@3x.png 3x" style="float:right; margin-right:110px; "></img><br><br>
+    <div class="order_complete" style="margin-left:60px; margin-right:5px;">고객님의</div>
+    <div class="order_complete" style=" font-weight:900;">주문</div>
+    <div class="order_complete">이 완료되었습니다.</div>
+    <br><br>
+    <div class="order_complete2" style="margin-left:60px;">마켓큐피드를 이용해주셔서 감사합니다.</div>
+    <br>
+    <div class="order_complete2"style="margin-left:60px;">주문변경은</div>
+    <a class="order_complete2" href="accounts/login" style="font-weight:900; margin-left:4px;">[홈페이지 - 로그인]</a>
+    <div class="order_complete2">에서 가능합니다.</div>
+    <br><br>
+    <div class="order_complete2" style="margin-left:60px;">※ 결제 완료된 상품 중 1개 상품이라도 '배송 준비중' 또는 '출고 완료' 상태인 경우 주문 취소 및 배송지 변경이 불가능합니다.</div>
+    <br><br>
+    <div class="graybox">
+      <table class="table1">
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:150px;height:28px;" id="name1">고객명</td>
+            <td id="name2">{{ order.name }}</td>
+          </tr>
+          <tr>
+            <td style="width:150px;height:28px;" id="order_num1">주문번호</td>
+            <td id="order_num2" style="color:#32b09b">{{ order.orderno }}</td>
+          </tr>
+          <tr>
+            <td style="width:150px;height:28px;" id="order_date1">주문일자</td>
+            <td id="order_date2">{{ order.created }}</td>
+          </tr>
+          <tr style="height:10px;"></tr>
+        </tbody>
+      </table>
+    </div>
+    <br><br>
+    <div class="order_product">주문 상품</div>
+    <hr style="border:solid 1px black; margin-left:60px;" width="87.3%" > <!--라인-->
+    <br>
+    <div class="gray_box">
+      <div id="gray_word" style="float:left; font-weight:bolder">{{ orderitem.product.company }}</div>
+    </div>
+
     <div class="item_box">
       {% if count == 0 %}
         <div id="item_title">{{ orderitem.product }}</div>
@@ -268,7 +315,9 @@ Order Complete
           <div id="item_title">{{orderitem.product}} 외 {{count}}건</div>
       {% endif %}
       <br><br>
+
       <div id="box"><img src="{{orderitem.product.image.url}}" width="80px" height="80px"></div>
+
       <div id="item_price">4,500원 </div><br>
       <div id="item_count2">옵션 : {{orderitem.option.name}}</div>
     </div>
@@ -355,5 +404,22 @@ Order Complete
     <br><br><br><br><br>
     <center><button type="button" name="button" class="gomain" onclick= "location.href='{% url 'shop:product_all' %}' ">메인으로 가기</button></center>
     <br><br><br><br>
+
+
+<script>
+function doNotReload(){
+    if(    (event.ctrlKey == true && (event.keyCode == 78 || event.keyCode == 82))
+        || (event.keyCode == 116) )
+    {
+      event.keyCode = 0;
+      event.cancelBubble = true;
+      event.returnValue = false;
+ alert("새로고침 방지");
+    }
+}
+document.onkeydown = doNotReload;
+</script>
+<body oncontextmenu="return false">
+
 
 {% endblock %}

@@ -77,6 +77,7 @@ def order_complete(request):
         orderitem.product.count_order+=orderitem.quantity
         orderitem.option.stock-=orderitem.quantity
         orderitem.product.save()
+        orderitem.option.save()
         sum += orderitem.get_item_price()
         count += 1
 
@@ -84,10 +85,8 @@ def order_complete(request):
         order.price=sum
         order.save()
 
-    order.order_userID = request.user
-    order.save()
-
     return render(request, 'order/created.html', {'order': order, 'orderitem':orderitem},{'count': count-1})
+
 
 
 from django.views.generic.base import View

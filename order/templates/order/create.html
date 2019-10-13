@@ -79,8 +79,6 @@ order_complete_url = '{% url "orders:order_complete" %}';
     .rank_menu{
       display:none; padding-left:25px;position:absolute; width:340px; height:430px; border: dashed 1px; color:#32b09d; margin-left: 35px; margin-top: -40px; background-color: #ffffff;
     }
-
-
     #logo_img{
       width:140px ;height:135px; position:absolute; top:65px; left:600px;
     }
@@ -403,9 +401,8 @@ order_complete_url = '{% url "orders:order_complete" %}';
             {{order_create_form.addr2}}
                 </td>
 
-            </div>
 
-            <br><br>
+            </div>
             <hr style="border:solid 1px #f1f3f5; margin-top:-3px;" width="99%"> <!--라인-->
             <div class="pw"><br>
                 <div class="pw_w">배송메세지</div>
@@ -417,7 +414,9 @@ order_complete_url = '{% url "orders:order_complete" %}';
         </div>
       <br><br><br>
       <div class="whitebox3">
+
         <div id="sender_t">주문 상품</div>
+
           {% for item in cart %}
             <div class="gray_box">
                 <div id="gray_word">{{ item.product.company }}</div>
@@ -452,7 +451,9 @@ order_complete_url = '{% url "orders:order_complete" %}';
         <br>
     </div>
     <br><br><br>
+
     <div style=" margin-right:105px; width:400px; top: -980px; position: relative;  left: 600px; float:right; width: 396px;height: 574px;object-fit: contain;border-radius: 10px;box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);border: solid 1px #dee2e6;background-color: #ffffff;">
+
       <div class="Payment_info1">결제 정보</div><div class="Payment_info2">(상품 3개)</div>
       <br>
       <hr style="border:solid 1px #f1f3f5; margin-bottom:0px;" width="90%"> <!--라인-->
@@ -478,6 +479,7 @@ order_complete_url = '{% url "orders:order_complete" %}';
       <div class="Payment_box">
         <div class="payment_box_word">최종 결제 금액</div>
           <div class="Payment_box_0"><div id="actual_price">{{ cart.get_total_price | add:'3000'}}원</div></div>
+
       </div>
       <hr style="border:solid 1px #f1f3f5; margin-bottom:0px;" width="100%"> <!--라인-->
       <br>
@@ -504,6 +506,7 @@ order_complete_url = '{% url "orders:order_complete" %}';
 
     </div>
 </div>
+
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js" type="text/javascript"></script>
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script language="JavaScript">
