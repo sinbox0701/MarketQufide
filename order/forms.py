@@ -7,7 +7,16 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['name', 'email','zip','addr1','addr2','phone','orderco']
+        fields = ('name', 'email','zip','addr1','addr2','phone','orderco')
+        labels = {
+            'name' : '받는사람',
+            'phone' : '연락처',
+            'email' : '이메일',
+            'zip' : '우편번호',
+            'addr1' : '주소',
+            'addr2' : '상세주소',
+            'orderco' : '배송메세지'
+        }
 
     def __init__(self, *args, **kwargs):
         super(OrderCreateForm, self).__init__(*args,**kwargs)

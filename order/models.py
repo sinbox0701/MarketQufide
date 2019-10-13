@@ -28,6 +28,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=11)
     orderco = models.TextField()
 
+
     class Meta:
         ordering = ['-created']
 

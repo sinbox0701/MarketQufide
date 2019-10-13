@@ -5,6 +5,28 @@
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
+    <style>
+        .b_logout {
+            width: 140px;
+            height: 46px;
+            object-fit: contain;
+            border-radius: 33px;
+            border: solid 1px #32b09b;
+            background-color: white;
+            font-family: NanumGothic;
+            font-size: 17px;
+            font-weight: bold;
+            line-height: 1.18;
+            letter-spacing: -0.34px;
+            text-align: center;
+            color: #32b09b;
+            cursor: pointer;
+        }
+    .b_logout2{
+      border-radius: 33px;border: solid 1px #32b09b; background-color: white; font-family: NanumGothic;font-size: 17px;font-weight: bold;line-height: 1.18;letter-spacing: -0.34px;text-align: center;color: #32b09b;cursor: pointer;padding-left: 28px;
+      padding-right: 28px; padding-top: 12px; padding-bottom: 12px;
+    }
+    </style>
 <div class="container-fluid">
 
 <h3 class="h3" id="head_banner">{% trans "Sign Out" %}</h3>
@@ -20,8 +42,8 @@
 
   {% endif %}
   
-  <button  class="btn btn-outline-success" type="submit">{% trans 'Sign Out' %}</button>
-  <a class="btn btn-outline-danger" id="custom_logout_no" href="/">{% trans 'No' %}</a>
+  <button  class="b_logout" type="submit">{% trans 'Sign Out' %}</button>
+  <a class="b_logout2" id="custom_logout_no" href="/">{% trans 'No' %}</a>
 </form>
 
 </div>

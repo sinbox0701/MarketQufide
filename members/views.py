@@ -58,7 +58,7 @@ class CustomSignupView(SignupView):
                     response = cool.send(params)
                     if 'error_list' in response:
                         print('Error List : {}'.format(response['error_list']))
-                    return redirect('members:test')
+                    return redirect('test')
                 except CoolsmsException as e:
                     return HttpResponse('Error : {} - {}'.format(e.code, e.msg))
             if confirm_form.is_valid():

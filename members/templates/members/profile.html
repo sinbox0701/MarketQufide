@@ -1,19 +1,305 @@
 {% extends 'base.html' %}
 {% block title %}My Page{% endblock %}
 {% block content %}
-    <nav class="navbar navbar-default">
-      <div class="container">
-        개인정보확인<br>
-          <form action="" method = "post" enctype="multipart/form-data">
+        <style>
+    .header1{
+      display:block;width:1310px; height:25px; font-family: NanumGothic;font-size: 15px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.7;letter-spacing: normal;text-align: center;color: #32b09d;text-decoration: none;
+      background-color: #d7f7f5;padding:11px;
+    }
+    .header1:hover{
+      color:white;background-color: #32b09d;
+    }
+    .header2{
+      background-color: #f1f3f5;height:38px;margin:0;
+    }
+    .header2{
+      background-color: #f1f3f5;height:38px;margin:0;
+    }
+    #h2_word{
+      width:440px;font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 38px;letter-spacing: -0.24px;text-align:left; margin-left: 35px;color: #707070; float:left;
+    }
+    #basket,#logout,#join{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 10px; text-decoration: none;
+    }
+    #myq{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 80px;text-decoration: none;
+    }
+    #basket:hover,#logout:hover,#join:hover,#myq:hover{
+      color:#32b09b; font-size: bolder;
+    }
+    .search_line{
+      float:right; margin-top:20px; margin-right:70px;width: 280px;height: 38px;border-radius: 19px;border: solid 1px #dee2e6;
+    }
+    .search_line>div {
+      display:block; float:right; margin-right:140px; font-family: NanumGothic;font-size: 14px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 2.6;letter-spacing: -0.28px;text-align: left;color: #c3c3c3;
+    }
+    #search_img{
+      position: relative; top:20%; left:90%;
+    }
+
+
+    #logo_img{
+      width:140px ;height:135px; position:absolute; top:65px; left:600px;
+    }
+    .category{
+      position:relative; display: inline-block; margin-left: 35px;float:left;width: 200px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #ffffff;text-decoration: none;
+
+      background-color: #343a40;
+    }
+    .tteok_back,.hangoa_back,.bread_back,.guk_back,.fruit_back,.bunsik_back,.sauce_back,.yukgagong_back,.healthyfood_back,.drink_back{
+      margin-left: 35px; width:200px;height:40px;background-color:#646664; opacity: 0.9;
+    }
+    #tteok,#hangoa,#bread,#guk,#fruit,#bunsik,#sauce,#yukgagong,#healthyfood,#drink{
+      display:block; margin-left: 60px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 40px;letter-spacing: -0.28px;text-align: left;color: #ffffff;text-decoration: none;
+    }
+    .tteok_back:hover,.hangoa_back:hover,.bread_back:hover,.guk_back:hover,.fruit_back:hover,.bunsik_back:hover,.sauce_back:hover,.yukgagong_back:hover,.healthyfood_back:hover,.drink_back:hover{background-color: #343a40;opacity: 0.9;}
+    #submenu{
+      display:none; position:absolute;
+    }
+    .top_menu:hover #submenu{
+      display: block;
+    }
+    .somun,.recommendation,.best,.new_item,.Exhibitions,.Event,.Recipe{
+      float:left;width: 142px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #070707;text-decoration: none;
+
+      background-color: #ffffff;
+    }
+    .somun:hover,.recommendation:hover,.best:hover,.new_item:hover,.Exhibitions:hover,.Event:hover,.Recipe:hover{color:#32b09b;}
+
+    .tteok_menu,.hangoa_menu,.bread_menu,.guk_menu,.fruit_menu,.bunsik_menu,.sauce_menu,.yukgagong_menu,.healthyfood_menu,.drink_menu{
+      margin-left: 200px; background-color: #ffffff; width:179px; height:400px;display:none; border:solid 1px;
+    }
+    #tteok1,#tteok2,#tteok3,#hangoa1,#hangoa2,#hangoa3,#hangoa4,#bread1,#bread2,#bread3,#bread4,#guk1,#guk2,#guk3,#guk4,#fruit1,#fruit2,#fruit3,#bunsik1,#bunsik2,#bunsik3,#bunsik4,#sauce1,#sauce2,#sauce3,#yukgagong1,#yukgagong2,#yukgagong3{
+      display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+    }
+    #healthyfood1,#healthyfood2,#healthyfood3,#drink1,#drink2,#drink3{
+      display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+    }
+    #tteok1:hover,#tteok2:hover,#tteok3:hover,#hangoa1:hover,#hangoa2:hover,#hangoa3:hover,#hangoa4:hover,#bread1:hover,#bread2:hover,#bread3:hover,#bread4:hover,#guk1:hover,#guk2:hover,#guk3:hover,#guk4:hover,#fruit1:hover,#fruit2:hover,#fruit3:hover{color:#32b09d; text-decoration: underline;}
+
+    #bunsik1:hover,#bunsik2:hover,#bunsik3:hover,#bunsik4:hover,#sauce1:hover,#sauce2:hover,#sauce3:hover,#healthyfood1:hover,#healthyfood2:hover,#healthyfood3:hover,#drink1:hover,#drink2:hover,#drink3:hover,#yukgagong1:hover,#yukgagong2:hover,#yukgagong3:hover{color:#32b09d; text-decoration: underline;}
+
+    .tteok_back:hover .tteok_menu{display: block;}
+    .hangoa_back:hover .hangoa_menu{display: block;}
+    .bread_back:hover .bread_menu{display: block;}
+    .fruit_back:hover .fruit_menu{display: block;}
+    .guk_back:hover .guk_menu{display: block;}
+    .bunsik_back:hover .bunsik_menu{display: block;}
+    .sauce_back:hover .sauce_menu{display: block;}
+    .healthyfood_back:hover .healthyfood_menu{display: block;}
+    .yukgagong_back:hover .yukgagong_menu{display: block;}
+    .drink_back:hover .drink_menu{display: block;}
+
+    .myqufidebox{
+      width: 199px;height:60px;object-fit: contain;background-color: #ffffff;font-family: NanumGothic;font-size: 18px;font-weight: bold;line-height: 27px;letter-spacing: -0.36px;text-align: left;color: #6c6c6c;  margin-top:-10px; padding:20px; text-decoration: none; border-bottom: none; border-left: none; margin-top: none; border-right: none;
+    }
+    .myqufidebox2{
+      width: 199px;height:48px;object-fit: contain;background-color: #ffffff;font-family: NanumGothic;font-size: 15px;font-weight: normal;line-height: 10px;letter-spacing: -0.3px;text-align: left;color: #070707; padding:14px;text-decoration: none;
+       padding:20px; text-decoration: none; border-bottom: solid 1.5px #dee2e6; border-left: none;border-top: none;cursor:pointer; border-right: none;
+    }
+    .title{
+      font-family: NanumGothic;font-size: 26px;font-weight: bold;line-height: 1.15;letter-spacing: -0.52px;text-align: center;color: #070707;width: 150px; height: 30px;
+    }
+    .pw_w
+    {
+      object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #070707;float:left;
+    }
+    .pw_w2
+    {
+      object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #070707;float:left;
+      opacity: 0.5;
+    }
+    .pw_w3
+    {
+      object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: right;color: #32b09b;float:right; text-decoration: underline;
+      cursor:pointer;
+    }
+    .star{
+      font-family: NanumGothic;font-size: 14px;font-weight: bold;color:#32d09b;float:left;margin-left: 3px;
+    }
+    .input_window1{
+      border: solid 1px #dee2e6; width: 550px;height: 38px;margin-top: 0px; border-radius: 4px; margin-right: 8px;
+    }
+    .input_window2{
+      border: solid 1px #dee2e6; width: 550px;height: 38px;margin-top: 0px; background-color: #f1f3f5;border-radius: 4px;
+    }
+    .input_window3{
+      border: solid 1px #dee2e6; width: 400px;height: 38px;margin-top: 0px; background-color: #ffffff;border-radius: 4px; float:left;
+    }
+    .lasttime{
+      family: NanumGothic;font-size: 15px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: right; margin-top: 11px; margin-right: 12px;
+    }
+    .Authentication_num{
+      width:138px; height:38px;border: solid 1px #32b09b;background-color: #32b09b;border-radius: 4px; object-fit: contain;font-family: NanumGothic;font-size: 15px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: white;float:right;
+      cursor:pointer;
+    }
+    .Authentication_num2{
+      width:138px; height:38px;border: solid 1px #dee2e6;background-color: #dee2e6;border-radius: 4px; object-fit: contain;font-family: NanumGothic;font-size: 15px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #707070;float:right;
+      cursor:pointer;
+    }
+
+    .option_slide{
+      float:left; display: block; border:solid 1px #dee2e6; width: 110px;height: 44px;
+    }
+    .select_type{
+      display: block; font-family: NanumGothic;font-size: 15px;font-weight: normal;line-height: 1.13;letter-spacing: -0.3px;text-align: left;color: #070707;  margin-left: 12px; float:left; margin-top: 15px;
+    }
+    #select_type_s{
+      float:right; margin-top: 17px;margin-right: 12px;
+    }
+    .checkbox{
+      float:left; margin-top:6px; margin-right:5px;
+    }
+    .check2_w{
+      font-family: NanumGothic;font-size: 15px;font-weight: normal;line-height: 1.13;letter-spacing: -0.3px;text-align: left;color: #070707; margin-top: 4px; float:left; margin-right: 30px;
+    }
+    .check3_w{
+      font-family: NanumGothic;font-size: 15px;font-weight: normal;line-height: 1.13;letter-spacing: -0.3px;text-align: left;color: #070707; margin-top: 4px;height:25px;
+    }
+    .b_changepw{
+      width: 140px;height: 46px;object-fit: contain;border-radius: 33px;border: solid 1px #dee2e6; background-color: white; font-family: NanumGothic;font-size: 17px;font-weight: normal;line-height: 1.18;letter-spacing: -0.34px;text-align: center;color: #070707;cursor: pointer; margin-left: 125px;
+    }
+    .b_modify{
+      width: 140px;height: 46px;object-fit: contain;border-radius: 33px;border: solid 1px #32b09b; background-color: white; font-family: NanumGothic;font-size: 17px;font-weight: normal;line-height: 1.18;letter-spacing: -0.34px;text-align: center;color: #32b09b;cursor: pointer; margin-left: 15px;
+    }
+    .Membership_Withdrawal{
+      font-family: NanumGothic;font-size: 15px;font-weight: bold;line-height: 1.13;letter-spacing: -0.3px;text-align: center;color: #707070; float:left; margin-right: 15px; margin-left:144px;
+    }
+    .b_Withdrawal{
+      width: 100px;height: 40px;object-fit: contain;border-radius: 7px;border: solid 1px #dee2e6;background-color: #ffffff; cursor: pointer; margin-top: -10px;font-family: NanumGothic;font-size: 15px;font-weight: normal;line-height: 1.13;letter-spacing: -0.3px;text-align: center;color: #070707;
+    }
+    #Customer_Service{
+      width: 300px;height: 3px;margin-left: 90px;font-family: NanumGothic;font-size: 25px;font-weight: bold;line-height: 1.7;letter-spacing: normal;text-align: left;color: #070707;
+      }
+    #hours_of_business{
+      float:left; width: 560px;height: 3px; margin-left: 90px; margin-bottom: 50px; font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.8;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+    .b_inquiry_l,.b_kakao_l,.b_insta_l{
+      float:left; margin-right:12px;width: 94px;height: 37px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff; margin-top: -16px;
+      }
+    #b_inquiry,#b_kakao,#b_insta{
+      display:block; font-family: NanumGothic;font-size: 16px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 37px; text-decoration: none;color: #444
+      }
+    #tail_mq
+      {
+      float:left; margin-left: 90px; margin-right:500px; height:20px;object-fit: contain;font-family: 'NanumGothic';font-size: 12px;font-weight: 900;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+    #info1{
+      float:left; margin-left: 90px; margin-bottom: 60px; object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+    #info2{
+      float:left; margin-left:326px; margin-top:5px; object-fit: contain;font-family: 'Nanum Gothic';font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+    #partnership,#terms,#p_info{
+       float:left; margin-right:15px;object-fit: contain; font-family: 'Nanum Gothic';font-size: 14px;font-weight:900; text-decoration: none;font-stretch: normal;line-height:1.2 ;letter-spacing: -0.28px;text-align: left;color: #070707;
+      }
+    ul{
+        list-style:none;
+        padding-left:0px;
+        margin: 0px;
+
+   }
+    li {
+        list-style-type: none;
+        float: left;
+        padding-left: 10px;
+    }
+
+    </style>
+
+         <hr style="border:solid 1px #f1f3f5;" width="100%"> <!--라인-->
+    <div class="menubar" style="margin-left:34px; margin-top: -8px; width:200px; height:570px;  border-right: solid 1.5px #dee2e6; float:left;">
+      <button type="button" onclick= "location.href='{% url 'members:mypage' %}' "class="myqufidebox">
+        마이큐피드
+      </button>
+      <br>
+      <button type="button" onclick= "location.href='{% url 'members:order' %}' " class="myqufidebox2" style="border-bottom:none;">
+        주문내역
+      </button>
+      <br>
+      <button  type="button" onclick= "location.href='{% url 'members:profile' %}' " class="myqufidebox2" style="color:#ffffff; background-color:#32b09b; border-right:solid 1.5px #32b09b; border-bottom:solid 1px #32b09b;">
+        내 정보 관리
+      </button>
+      <br>
+      <button type="button" onclick= "location.href='{% url 'members:address' %}' " class="myqufidebox2" style="border-bottom:none;">
+        배송지 관리
+      </button>
+    </div>
+    <br><br>
+    <div style="margin-left:500px; width:550px;">
+      <center><h2 class="title">내 정보 관리</h2></center>
+             <form action="" method = "post" enctype="multipart/form-data">
             {% csrf_token %}
-            <table>
-                 {{form.as_table}}
-            </table>
-            <input type="submit" value="수정하기">
-              <a href="{% url 'account_change_password' %}">비밀번호 변경</a><br>
-              <a href="{% url 'members:delete' %}">계정 탈퇴</a>
+                 <div class="pw"><br>
+                <div class="pw_w2">이메일 </div>
+                <br>
+                <input type="text" placeholder="{{form.instance.email}}" class="input_window2"></div>
+                 <br>
+                <div class="pw">
+                 <div class="pw_w">이름</div>
+                 <div class="star">*</div>
+                 <br>
+                <input type="text" placeholder="{{form.instance.name}}" class="input_window1">
+
+                 <div class="pw"><br>
+                <div class="pw_w2">휴대폰 번호</div>
+                <div class="star">*</div>
+                <br>
+                <input type="text" placeholder="{{form.instance.phone}}" class="input_window3">
+                <br><br>
+
+                </div>
+                <br><br>
+                 <br>
+                <div class="pw">
+                <div class="pw_w">생년원일</div><br>
+                <div class="option_slide">
+                <div class="select_type">{{ form.instance.birthdate.year }}연도</div>
+                <img src="그룹 708.png" srcset="그룹 708@2x.png 2x,  그룹 708@3x.png 3x" id="select_type_s">
+                </div>
+                <div style="float:left; font-size:20px;margin-left:15px; margin-right:15px; margin-top:6px;">-</div>
+                <div class="option_slide">
+                <div class="select_type">{{ form.instance.birthdate.month }}월</div>
+                <img src="그룹 708.png" srcset="그룹 708@2x.png 2x,  그룹 708@3x.png 3x" id="select_type_s">
+                </div>
+                <div style="float:left; font-size:20px;margin-left:15px; margin-right:15px; margin-top:6px;">-</div>
+                <div class="option_slide">
+                <div class="select_type">{{ form.instance.birthdate.day }}일</div>
+                <img src="그룹 708.png" srcset="그룹 708@2x.png 2x,  그룹 708@3x.png 3x" id="select_type_s">
+                </div>
+                </div>
+                <br><br><br>
+                  <div class="pw">
+                <div class="pw_w">성별</div><br>
+                </div>
+                <label class="check2">
+                <span class="checkmark"></span>
+                <div class="check2_w">{{ form.sex }}</div>
+                </label>
+              <br><br>
+                 <div class="pw">
+               <div class="pw_w">마케팅 정보 수신</div><br>
+                </div>
+                <label class="check2">
+                <span class="checkmark"></span>
+                <div class="check3_w">{{ form.marketing }}</div>
+                </label>
+                <br><br>
+                <div>
+                <button type="button" class="b_changepw"><a href="{% url 'account_change_password' %}">비밀번호 변경</a></button>
+                <button type="submit" class="b_modify">수정하기</button>
+                </div>
+                <br><br><br>
+                 <div>
+                <div class="Membership_Withdrawal">회원 탈퇴를 원하시나요?</div>
+                 <button type="button" class="b_Withdrawal"><a href="{% url 'members:delete' %}">계정 탈퇴</a></button>
+                </div>
 
           </form>
-      </div>
-    </nav>
+
+  </div>
+    <br><br><br><br>
+
+    <hr style="border:solid 1px #f1f3f5;" width="100%"> <!--라인-->
+
 {% endblock %}

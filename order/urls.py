@@ -1,5 +1,9 @@
 from django.urls import path
 from .views import *
+from django.contrib import admin
+from members.views import *
+from django.urls import re_path
+
 
 app_name = 'orders'
 

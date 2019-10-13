@@ -1,140 +1,218 @@
 {% extends 'base.html' %}
 {% block title %}My Page{% endblock %}
 {% block content %}
-    <nav class="navbar navbar-default">
-      <div class="container">
-          주문내역확인<br><br>
-          {% for order in orders %}
-          주문번호 : <a href="{% url 'members:order_detail' order.orderno %}">{{order.orderno}}</a><br><br>
-            주문정보<br><br>
-                {% if count == 0 %}
-                    {{orderitem.product}} ({{orderitem.option.name}}) <br>
-                {% else %}
-                    {{orderitem.product}} ({{orderitem.option.name}}) 외 {{count}}건 <br>
-                {% endif %}
-            {{order.price}}원<br>
-            {{order.created}}<br>
-          <br><br>
+    <style>
+       .header1{
+      display:block;width:1310px; height:25px; font-family: NanumGothic;font-size: 15px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.7;letter-spacing: normal;text-align: center;color: #32b09d;text-decoration: none;
+      background-color: #d7f7f5;padding:11px;
+    }
+    .header1:hover{
+      color:white;background-color: #32b09d;
+    }
+    .header2{
+      background-color: #f1f3f5;height:38px;margin:0;
+    }
+    .header2{
+      background-color: #f1f3f5;height:38px;margin:0;
+    }
+    #h2_word{
+      width:440px;font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 38px;letter-spacing: -0.24px;text-align:left; margin-left: 35px;color: #707070; float:left;
+    }
+    #basket,#logout,#join{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 10px; text-decoration: none;
+    }
+    #myq{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 80px;text-decoration: none;
+    }
+    #basket:hover,#logout:hover,#join:hover,#myq:hover{
+      color:#32b09b; font-size: bolder;
+    }
+    .search_line{
+      float:right; margin-top:20px; margin-right:70px;width: 280px;height: 38px;border-radius: 19px;border: solid 1px #dee2e6;
+    }
+    .search_line>div {
+      display:block; float:right; margin-right:140px; font-family: NanumGothic;font-size: 14px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 2.6;letter-spacing: -0.28px;text-align: left;color: #c3c3c3;
+    }
+    #search_img{
+      position: relative; top:20%; left:90%;
+    }
 
 
-          <br>
-          가격: {{order.get_total_price}}<br>
-          {% endfor %}
+    #logo_img{
+      width:140px ;height:135px; position:absolute; top:65px; left:600px;
+    }
+    .category{
+      position:relative; display: inline-block; margin-left: 35px;float:left;width: 200px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #ffffff;text-decoration: none;
 
-      </div>
-    </nav>
+      background-color: #343a40;
+    }
+    .tteok_back,.hangoa_back,.bread_back,.guk_back,.fruit_back,.bunsik_back,.sauce_back,.yukgagong_back,.healthyfood_back,.drink_back{
+      margin-left: 35px; width:200px;height:40px;background-color:#646664; opacity: 0.9;
+    }
+    #tteok,#hangoa,#bread,#guk,#fruit,#bunsik,#sauce,#yukgagong,#healthyfood,#drink{
+      display:block; margin-left: 60px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 40px;letter-spacing: -0.28px;text-align: left;color: #ffffff;text-decoration: none;
+    }
+    .tteok_back:hover,.hangoa_back:hover,.bread_back:hover,.guk_back:hover,.fruit_back:hover,.bunsik_back:hover,.sauce_back:hover,.yukgagong_back:hover,.healthyfood_back:hover,.drink_back:hover{background-color: #343a40;opacity: 0.9;}
+    #submenu{
+      display:none; position:absolute;
+    }
+    .top_menu:hover #submenu{
+      display: block;
+    }
+    .somun,.recommendation,.best,.new_item,.Exhibitions,.Event,.Recipe{
+      float:left;width: 142px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #070707;text-decoration: none;
 
+      background-color: #ffffff;
+    }
+    .somun:hover,.recommendation:hover,.best:hover,.new_item:hover,.Exhibitions:hover,.Event:hover,.Recipe:hover{color:#32b09b;}
 
-<script>
+    .tteok_menu,.hangoa_menu,.bread_menu,.guk_menu,.fruit_menu,.bunsik_menu,.sauce_menu,.yukgagong_menu,.healthyfood_menu,.drink_menu{
+      margin-left: 200px; background-color: #ffffff; width:179px; height:400px;display:none; border:solid 1px;
+    }
+    #tteok1,#tteok2,#tteok3,#hangoa1,#hangoa2,#hangoa3,#hangoa4,#bread1,#bread2,#bread3,#bread4,#guk1,#guk2,#guk3,#guk4,#fruit1,#fruit2,#fruit3,#bunsik1,#bunsik2,#bunsik3,#bunsik4,#sauce1,#sauce2,#sauce3,#yukgagong1,#yukgagong2,#yukgagong3{
+      display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+    }
+    #healthyfood1,#healthyfood2,#healthyfood3,#drink1,#drink2,#drink3{
+      display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+    }
+    #tteok1:hover,#tteok2:hover,#tteok3:hover,#hangoa1:hover,#hangoa2:hover,#hangoa3:hover,#hangoa4:hover,#bread1:hover,#bread2:hover,#bread3:hover,#bread4:hover,#guk1:hover,#guk2:hover,#guk3:hover,#guk4:hover,#fruit1:hover,#fruit2:hover,#fruit3:hover{color:#32b09d; text-decoration: underline;}
 
-$(document).ready(function(){
-	var myKey = "50QC9hi00dt6eL3yOBJqRw"; // sweet tracker에서 발급받은 자신의 키 넣는다.
+    #bunsik1:hover,#bunsik2:hover,#bunsik3:hover,#bunsik4:hover,#sauce1:hover,#sauce2:hover,#sauce3:hover,#healthyfood1:hover,#healthyfood2:hover,#healthyfood3:hover,#drink1:hover,#drink2:hover,#drink3:hover,#yukgagong1:hover,#yukgagong2:hover,#yukgagong3:hover{color:#32b09d; text-decoration: underline;}
 
-		// 택배사 목록 조회 company-api
-        $.ajax({
-            type:"GET",
-            dataType : "json",
-            url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key="+myKey,
-            success:function(data){
+    .tteok_back:hover .tteok_menu{display: block;}
+    .hangoa_back:hover .hangoa_menu{display: block;}
+    .bread_back:hover .bread_menu{display: block;}
+    .fruit_back:hover .fruit_menu{display: block;}
+    .guk_back:hover .guk_menu{display: block;}
+    .bunsik_back:hover .bunsik_menu{display: block;}
+    .sauce_back:hover .sauce_menu{display: block;}
+    .healthyfood_back:hover .healthyfood_menu{display: block;}
+    .yukgagong_back:hover .yukgagong_menu{display: block;}
+    .drink_back:hover .drink_menu{display: block;}
 
-            		// 방법 1. JSON.parse 이용하기
-            		var parseData = JSON.parse(JSON.stringify(data));
-             		console.log(parseData.Company); // 그중 Json Array에 접근하기 위해 Array명 Company 입력
+    .myqufidebox{
+      width: 199px;height:60px;object-fit: contain;background-color: #ffffff;font-family: NanumGothic;font-size: 18px;font-weight: bold;line-height: 27px;letter-spacing: -0.36px;text-align: left;color: #6c6c6c;  margin-top:-10px; padding:20px; text-decoration: none; border-bottom: none; border-left: none; margin-top: none; border-right: none;
+    }
+    .myqufidebox2{
+      width: 199px;height:48px;object-fit: contain;background-color: #ffffff;font-family: NanumGothic;font-size: 15px;font-weight: normal;line-height: 10px;letter-spacing: -0.3px;text-align: left;color: #070707; padding:14px;text-decoration: none;
+       padding:20px; text-decoration: none; border-bottom: solid 1.5px #dee2e6; border-left: none;border-top: none;cursor:pointer; border-right: none;
+    }
+    .title{
+      font-family: NanumGothic;font-size: 26px;font-weight: bold;line-height: 1.15;letter-spacing: -0.52px;text-align: center;color: #070707;width: 106px; height: 30px;
+    }
+    .max_1year{
+      width: 553px;height: 15px;font-family: NanumGothic;font-size: 13px;font-weight: normal;line-height: 1.15;letter-spacing: -0.26px;color: #707070;
+    }
+    .date1{
+      width: 90px;height: 30px;object-fit: contain;border-radius: 4px;background-color: #dee2e6; font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 30px;letter-spacing: -0.24px;text-align: center;color: #707070;margin-top: -24px;
+    }
+    .item_box{
+      width: 800px;height: 106px;object-fit: contain;border: solid 1px #dee2e6; margin-top: 0px; margin-bottom: 15px;
+    }
+    #line1{
+      border: solid 1px #dee2e6;
+    }
+    #box{
+      width: 80px;height: 80px;object-fit: contain;background-color: #f1f3f5; float:left;margin-top: 13.5px;margin-left: 12px;margin-right: 12px;
+    }
+    #item_title{
+      font-family: NanumGothic;font-size: 13px;font-weight: bold;line-height: 1.15;letter-spacing: -0.26px;text-align: left;color: #707070;float:left;margin-top: 18px;
+    }
+    #item_date{
+      font-family: NanumGothic;font-size: 12px;font-weight:900;line-height: 1.17;letter-spacing: -0.1px;text-align: right;color: #707070;margin-top: 17px; margin-right: 18px;opacity: 0.7;
+    }
+    #item_price{
+        font-family: NanumGothic;font-size: 16px;font-weight: 900;line-height: 1.19;letter-spacing: 0.2px;text-align: left;margin-top: 7px;
+    }
+    #item_drive{
+        font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #707070;float:left;margin-top: 18px;opacity: 0.7;
+    }
+    #item_drive2{
+        font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 1.17;letter-spacing: -0.24px;text-align: center;color: #32b09b;float:left;margin-top: 18px;
+      }
+    #b_review{
+      width: 100px;height: 30px;object-fit: contain;border-radius: 17px;border: solid 1px #32b09b;background-color: #ffffff;font-family: NanumGothic;font-size: 12px;font-weight: normal;line-height: 25px;letter-spacing: -0.24px;text-align: center;color: #32b09b; float:right; margin-top: 7px;margin-right: 18px; text-decoration: none; cursor: pointer;
+    }
+    #Customer_Service{
+      width: 300px;height: 3px;margin-left: 90px;font-family: NanumGothic;font-size: 25px;font-weight: bold;line-height: 1.7;letter-spacing: normal;text-align: left;color: #070707;
+      }
 
-            		// 방법 2. Json으로 가져온 데이터에 Array로 바로 접근하기
-            		var CompanyArray = data.Company; // Json Array에 접근하기 위해 Array명 Company 입력
-            		console.log(CompanyArray);
+      #hours_of_business{
+        float:left; width: 560px;height: 3px; margin-left: 90px; margin-bottom: 50px; font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.8;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      .b_inquiry_l,.b_kakao_l,.b_insta_l{
+        float:left; margin-right:12px;width: 94px;height: 37px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff; margin-top: -16px;
+      }
+      #b_inquiry,#b_kakao,#b_insta{
+        display:block; font-family: NanumGothic;font-size: 16px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 37px; text-decoration: none;color: #444
+      }
+      #tail_mq
+      {
+        float:left; margin-left: 90px; margin-right:500px; height:20px;object-fit: contain;font-family: 'NanumGothic';font-size: 12px;font-weight: 900;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info1{
+        float:left; margin-left: 90px; margin-bottom: 60px; object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info2{
+        float:left; margin-left:326px; margin-top:5px; object-fit: contain;font-family: 'Nanum Gothic';font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #partnership,#terms,#p_info{
+       float:left; margin-right:15px;object-fit: contain; font-family: 'Nanum Gothic';font-size: 14px;font-weight:900; text-decoration: none;font-stretch: normal;line-height:1.2 ;letter-spacing: -0.28px;text-align: left;color: #070707;
+      }
+      #item_num{
+      font-family: NanumGothic;font-size: 12px;font-weight:800;line-height: 1.17;letter-spacing: -0.1px;text-align: right;color: #32b09b;margin-top: 20px; margin-right: 18px;opacity: 0.7; float:right;
+    }
 
-            		var myData="";
-            		$.each(CompanyArray,function(key,value) {
-	            			myData += ('<option value='+value.Code+'>' +value.Name + '</option>');
-            		});
-            		$("#tekbeCompnayList").html(myData);
-            }
-        });
+    </style>
+         <hr style="border:solid 1px #f1f3f5;" width="100%"> <!--라인-->
+    <div class="menubar" style="margin-left:34px; margin-top: -8px; width:200px; height:570px;  border-right: solid 1.5px #dee2e6; float:left;">
+      <button type="button" onclick= "location.href='{% url 'members:mypage' %}' "class="myqufidebox">
+        마이큐피드
+      </button>
+      <br>
+      <button type="button" onclick= "location.href='{% url 'members:order' %}' " class="myqufidebox2"  style="color:#ffffff; background-color:#32b09b; border-right:solid 1.5px #32b09b; border-bottom:solid 1px #32b09b;">
+        주문내역
+      </button>
+      <br>
+      <button  type="button" onclick= "location.href='{% url 'members:profile' %}' " class="myqufidebox2" style="border-bottom:none;">
+        내 정보 관리
+      </button>
+      <br>
+      <button type="button" onclick= "location.href='{% url 'members:address' %}' " class="myqufidebox2" style="border-bottom:none;">
+        배송지 관리
+      </button>
+    </div>
+     <br>
 
-		// 배송정보와 배송추적 tracking-api
-        $("#myButton1").click(function() {
-        	var t_code = $('#tekbeCompnayList option:selected').attr('value');
-        	var t_invoice = $('#invoiceNumberText').val();
-            $.ajax({
-                type:"GET",
-                dataType : "json",
-                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+t_code+"&t_invoice="+t_invoice,
-                success:function(data){
-                	console.log(data);
-                	var myInvoiceData = "";
-                	if(data.status == false){
-                		myInvoiceData += ('<p>'+data.msg+'<p>');
-                	}else{
-	            		myInvoiceData += ('<tr>');
-	            		myInvoiceData += ('<th>'+"보내는사람"+'</td>');
-	            		myInvoiceData += ('<th>'+data.senderName+'</td>');
-	            		myInvoiceData += ('</tr>');
-	            		myInvoiceData += ('<tr>');
-	            		myInvoiceData += ('<th>'+"제품정보"+'</td>');
-	            		myInvoiceData += ('<th>'+data.itemName+'</td>');
-	            		myInvoiceData += ('</tr>');
-	            		myInvoiceData += ('<tr>');
-	            		myInvoiceData += ('<th>'+"송장번호"+'</td>');
-	            		myInvoiceData += ('<th>'+data.invoiceNo+'</td>');
-	            		myInvoiceData += ('</tr>');
-	            		myInvoiceData += ('<tr>');
-	            		myInvoiceData += ('<th>'+"송장번호"+'</td>');
-	            		myInvoiceData += ('<th>'+data.receiverAddr+'</td>');
-	            		myInvoiceData += ('</tr>');
-                	}
+    <br>
+    <div style="margin-left:450px; width:600px;">
+      <center><h2 class="title">주문완료</h2>
+      <div class="max_1year">주문 내역은 최대 1년까지만 확인 가능합니다. 이전 주문은 하단 1:1 채팅이나 고객센터로 문의해주세요.</div>
+      <br><br>
+    </div>
+    <div class="bodybox" style="margin-left:340px; width:800px;">
+        <hr id="line1" width="100%"> <!--라인-->
+        {% if orders.exists  %}
+        <div class="date1">2019년 8월</div>
+        <br>
+        {% for order in orders %}
+            <div class="item_box">
+            <div id="box"><img src="{{orderitem.product.image.url}}" width="80px" height="80px"></div>
+             {% if order.count == 0 %}
+                   <div id="item_title">{{orderitem.product}} ({{orderitem.option.name}}) </div>
+             {% else %}
+                    <div id="item_title">{{orderitem.product}} ({{orderitem.option.name}}) 외 {{count}}건 </div>
+             {% endif %}
+            <div id="item_date">{{ order.created.year }}.{{ order.created.month }}.{{ order.created.day }}</div>
+            <div id="item_price">{{order.price}}</div>
+            {% if order.paid %}
+                <div id="item_drive">결제완료</div>
+            {% endif %}
+            <a id="item_num" href="{% url 'members:order_detail' order.orderno %}">주문번호 | {{order.orderno}}</a>
+            </div>
+        {% endfor %}
+        {% endif %}
+    </div>
 
-
-                	$("#myPtag").html(myInvoiceData)
-
-                	var trackingDetails = data.trackingDetails;
-
-
-            		var myTracking="";
-            		var header ="";
-            		header += ('<tr>');
-            		header += ('<th>'+"시간"+'</th>');
-            		header += ('<th>'+"장소"+'</th>');
-            		header += ('<th>'+"유형"+'</th>');
-            		header += ('<th>'+"전화번호"+'</th>');
-        			header += ('</tr>');
-
-            		$.each(trackingDetails,function(key,value) {
-	            		myTracking += ('<tr>');
-            			myTracking += ('<td>'+value.timeString+'</td>');
-            			myTracking += ('<td>'+value.where+'</td>');
-            			myTracking += ('<td>'+value.kind+'</td>');
-            			myTracking += ('<td>'+value.telno+'</td>');
-	            		myTracking += ('</tr>');
-            		});
-
-            		$("#myPtag2").html(header+myTracking);
-
-                }
-            });
-        });
-
-});
-
-
-</script>
-<body>
-<span id="tekbeCompnayName">택배회사명: </span>
-<select id="tekbeCompnayList" name="tekbeCompnayList"></select><br/><br/>
-
-<span id="invoiceNumber">운송장번호: </span>
-<input type="text" id="invoiceNumberText" name="invoiceNumberText"><br/><br/>
-<button id="myButton1">택배 조회하기 </button>
-<br/>
-<br/>
-<div>
-	<table id="myPtag"></table>
-</div>
-<br/>
-<div>
-	<table id="myPtag2"></table>
-</div>
-</body>
 
 {% endblock %}

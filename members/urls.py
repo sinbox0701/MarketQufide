@@ -12,7 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('signup/', signup, name='signup'),
-    path('signup/', send_and_confirm, name='send_and_confirm'),
+    #path('signup/', send_and_confirm, name='send_and_confirm'),
 
     #path('signup/', sms_send, name='sms_send'),
     #path('login/', login, name='login'),

@@ -3,9 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from allauth.account.forms import SignupForm
 from django.contrib.auth import get_user_model, authenticate, login
 from .models import SmsSend
-from members.models import Marketing, Address
+from members.models import Marketing, Address,User
 
-User = get_user_model()
 
 '''
 class CustomSignupForm(SignupForm):
@@ -94,7 +93,15 @@ class AddressForm(forms.ModelForm):
 
     class Meta:
         model = Address
-        fields = ['addr_name', 'phone', 'zip','addr1','addr2']
+        fields = ('addr_name', 'phone', 'zip','addr1','addr2')
+        labels = {
+            'addr_name':'배송지명',
+            'phone':'연락처',
+            'zip':'우편번호',
+            'addr1':'주소',
+            'addr2':'상세주소'
+        }
+
 
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args,**kwargs)

@@ -5,12 +5,355 @@ Order Complete
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col">
-        <div class="alert alert-success" role="alert">Thank you!<br/>
-            Your order has been successfully completed.<br/>
-        Your order number is <strong>{{order.orderno}}</strong></div>
+<style>
 
+    .header1{
+      display:block;width:1310px; height:25px; font-family: NanumGothic;font-size: 15px;font-weight: 800;font-style: normal;font-stretch: normal;line-height: 1.7;letter-spacing: normal;text-align: center;color: #32b09d;text-decoration: none;
+      background-color: #d7f7f5;padding:11px;
+    }
+    .header1:hover{
+      color:white;background-color: #32b09d;
+    }
+    .header2{
+      background-color: #f1f3f5;height:38px;margin:0;
+    }
+    .header2{
+      background-color: #f1f3f5;height:38px;margin:0;
+    }
+    #h2_word{
+      width:440px;font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 38px;letter-spacing: -0.24px;text-align:left; margin-left: 35px;color: #707070; float:left;
+    }
+    #basket,#logout,#join{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 10px; text-decoration: none;
+    }
+    #myq{
+      float:right;font-family: NanumGothic;font-size: 12px;font-weight: bold;line-height: 38px;letter-spacing: -0.24px;text-align: left;color: #707070;margin-right: 80px;text-decoration: none;
+    }
+    #basket:hover,#logout:hover,#join:hover,#myq:hover{
+      color:#32b09b; font-size: bolder;
+    }
+    .search_line{
+      float:right; margin-top:20px; margin-right:70px;width: 280px;height: 38px;border-radius: 19px;border: solid 1px #dee2e6;
+    }
+    .search_line>div {
+      display:block; float:right; margin-right:140px; font-family: NanumGothic;font-size: 14px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 2.6;letter-spacing: -0.28px;text-align: left;color: #c3c3c3;
+    }
+    #search_img{
+      position: relative; top:20%; left:90%;
+    }
+
+
+    #logo_img{
+      width:140px ;height:135px; position:absolute; top:65px; left:600px;
+    }
+    .category{
+      position:relative; display: inline-block; margin-left: 35px;float:left;width: 200px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #ffffff;text-decoration: none;
+
+      background-color: #343a40;
+    }
+    .tteok_back,.hangoa_back,.bread_back,.guk_back,.fruit_back,.bunsik_back,.sauce_back,.yukgagong_back,.healthyfood_back,.drink_back{
+      margin-left: 35px; width:200px;height:40px;background-color:#646664; opacity: 0.9;
+    }
+    #tteok,#hangoa,#bread,#guk,#fruit,#bunsik,#sauce,#yukgagong,#healthyfood,#drink{
+      display:block; margin-left: 60px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 40px;letter-spacing: -0.28px;text-align: left;color: #ffffff;text-decoration: none;
+    }
+    .tteok_back:hover,.hangoa_back:hover,.bread_back:hover,.guk_back:hover,.fruit_back:hover,.bunsik_back:hover,.sauce_back:hover,.yukgagong_back:hover,.healthyfood_back:hover,.drink_back:hover{background-color: #343a40;opacity: 0.9;}
+    #submenu{
+      display:none; position:absolute;
+    }
+    .top_menu:hover #submenu{
+      display: block;
+    }
+    .somun,.recommendation,.best,.new_item,.Exhibitions,.Event,.Recipe{
+      float:left;width: 142px;height: 42px;object-fit: contain;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 2.8;letter-spacing: -0.28px;text-align: center;vertical-align: middle;color: #070707;text-decoration: none;
+
+      background-color: #ffffff;
+    }
+    .somun:hover,.recommendation:hover,.best:hover,.new_item:hover,.Exhibitions:hover,.Event:hover,.Recipe:hover{color:#32b09b;}
+
+    .tteok_menu,.hangoa_menu,.bread_menu,.guk_menu,.fruit_menu,.bunsik_menu,.sauce_menu,.yukgagong_menu,.healthyfood_menu,.drink_menu{
+      margin-left: 200px; background-color: #ffffff; width:179px; height:400px;display:none; border:solid 1px;
+    }
+    #tteok1,#tteok2,#tteok3,#hangoa1,#hangoa2,#hangoa3,#hangoa4,#bread1,#bread2,#bread3,#bread4,#guk1,#guk2,#guk3,#guk4,#fruit1,#fruit2,#fruit3,#bunsik1,#bunsik2,#bunsik3,#bunsik4,#sauce1,#sauce2,#sauce3,#yukgagong1,#yukgagong2,#yukgagong3{
+      display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+    }
+    #healthyfood1,#healthyfood2,#healthyfood3,#drink1,#drink2,#drink3{
+      display:block; margin-left: 30px; margin-top: 20px;font-family: NanumGothic;font-size: 14px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 0px;letter-spacing: -0.28px;text-align: left;color:#646664 ;text-decoration: none;
+    }
+    #tteok1:hover,#tteok2:hover,#tteok3:hover,#hangoa1:hover,#hangoa2:hover,#hangoa3:hover,#hangoa4:hover,#bread1:hover,#bread2:hover,#bread3:hover,#bread4:hover,#guk1:hover,#guk2:hover,#guk3:hover,#guk4:hover,#fruit1:hover,#fruit2:hover,#fruit3:hover{color:#32b09d; text-decoration: underline;}
+
+    #bunsik1:hover,#bunsik2:hover,#bunsik3:hover,#bunsik4:hover,#sauce1:hover,#sauce2:hover,#sauce3:hover,#healthyfood1:hover,#healthyfood2:hover,#healthyfood3:hover,#drink1:hover,#drink2:hover,#drink3:hover,#yukgagong1:hover,#yukgagong2:hover,#yukgagong3:hover{color:#32b09d; text-decoration: underline;}
+
+    .tteok_back:hover .tteok_menu{display: block;}
+    .hangoa_back:hover .hangoa_menu{display: block;}
+    .bread_back:hover .bread_menu{display: block;}
+    .fruit_back:hover .fruit_menu{display: block;}
+    .guk_back:hover .guk_menu{display: block;}
+    .bunsik_back:hover .bunsik_menu{display: block;}
+    .sauce_back:hover .sauce_menu{display: block;}
+    .healthyfood_back:hover .healthyfood_menu{display: block;}
+    .yukgagong_back:hover .yukgagong_menu{display: block;}
+    .drink_back:hover .drink_menu{display: block;}
+
+    .basket_title{
+      font-family: NanumGothic;font-size: 26px;font-weight: bold;line-height: 1.15;letter-spacing: normal;color: #070707;
+    }
+    .basket_itembox{
+        margin-left: 1px;display:inline-block; width: 580px;height: 265px;border: solid 1px #dee2e6; float: left; margin-left: 110px;
+    }
+    .basket_itembox_word{
+      font-family: NanumGothic;font-size: 17px;font-weight: bold;line-height: 1.18;letter-spacing: normal;text-align: center;color: #070707;
+    }
+    .order_complete{
+      font-family: NanumGothic;font-size: 20px;font-weight: normal;line-height: 1.15;letter-spacing: -0.2px;text-align: left;color: #070707; float:left; margin-right: 1px;
+    }
+    .order_complete2{
+      font-family: NanumGothic;font-size: 15px;font-weight: normal;line-height: 1.33;letter-spacing: -0.3px;text-align: left;color: #707070; float:left;
+    }
+    .graybox{
+      width: 1144px;height: 100px;object-fit: contain;background-color: #f1f3f5; margin-left: 60px; margin-top: 10px; padding:10px;
+    }
+    #name1,#order_num1,#order_date1,#name2,#order_num2,#order_date2{
+      font-family: NanumGothic;font-size: 15px;font-weight: bold;line-height: 1.13;letter-spacing: -0.3px;text-align: left;color: #707070;
+    }
+    .order_product{
+      font-family: NanumGothic;font-size: 18px;font-weight: bold;line-height: 1.17;letter-spacing: -0.36px;text-align: left;color: #070707;margin-left: 60px;
+    }
+    .gray_box{
+      width: 1164px;height: 38px;object-fit: contain;border: solid 1px #dee2e6;background-color: #f1f3f5;margin-bottom: -10px; margin-left: 60px;
+    }
+    #gray_word{
+      font-family: NanumSquare;font-size: 14px;line-height: 38px;letter-spacing: -0.28px;text-align: left;color: #707070; margin-left: 12px;
+    }
+    .item_box{
+      width: 1164px;height: 128px;object-fit: contain;border: solid 1px #dee2e6; margin-top: 10px; margin-bottom: 15px;margin-left: 60px;
+    }
+    #box{
+      width: 80px;height: 80px;object-fit: contain;background-color: #f1f3f5; float:left;margin-top: -6px;margin-left: 12px;margin-right: 12px;
+    }
+    #item_title{
+      font-family: NanumGothic;font-size: 13px;font-weight: bold;line-height: 1.15;letter-spacing: -0.26px;text-align: left;color: #707070;float:left;margin-top: 10px; margin-left: 12px;
+    }
+    #item_price{
+      font-family: NanumGothic;font-size: 16px;font-weight: 800;line-height: 1.19;letter-spacing: -0.32px;text-align: left;color: #070707;margin-top: -5px;float:left;
+    }
+    #item_count2{
+      font-family: NanumGothic;font-size: 12px;font-weight:bold;line-height: 1.17;letter-spacing: -0.24px;text-align: left; color: #707070;margin-top: 0px; margin-bottom:5px; opacity: 0.7;
+
+    }
+    #item_price2{
+        font-family: NanumGothic;font-size: 16px;font-weight: 900;line-height: 1.19;letter-spacing: 0.7px;text-align: left;margin-top: 8px;
+    }
+    #b_cancel{
+      width: 80px;height: 30px;object-fit: contain;border-radius: 17px;border: solid 1px #707070;background-color: #ffffff;font-family: NanumGothic;font-size: 12px;font-weight: normal;line-height: 30px;letter-spacing: -0.24px;text-align: center;color: #707070; float:right; margin-top: 7px;margin-right: 18px; text-decoration: none;
+    }
+    .gray_box2{
+      width: 1164px;height: 44px;object-fit: contain;border: solid 1px #dee2e6;background-color: #f1f3f5;margin-bottom: -10px; margin-top:-15px;margin-left: 60px;
+    }
+    #gray_word2{
+      font-family: NanumGothic;font-size: 13px;font-weight: bold;line-height: 44px;letter-spacing: -0.26px;text-align: left;color: #707070; float:left;
+    }
+    #gray_word3{
+        font-family: NanumGothic;font-size: 13px;font-weight: bold;line-height: 44px;letter-spacing: -0.26px;text-align: right;color: #707070; margin-right: 13px;
+    }
+
+
+    .drive_img{
+      float:left; margin-top:13px;margin-left: 12px;margin-right: 10px;
+    }
+    .dilivery_info,.result1{
+      font-family: NanumGothic;font-size: 17px;font-weight: 900;line-height: 1.18;letter-spacing: -0.34px;text-align: left;color: #070707;margin-left: 60px;
+    }
+    .table1{
+      float:left;margin-left: 60px; margin-top: 8px; margin-bottom: -5px;
+    }
+    .table2{
+      float:left;margin-left: 60px; margin-top: 2px;
+    }
+    #recipient1,#phonenum1,#deliadd1{
+      font-family: NanumGothic;font-size: 16px;font-weight: bold;line-height: 1.19;letter-spacing: -0.32px;text-align: left;color: #707070; vertical-align: top;
+    }
+    #recipient2,#phonenum2,#deliadd2{
+        font-family: NanumGothic;font-size: 16px;font-weight: bold;line-height: 1.19;letter-spacing: -0.32px;text-align: left;color: #070707; vertical-align: top;
+    }
+    #recipient3,#phonenum3,#deliadd3{
+        font-family: NanumGothic;font-size: 16px;font-weight: bold;line-height: 1.19;letter-spacing: -0.32px;text-align: right;color: #707070;vertical-align: top;
+    }
+    #final_payment1{
+      font-family: NanumGothic;font-size: 18px;font-weight: bold;line-height: 1.17;letter-spacing: -0.36px;text-align: left;color: #070707;
+    }
+    #final_payment2{
+      font-family: NanumGothic;font-size: 18px;font-weight: bold;line-height: 1.17;letter-spacing: -0.36px;text-align: left;color: #ef2f35;
+    }
+    .gomain{
+      width: 170px;height: 44px;object-fit: contain;border-radius: 4px;background-color: #32b09d; border:solid 1px #32b09b;
+      font-family: NanumGothic;font-size: 20px;font-weight: bold;line-height: 1.15;letter-spacing: -0.4px;text-align: center;color: #ffffff;cursor:pointer;
+    }
+
+      #Customer_Service{
+      width: 300px;height: 3px;margin-left: 90px;font-family: NanumGothic;font-size: 25px;font-weight: bold;line-height: 1.7;letter-spacing: normal;text-align: left;color: #070707;
+      }
+
+      #hours_of_business{
+        float:left; width: 560px;height: 3px; margin-left: 90px; margin-bottom: 50px; font-family: NanumGothic;font-size: 12px;font-weight: bold;font-style: normal;font-stretch: normal;line-height: 1.8;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      .b_inquiry_l,.b_kakao_l,.b_insta_l{
+        float:left; margin-right:12px;width: 94px;height: 37px;border-radius: 6px;border: solid 1px #707070;background-color: #ffffff; margin-top: -16px;
+      }
+      #b_inquiry,#b_kakao,#b_insta{
+        display:block; font-family: NanumGothic;font-size: 16px;font-weight: bold;font-style: normal;font-stretch: normal;letter-spacing: -0.32px;text-align:center;line-height: 37px; text-decoration: none;color: #444
+      }
+      #tail_mq
+      {
+        float:left; margin-left: 90px; margin-right:500px; height:20px;object-fit: contain;font-family: 'NanumGothic';font-size: 12px;font-weight: 900;font-stretch: normal;line-height: 1.17;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info1{
+        float:left; margin-left: 90px; margin-bottom: 60px; object-fit: contain;font-family: NanumGothic;font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #info2{
+        float:left; margin-left:326px; margin-top:5px; object-fit: contain;font-family: 'Nanum Gothic';font-size: 12px;font-weight: normal;font-style: normal;font-stretch: normal;line-height: 1.6;letter-spacing: -0.24px;text-align: left;color: #070707;
+      }
+      #partnership,#terms,#p_info{
+       float:left; margin-right:15px;object-fit: contain; font-family: 'Nanum Gothic';font-size: 14px;font-weight:900; text-decoration: none;font-stretch: normal;line-height:1.2 ;letter-spacing: -0.28px;text-align: left;color: #070707;
+      }
+
+</style>
+    <br>
+    <center><h2 class="basket_title">주문완료</h2></center><br>
+    <img src="그룹 8532.png" srcset="그룹 8532@2x.png 2x, 그룹 8532@3x.png 3x" style="float:right; margin-right:110px; "></img><br><br>
+    <div class="order_complete" style="margin-left:60px; margin-right:5px;">고객님의</div>
+    <div class="order_complete" style=" font-weight:900;">주문</div>
+    <div class="order_complete">이 완료되었습니다.</div>
+    <br><br>
+    <div class="order_complete2" style="margin-left:60px;">마켓큐피드를 이용해주셔서 감사합니다.</div>
+    <br>
+    <div class="order_complete2"style="margin-left:60px;">주문변경은</div>
+    <a class="order_complete2" href="accounts/login" style="font-weight:900; margin-left:4px;">[홈페이지 - 로그인]</a>
+    <div class="order_complete2">에서 가능합니다.</div>
+    <br><br>
+    <div class="order_complete2" style="margin-left:60px;">※ 결제 완료된 상품 중 1개 상품이라도 '배송 준비중' 또는 '출고 완료' 상태인 경우 주문 취소 및 배송지 변경이 불가능합니다.</div>
+    <br><br>
+    <div class="graybox">
+      <table class="table1">
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:150px;height:28px;" id="name1">고객명</td>
+            <td id="name2">{{ order.name }}</td>
+          </tr>
+          <tr>
+            <td style="width:150px;height:28px;" id="order_num1">주문번호</td>
+            <td id="order_num2" style="color:#32b09b">{{ order.orderno }}</td>
+          </tr>
+          <tr>
+            <td style="width:150px;height:28px;" id="order_date1">주문일자</td>
+            <td id="order_date2">{{ order.created }}</td>
+          </tr>
+          <tr style="height:10px;"></tr>
+        </tbody>
+      </table>
     </div>
-</div>
+    <br><br>
+    <div class="order_product">주문 상품</div>
+    <hr style="border:solid 1px black; margin-left:60px;" width="87.3%" > <!--라인-->
+    <br>
+    <div class="gray_box">
+      <div id="gray_word" style="float:left; font-weight:bolder">{{ orderitem.product.company }}</div>
+    </div>
+    <div class="item_box">
+      {% if count == 0 %}
+        <div id="item_title">{{ orderitem.product }}</div>
+      {% else %}
+          <div id="item_title">{{orderitem.product}} 외 {{count}}건</div>
+      {% endif %}
+      <br><br>
+      <div id="box"><img src="{{orderitem.product.image.url}}" width="80px" height="80px"></div>
+      <div id="item_price">4,500원 </div><br>
+      <div id="item_count2">옵션 : {{orderitem.option.name}}</div>
+    </div>
+    <div class="gray_box2">
+      <img src="패스 1125.png"  srcset="패스 1125@2x.png 2x,  패스 1125@3x.png 3x" class="drive_img">
+      <div id="gray_word2">배송비 3000원</div>
+      {% if not order.transno %}
+      <div id="gray_word3">미배송</div>
+      {% endif %}
+    </div>
+    <br><br>
+    <div class="dilivery_info">배송지 정보</div>
+    <hr id="line3" width="87.3%" style="border:solid 1px black; margin-left:60px;"> <!--라인-->
+
+    <table class="table1">
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width:150px;height:34px;" id="recipient1">받는 사람</td>
+          <td id="recipient2">{{ order.name }}</td>
+        </tr>
+        <tr>
+          <td style="width:150px;height:34px;" id="phonenum1">연락처</td>
+          <td id="phonenum2">{{ order.phone }}</td>
+        </tr>
+        <tr>
+          <td style="width:150px;height:34px;" id="deliadd1">배송 주소</td>
+          <td id="deliadd2">{{ order.zip }} <br>{{ order.addr1 }} <br>{{ order.addr2 }}</td>
+        </tr>
+        <tr style="height:10px;"></tr>
+
+      </tbody>
+    </table>
+    <br><br><br><br><br><br><br><br>
+    <div class="dilivery_info">결제 정보</div>
+    <hr id="line3" width="87.3%" style="border:solid 1px black; margin-left:60px;"> <!--라인-->
+
+    <table class="table1">
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width:1090px;height:34px;" id="recipient1">상품 금액</td>
+          <td id="recipient3">{{ order.price }}원</td>
+        </tr>
+        <tr>
+          <td style="width:1090px;height:34px;" id="phonenum1">배송비</td>
+          <td id="phonenum3">3,000원</td>
+        </tr>
+        <tr>
+          <td style="width:1090px;height:34px;" id="deliadd1">할인 금액</td>
+          <td id="deliadd3">0원
+        </tr>
+        <tr style="height:10px;"></tr>
+      </tbody>
+    </table>
+
+    <hr id="line3" width="87.3%" style="border:solid 1px #dee2e6; margin-left:60px;"> <!--라인-->
+    <table class="table2">
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width:1098px;height:24px;" id="recipient1">결제 수단</td>
+          <td id="recipient3">신용카드</td>
+        </tr>
+        <tr style="height:3.5px;"></tr>
+      </tbody>
+    </table>
+
+    <hr id="line3" width="87.3%" style="border:solid 1px #dee2e6; margin-left:60px;"> <!--라인-->
+    <table class="table1">
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width:1084px;height:24px;" id="final_payment1">최종 결제 금액</td>
+          <td id="final_payment2">{{ order.price }}원</td>
+        </tr>
+        <tr style="height:0px;"></tr>
+      </tbody>
+    </table>
+    <br><br><br><br><br>
+    <center><button type="button" name="button" class="gomain" onclick= "location.href='{% url 'shop:product_all' %}' ">메인으로 가기</button></center>
+    <br><br><br><br>
+
 {% endblock %}

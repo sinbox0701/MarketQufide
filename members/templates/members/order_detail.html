@@ -311,9 +311,12 @@
         <img src="패스 1125.png"  srcset="패스 1125@2x.png 2x,  패스 1125@3x.png 3x" class="drive_img">
         <div id="gray_word2">배송비 0원</div>
         <div id="gray_word3">출고완료</div>
-        <a href="#" id="gray_word5">{{ order.transno }}</a>
+        {% if order.transno %}
+            <a href="#" id="gray_word5">{{ order.transno }}</a>
+        {% endif %}
+        {% if order.delivery %}
         <div id="gray_word4">{{ order.delivery }}</div>
-
+        {% endif %}
       </div>
              <br>
          {% endfor %}

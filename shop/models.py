@@ -81,6 +81,7 @@ class Product(models.Model):
     image3 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True)
     image4 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True)
     image5 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True)
+    info_image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True)
     description = models.TextField(blank=True)
     #meta_description = models.TextField(blank=True)
     tag_description = TagField(blank=True, null=True)
